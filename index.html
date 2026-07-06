@@ -85,7 +85,8 @@
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Psicoterapia individuale online" } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Psicoterapia di coppia" } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Psicoterapia in presenza a Itri (LT)" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Psicoterapia online in italiano per italiani all'estero" } }
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Psicoterapia online in italiano per italiani all'estero" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supervisione clinica per psicologi, psicoterapeuti ed équipe (online e in presenza)" } }
     ],
     "founder": {
       "@type": "Person",
@@ -167,6 +168,17 @@
     .quiz-step.leaving { opacity: 0; transform: translateX(-16px); }
     .quiz-step.entering { opacity: 0; transform: translateX(16px); }
 
+    /* Navigazione: link, stato attivo (scrollspy), dropdown */
+    .nav-link { position: relative; color: #2B2B2B; cursor: pointer; transition: color .2s ease; }
+    .nav-link:hover { color: #4D6156; }
+    .nav-link.is-active { color: #4D6156; font-weight: 600; }
+    .nav-link.is-active::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -7px;
+      height: 2px; background: #61796A; border-radius: 2px;
+    }
+    #services-toggle[aria-expanded="true"] i { transform: rotate(180deg); }
+    #scroll-progress { transition: width .15s ease-out; }
+
     a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
       outline: 3px solid #61796A; outline-offset: 2px; border-radius: 4px;
     }
@@ -201,12 +213,37 @@
       </a>
 
       <ul class="hidden lg:flex items-center gap-6 text-sm font-medium">
-        <li><a href="#chi-sono" class="nav-link hover:text-salvia-700 transition-colors">Chi sono</a></li>
-        <li><a href="#approccio" class="nav-link hover:text-salvia-700 transition-colors">Approccio</a></li>
-        <li><a href="#expat" class="nav-link hover:text-salvia-700 transition-colors">Italiani all'estero</a></li>
-        <li><a href="#test" class="nav-link hover:text-salvia-700 transition-colors">Test gratuiti</a></li>
-        <li><a href="#percorso" class="nav-link hover:text-salvia-700 transition-colors">Curriculum</a></li>
-        <li><a href="#risorse" class="nav-link hover:text-salvia-700 transition-colors">Risorse</a></li>
+        <li><a href="#chi-sono" class="nav-link" data-target="chi-sono">Chi sono</a></li>
+
+        <!-- Dropdown Servizi -->
+        <li class="relative" id="services-dropdown">
+          <button type="button" id="services-toggle" class="nav-link inline-flex items-center gap-1" aria-expanded="false" aria-controls="services-menu" aria-haspopup="true" data-target="servizi">
+            Servizi <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200" aria-hidden="true"></i>
+          </button>
+          <div id="services-menu" class="hidden absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[19rem]">
+            <ul class="bg-white rounded-2xl shadow-xl ring-1 ring-tortora/70 p-2">
+              <li><a href="#approccio" class="services-link flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-salvia-50 transition-colors">
+                <i data-lucide="compass" class="w-5 h-5 mt-0.5 text-salvia-700 shrink-0" aria-hidden="true"></i>
+                <span><span class="block font-semibold text-notte">Terapia individuale e di coppia</span><span class="block text-xs text-inchiostro/60">Approccio e Analisi della Domanda</span></span>
+              </a></li>
+              <li><a href="#expat" class="services-link flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-salvia-50 transition-colors">
+                <i data-lucide="plane" class="w-5 h-5 mt-0.5 text-salvia-700 shrink-0" aria-hidden="true"></i>
+                <span><span class="block font-semibold text-notte">Italiani all'estero</span><span class="block text-xs text-inchiostro/60">Terapia online in italiano</span></span>
+              </a></li>
+              <li><a href="#supervisione" class="services-link flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-salvia-50 transition-colors">
+                <i data-lucide="users-round" class="w-5 h-5 mt-0.5 text-salvia-700 shrink-0" aria-hidden="true"></i>
+                <span><span class="block font-semibold text-notte">Supervisione clinica</span><span class="block text-xs text-inchiostro/60">Per psicologi, terapeuti ed équipe</span></span>
+              </a></li>
+              <li><a href="#psicovoice" class="services-link flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-salvia-50 transition-colors">
+                <i data-lucide="app-window" class="w-5 h-5 mt-0.5 text-salvia-700 shrink-0" aria-hidden="true"></i>
+                <span><span class="block font-semibold text-notte">PsicoVoice</span><span class="block text-xs text-inchiostro/60">La webapp per gli psicologi</span></span>
+              </a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li><a href="#test" class="nav-link" data-target="test">Test gratuiti</a></li>
+        <li><a href="#risorse" class="nav-link" data-target="risorse">Risorse</a></li>
         <li>
           <a href="#contatti" class="inline-flex items-center gap-2 bg-notte text-white px-4 py-2.5 rounded-full hover:bg-salvia-700 transition-colors">
             <i data-lucide="calendar-heart" class="w-4 h-4" aria-hidden="true"></i>
@@ -220,18 +257,38 @@
       </button>
     </nav>
 
+    <!-- Barra di avanzamento lettura -->
+    <div id="scroll-progress" class="absolute bottom-0 left-0 h-[3px] w-0 bg-salvia-600 rounded-r-full" aria-hidden="true"></div>
+
     <!-- Menu mobile -->
-    <div id="mobile-menu" class="lg:hidden hidden border-t border-tortora bg-crema px-5 pb-5">
-      <ul class="flex flex-col gap-1 pt-3 text-base font-medium">
-        <li><a href="#chi-sono" class="mobile-link block px-3 py-2.5 rounded-lg hover:bg-tortora">Chi sono</a></li>
-        <li><a href="#approccio" class="mobile-link block px-3 py-2.5 rounded-lg hover:bg-tortora">Approccio terapeutico</a></li>
-        <li><a href="#expat" class="mobile-link block px-3 py-2.5 rounded-lg hover:bg-tortora">Italiani all'estero</a></li>
-        <li><a href="#test" class="mobile-link block px-3 py-2.5 rounded-lg hover:bg-tortora">Test gratuiti</a></li>
-        <li><a href="#percorso" class="mobile-link block px-3 py-2.5 rounded-lg hover:bg-tortora">Esperienza &amp; Curriculum</a></li>
-        <li><a href="#risorse" class="mobile-link block px-3 py-2.5 rounded-lg hover:bg-tortora">Risorse &amp; Articoli</a></li>
-        <li><a href="#psicovoice" class="mobile-link block px-3 py-2.5 rounded-lg hover:bg-tortora">PsicoVoice (per psicologi)</a></li>
-        <li><a href="#contatti" class="mobile-link block mt-2 text-center bg-notte text-white px-4 py-3 rounded-full">Prenota un primo colloquio</a></li>
+    <div id="mobile-menu" class="lg:hidden hidden border-t border-tortora bg-crema px-5 pb-6 max-h-[calc(100dvh-3.75rem)] overflow-y-auto">
+      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-salvia-700 pt-4 pb-1 px-1">Percorsi di terapia</p>
+      <ul class="flex flex-col gap-0.5 text-[1.05rem] font-medium">
+        <li><a href="#chi-sono" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="user" class="w-5 h-5 text-salvia-700" aria-hidden="true"></i> Chi sono</a></li>
+        <li><a href="#approccio" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="compass" class="w-5 h-5 text-salvia-700" aria-hidden="true"></i> Approccio &amp; terapia</a></li>
+        <li><a href="#expat" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="plane" class="w-5 h-5 text-salvia-700" aria-hidden="true"></i> Italiani all'estero</a></li>
+        <li><a href="#test" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="sparkles" class="w-5 h-5 text-salvia-700" aria-hidden="true"></i> Test gratuiti</a></li>
       </ul>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-salvia-700 pt-4 pb-1 px-1">Per i colleghi</p>
+      <ul class="flex flex-col gap-0.5 text-[1.05rem] font-medium">
+        <li><a href="#supervisione" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="users-round" class="w-5 h-5 text-salvia-700" aria-hidden="true"></i> Supervisione clinica</a></li>
+        <li><a href="#psicovoice" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="app-window" class="w-5 h-5 text-salvia-700" aria-hidden="true"></i> PsicoVoice</a></li>
+      </ul>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-salvia-700 pt-4 pb-1 px-1">Approfondisci</p>
+      <ul class="flex flex-col gap-0.5 text-[1.05rem] font-medium">
+        <li><a href="#percorso" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="briefcase" class="w-5 h-5 text-salvia-700" aria-hidden="true"></i> Esperienza &amp; Curriculum</a></li>
+        <li><a href="#risorse" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-open" class="w-5 h-5 text-salvia-700" aria-hidden="true"></i> Risorse &amp; Articoli</a></li>
+      </ul>
+      <!-- Contatto nativo diretto -->
+      <div class="grid grid-cols-2 gap-3 mt-5">
+        <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="mobile-link inline-flex items-center justify-center gap-2 border-2 border-notte text-notte font-semibold px-4 py-3 rounded-full hover:bg-notte hover:text-white transition-colors">
+          <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i> Email
+        </a>
+        <a href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20vorrei%20informazioni%20per%20un%20primo%20colloquio." target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-salvia-700 text-white font-semibold px-4 py-3 rounded-full hover:bg-salvia-600 transition-colors">
+          <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> WhatsApp
+        </a>
+      </div>
+      <a href="#contatti" class="mobile-link block mt-3 text-center bg-notte text-white font-semibold px-4 py-3.5 rounded-full hover:bg-salvia-700 transition-colors">Prenota un primo colloquio</a>
     </div>
   </header>
 
@@ -726,6 +783,71 @@
       </div>
     </section>
 
+    <!-- ==================== SUPERVISIONE CLINICA ==================== -->
+    <section id="supervisione" class="py-20 lg:py-28 bg-tortora/40" aria-labelledby="supervisione-title">
+      <div class="max-w-6xl mx-auto px-5">
+        <div class="max-w-3xl mb-14 reveal">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-salvia-700 mb-3">Per psicologi, psicoterapeuti ed équipe</p>
+          <h2 id="supervisione-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6">Supervisione clinica: uno spazio terzo per pensare il tuo lavoro</h2>
+          <div class="space-y-4 text-[1.05rem] text-inchiostro/85">
+            <p>
+              La supervisione non è un controllo sul tuo operato, né un luogo dove ricevere la "risposta giusta". È uno <strong>spazio terzo</strong> in cui fermarsi a pensare insieme un caso, una relazione terapeutica, un impasse — e ritrovare la libertà di muoversi quando il lavoro clinico si fa denso, confuso o troppo carico.
+            </p>
+            <p>
+              Spesso ciò che chiamiamo "difficoltà con un paziente" è in realtà una <strong>domanda che il caso rivolge a noi</strong>: al nostro modo di ascoltare, ai nostri punti ciechi, ai contesti in cui lavoriamo. La supervisione serve proprio a dare parole a questa domanda.
+            </p>
+          </div>
+        </div>
+
+        <!-- Il modello -->
+        <p class="text-sm font-semibold text-notte mb-5 reveal">Come le conduco: l'Analisi della Domanda applicata alla supervisione</p>
+        <div class="grid md:grid-cols-3 gap-6 mb-14">
+          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-salvia-100 mb-5" aria-hidden="true"><i data-lucide="ear" class="w-6 h-6 text-salvia-700"></i></span>
+            <h3 class="font-serif text-xl text-notte mb-3">Il caso e la sua domanda</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]">Partiamo dal materiale clinico che porti — sedute, sogni, momenti di stallo — per mettere a fuoco cosa il paziente sta davvero chiedendo, a sé e a te, oltre il sintomo dichiarato.</p>
+          </article>
+          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-salvia-100 mb-5" aria-hidden="true"><i data-lucide="refresh-cw" class="w-6 h-6 text-salvia-700"></i></span>
+            <h3 class="font-serif text-xl text-notte mb-3">La relazione e il controtransfert</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]">Ciò che senti in seduta — noia, fastidio, protezione, urgenza — non è un disturbo da correggere ma uno strumento di conoscenza. Impariamo a leggerlo come informazione sul caso.</p>
+          </article>
+          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-salvia-100 mb-5" aria-hidden="true"><i data-lucide="building-2" class="w-6 h-6 text-salvia-700"></i></span>
+            <h3 class="font-serif text-xl text-notte mb-3">Il contesto e l'istituzione</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]">Nessun caso vive nel vuoto: servizio, piattaforma, budget, mandato. Avendo guidato team clinici in aziende della salute mentale digitale, porto uno sguardo anche sulle dinamiche organizzative in cui lavori.</p>
+          </article>
+        </div>
+
+        <!-- Setting e formati -->
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div class="grid sm:grid-cols-2 gap-6">
+            <article class="bg-notte text-white rounded-3xl p-8 reveal">
+              <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 mb-5" aria-hidden="true"><i data-lucide="laptop" class="w-5 h-5 text-salvia-300"></i></span>
+              <h3 class="font-serif text-xl mb-3">Online</h3>
+              <p class="text-white/80 text-[0.95rem]">In videochiamata, ovunque tu eserciti. Ho supervisionato e formato terapeuti da remoto per anni: il setting online, se tenuto con metodo, ha la stessa densità di quello in presenza.</p>
+            </article>
+            <article class="bg-white rounded-3xl p-8 shadow-sm reveal">
+              <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-salvia-100 mb-5" aria-hidden="true"><i data-lucide="map-pin" class="w-5 h-5 text-salvia-700"></i></span>
+              <h3 class="font-serif text-xl text-notte mb-3">In presenza</h3>
+              <p class="text-inchiostro/75 text-[0.95rem]">Nello studio di Itri (LT), per chi preferisce l'incontro dal vivo o per cicli di supervisione periodici, anche in formula mista con le sedute online.</p>
+            </article>
+          </div>
+          <article class="bg-white rounded-3xl p-8 shadow-sm reveal flex flex-col">
+            <h3 class="font-serif text-xl text-notte mb-4">Formati disponibili</h3>
+            <ul class="space-y-3 text-[0.95rem] text-inchiostro/80 mb-6">
+              <li class="flex gap-3"><i data-lucide="user" class="w-5 h-5 shrink-0 text-salvia-600" aria-hidden="true"></i> <span><strong class="text-notte">Individuale</strong> — un percorso sui tuoi casi e sul tuo stile clinico, per neo-iscritti o colleghi esperti.</span></li>
+              <li class="flex gap-3"><i data-lucide="users" class="w-5 h-5 shrink-0 text-salvia-600" aria-hidden="true"></i> <span><strong class="text-notte">Di gruppo</strong> — piccoli gruppi di intervisione tra pari, dove il caso di uno diventa pensiero di tutti.</span></li>
+              <li class="flex gap-3"><i data-lucide="users-round" class="w-5 h-5 shrink-0 text-salvia-600" aria-hidden="true"></i> <span><strong class="text-notte">Per équipe e servizi</strong> — supervisione d'istituzione per team clinici, cooperative e piattaforme.</span></li>
+            </ul>
+            <a href="#contatti" data-topic="Supervisione clinica" class="supervision-cta mt-auto inline-flex items-center justify-center gap-2 bg-salvia-700 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-salvia-600 transition-colors">
+              <i data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> Richiedi una supervisione
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- ==================== RISORSE & ARTICOLI ==================== -->
     <section id="risorse" class="py-20 lg:py-28 bg-salvia-50" aria-labelledby="risorse-title">
       <div class="max-w-6xl mx-auto px-5">
@@ -873,9 +995,13 @@
                   <input type="checkbox" name="temi" value="Vivo all'estero" class="h-4 w-4 rounded border-tortora-dark text-salvia-700 focus:ring-salvia-600">
                   <span class="text-[0.92rem]">Vivo all'estero</span>
                 </label>
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-salvia-600 hover:bg-salvia-50 transition-colors sm:col-span-2">
+                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-salvia-600 hover:bg-salvia-50 transition-colors">
                   <input type="checkbox" name="temi" value="Percorso di coppia" class="h-4 w-4 rounded border-tortora-dark text-salvia-700 focus:ring-salvia-600">
                   <span class="text-[0.92rem]">Percorso di coppia</span>
+                </label>
+                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-salvia-600 hover:bg-salvia-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Supervisione clinica" class="h-4 w-4 rounded border-tortora-dark text-salvia-700 focus:ring-salvia-600">
+                  <span class="text-[0.92rem]">Supervisione clinica (per colleghi)</span>
                 </label>
               </div>
             </fieldset>
@@ -1059,14 +1185,37 @@
     </div>
   </div>
 
-  <!-- ==================== CTA FLOTTANTE WHATSAPP ==================== -->
-  <a id="fab-whatsapp" href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20vorrei%20informazioni%20per%20un%20primo%20colloquio."
-     target="_blank" rel="noopener"
-     class="fixed bottom-5 right-5 z-40 flex items-center gap-2 bg-salvia-700 text-white font-semibold pl-4 pr-5 py-3 rounded-full shadow-xl shadow-notte/20 hover:bg-salvia-600 transition-all duration-300 translate-y-24 opacity-0 pointer-events-none"
-     aria-label="Scrivimi su WhatsApp per un primo colloquio">
-    <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i>
-    <span class="hidden sm:inline">Prenota un colloquio</span>
-  </a>
+  <!-- ==================== CONTATTO RAPIDO (Email / WhatsApp) ==================== -->
+  <!-- Mobile: barra fissa in basso · Desktop: stack flottante in basso a destra -->
+
+  <!-- Barra mobile -->
+  <div id="contact-bar" class="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-crema/95 backdrop-blur-md border-t border-tortora-dark shadow-[0_-4px_20px_rgba(27,42,58,0.08)] transition-transform duration-300 translate-y-full" role="region" aria-label="Contatti rapidi">
+    <div class="grid grid-cols-3 gap-1.5 px-3 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))]">
+      <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-notte hover:bg-tortora/60 transition-colors">
+        <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold">Email</span>
+      </a>
+      <a href="tel:+393455032318" class="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-notte hover:bg-tortora/60 transition-colors">
+        <i data-lucide="phone" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold">Chiama</span>
+      </a>
+      <a href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20vorrei%20informazioni%20per%20un%20primo%20colloquio." target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-1 py-2 rounded-xl bg-salvia-700 text-white hover:bg-salvia-600 transition-colors">
+        <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold">WhatsApp</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Stack desktop -->
+  <div id="contact-dock" class="hidden sm:flex fixed bottom-6 right-6 z-40 flex-col items-end gap-3 transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+    <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="group inline-flex items-center gap-2 bg-white text-notte font-semibold pl-3 pr-4 py-3 rounded-full shadow-xl shadow-notte/15 ring-1 ring-tortora hover:ring-salvia-600 transition-all" aria-label="Scrivimi una email">
+      <span class="flex h-8 w-8 items-center justify-center rounded-full bg-salvia-100"><i data-lucide="mail" class="w-4 h-4 text-salvia-700" aria-hidden="true"></i></span>
+      <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-[7rem] transition-all duration-300">Email</span>
+    </a>
+    <a href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20vorrei%20informazioni%20per%20un%20primo%20colloquio." target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-salvia-700 text-white font-semibold pl-3 pr-5 py-3 rounded-full shadow-xl shadow-notte/20 hover:bg-salvia-600 transition-all" aria-label="Scrivimi su WhatsApp per un primo colloquio">
+      <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15"><i data-lucide="message-circle" class="w-4 h-4" aria-hidden="true"></i></span>
+      Prenota un colloquio
+    </a>
+  </div>
+  <!-- Spaziatore per non coprire il fondo pagina su mobile -->
+  <div class="h-16 sm:hidden" aria-hidden="true"></div>
 
   <!-- ==================== JAVASCRIPT ==================== -->
   <!-- Logica pura dei test (dati + punteggio), condivisa con i test automatici -->
@@ -1087,27 +1236,81 @@
     /* ---------- Anno footer ---------- */
     document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-    /* ---------- Navbar: sfondo allo scroll + CTA flottante ---------- */
+    /* ---------- Navbar: sfondo allo scroll, avanzamento, contatti rapidi ---------- */
     const header = document.getElementById('site-header');
-    const fab = document.getElementById('fab-whatsapp');
+    const dock = document.getElementById('contact-dock');
+    const contactBar = document.getElementById('contact-bar');
+    const progress = document.getElementById('scroll-progress');
     function onScroll() {
-      if (window.scrollY > 40) {
+      const y = window.scrollY;
+      if (y > 40) {
         header.classList.add('shadow-md', 'bg-crema/95');
         header.classList.remove('bg-crema/80');
       } else {
         header.classList.remove('shadow-md', 'bg-crema/95');
         header.classList.add('bg-crema/80');
       }
-      // Mostra il pulsante flottante dopo la prima schermata
-      if (fab) {
-        const show = window.scrollY > 600;
-        fab.classList.toggle('translate-y-24', !show);
-        fab.classList.toggle('opacity-0', !show);
-        fab.classList.toggle('pointer-events-none', !show);
+      // Barra di avanzamento lettura
+      if (progress) {
+        const docH = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = (docH > 0 ? Math.min(y / docH * 100, 100) : 0) + '%';
+      }
+      // Contatti rapidi: compaiono dopo la prima schermata
+      const show = y > 500;
+      if (dock) {
+        dock.classList.toggle('translate-y-24', !show);
+        dock.classList.toggle('opacity-0', !show);
+        dock.classList.toggle('pointer-events-none', !show);
+      }
+      if (contactBar) {
+        contactBar.classList.toggle('translate-y-full', !show);
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+
+    /* ---------- Dropdown "Servizi" (desktop) ---------- */
+    const servicesToggle = document.getElementById('services-toggle');
+    const servicesMenu = document.getElementById('services-menu');
+    const servicesDropdown = document.getElementById('services-dropdown');
+    if (servicesToggle && servicesMenu) {
+      function openServices() { servicesMenu.classList.remove('hidden'); servicesToggle.setAttribute('aria-expanded', 'true'); }
+      function closeServices() { servicesMenu.classList.add('hidden'); servicesToggle.setAttribute('aria-expanded', 'false'); }
+      servicesToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        servicesMenu.classList.contains('hidden') ? openServices() : closeServices();
+      });
+      servicesMenu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeServices); });
+      document.addEventListener('click', function (e) { if (!servicesDropdown.contains(e.target)) { closeServices(); } });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeServices(); } });
+    }
+
+    /* ---------- Scrollspy: evidenzia la sezione attiva nel menu ---------- */
+    const navLinks = Array.from(document.querySelectorAll('.nav-link[data-target]'));
+    const serviceSections = ['approccio', 'expat', 'supervisione', 'psicovoice'];
+    const spySections = navLinks
+      .map(function (l) { return l.dataset.target; })
+      .filter(function (t) { return t !== 'servizi'; })
+      .concat(serviceSections);
+    const sectionEls = spySections
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);
+    if ('IntersectionObserver' in window && sectionEls.length) {
+      let visible = {};
+      const spy = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { visible[en.target.id] = en.isIntersecting ? en.intersectionRatio : 0; });
+        // sezione con maggiore visibilità
+        let bestId = null, best = 0;
+        Object.keys(visible).forEach(function (id) { if (visible[id] > best) { best = visible[id]; bestId = id; } });
+        navLinks.forEach(function (l) { l.classList.remove('is-active'); });
+        if (bestId) {
+          const targetKey = serviceSections.indexOf(bestId) !== -1 ? 'servizi' : bestId;
+          const link = navLinks.find(function (l) { return l.dataset.target === targetKey; });
+          if (link) { link.classList.add('is-active'); }
+        }
+      }, { threshold: [0.15, 0.4, 0.7], rootMargin: '-30% 0px -50% 0px' });
+      sectionEls.forEach(function (el) { spy.observe(el); });
+    }
 
     /* ---------- Menu mobile ---------- */
     const menuToggle = document.getElementById('menu-toggle');
@@ -1341,6 +1544,20 @@
       cta.addEventListener('click', function () {
         const box = document.querySelector('input[name="temi"][value="Percorso di coppia"]');
         if (box) { box.checked = true; }
+      });
+    });
+
+    /* CTA supervisione → seleziona il tema e precompila il messaggio */
+    document.querySelectorAll('.supervision-cta').forEach(function (cta) {
+      cta.addEventListener('click', function () {
+        const box = document.querySelector('input[name="temi"][value="Supervisione clinica"]');
+        if (box) { box.checked = true; }
+        const textarea = document.getElementById('cf-messaggio');
+        if (textarea && !textarea.value.trim()) {
+          textarea.value = 'Buongiorno Dott. Del Bove,\n\nsono un/una collega e vorrei informazioni su un percorso di supervisione clinica ';
+          const setting = document.getElementById('cf-setting');
+          if (setting) { setting.value = 'Non so ancora'; }
+        }
       });
     });
 
