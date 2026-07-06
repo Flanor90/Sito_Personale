@@ -1,0 +1,11 @@
+{
+  "name": "sito-alberto-del-bove",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sito vetrina one-page del Dott. Alberto Del Bove, psicoterapeuta. Include i test psicologici interattivi e la relativa suite di test automatici.",
+  "scripts": {
+    "test": "node --test",
+    "serve": "python3 -m http.server 8742"
+  },
+  "license": "UNLICENSED"
+}
