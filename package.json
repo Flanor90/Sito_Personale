@@ -5,7 +5,11 @@
   "description": "Sito vetrina one-page del Dott. Alberto Del Bove, psicoterapeuta. Include i test psicologici interattivi e la relativa suite di test automatici.",
   "scripts": {
     "test": "node --test",
-    "serve": "python3 -m http.server 8742"
+    "serve": "python3 -m http.server 8742",
+    "build:css": "tailwindcss -c tailwind.config.js -i tailwind.input.css -o assets/tailwind.css --minify"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
 }

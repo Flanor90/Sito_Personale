@@ -16,14 +16,14 @@
   /* Palette del sito in RGB */
   var C = {
     notte: [27, 42, 58],
-    salvia: [122, 144, 130],
-    salvia600: [97, 121, 106],
-    salvia700: [77, 97, 86],
-    salvia300: [168, 188, 169],
-    salvia50: [241, 244, 240],
-    crema: [247, 244, 238],
-    tortora: [229, 222, 212],
-    tortoraDark: [207, 197, 182],
+    mirtillo: [124, 129, 179],
+    mirtillo600: [96, 101, 155],
+    mirtillo700: [76, 80, 127],
+    mirtillo300: [169, 172, 212],
+    mirtillo50: [240, 241, 248],
+    crema: [247, 245, 241],
+    tortora: [228, 223, 216],
+    tortoraDark: [207, 200, 189],
     inchiostro: [43, 43, 43],
     muted: [96, 96, 96],
     white: [255, 255, 255],
@@ -128,21 +128,21 @@
       try { doc.addImage(logoPng, 'PNG', M, 8, 18, 18); } catch (e) { logoPng = null; }
     }
     if (!logoPng) {
-      fill(C.salvia); doc.roundedRect(M, 8, 18, 18, 3, 3, 'F');
+      fill(C.mirtillo); doc.roundedRect(M, 8, 18, 18, 3, 3, 'F');
       txt(C.white); doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
       doc.text('AB', M + 9, 17.5, { align: 'center', baseline: 'middle' });
     }
     txt(C.white); doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
     doc.text(CONTACT.nome, M + 23, 14, { baseline: 'top' });
-    txt(C.salvia300); doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+    txt(C.mirtillo300); doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
     doc.text(CONTACT.ruolo, M + 23, 21, { baseline: 'top' });
-    doc.setFontSize(8); txt(C.salvia300);
+    doc.setFontSize(8); txt(C.mirtillo300);
     doc.text('REPORT · ' + todayLabel(), PW - M, 14, { align: 'right', baseline: 'top' });
 
     y = 44;
 
     /* ---------- Titolo del test e risultato ---------- */
-    txt(C.salvia700); doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+    txt(C.mirtillo700); doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
     doc.text((rep.intro || rep.testName).toUpperCase(), M, y, { baseline: 'top' });
     y += 7;
     txt(C.notte); doc.setFont('helvetica', 'bold'); doc.setFontSize(22);
@@ -154,8 +154,8 @@
     doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
     var chip = rep.code;
     var chipW = doc.getTextWidth(chip) + 10;
-    fill(C.salvia50); doc.roundedRect(M, y, chipW, 8, 4, 4, 'F');
-    txt(C.salvia700); doc.text(chip, M + 5, y + 4, { baseline: 'middle' });
+    fill(C.mirtillo50); doc.roundedRect(M, y, chipW, 8, 4, 4, 'F');
+    txt(C.mirtillo700); doc.text(chip, M + 5, y + 4, { baseline: 'middle' });
     y += 15;
 
     /* ---------- Grafica del risultato ---------- */
@@ -179,7 +179,7 @@
         var lines = doc.splitTextToSize(item, CW - 6);
         var lh = 10 * 0.352778 * 1.35;
         ensure(lines.length * lh + 1);
-        txt(C.salvia600); doc.setFont('helvetica', 'bold');
+        txt(C.mirtillo600); doc.setFont('helvetica', 'bold');
         doc.text('›', M, y, { baseline: 'top' });
         txt(C.inchiostro); doc.setFont('helvetica', 'normal');
         lines.forEach(function (ln, i) {
@@ -207,7 +207,7 @@
     fill(C.notte); doc.roundedRect(M, y, CW, 26, 3, 3, 'F');
     txt(C.white); doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
     doc.text('Vuoi dare parole a questo risultato?', M + 6, y + 7, { baseline: 'top' });
-    txt(C.salvia300); doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+    txt(C.mirtillo300); doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
     doc.text('Prenota un primo colloquio conoscitivo, online o in studio a Itri (LT).', M + 6, y + 13, { baseline: 'top' });
     doc.setFontSize(8.5); txt(C.white);
     doc.text(CONTACT.email + '   ·   ' + CONTACT.tel + '   ·   ' + CONTACT.sito, M + 6, y + 19.5, { baseline: 'top' });
@@ -238,7 +238,7 @@
         doc.text(b.right + ' ' + (100 - pct) + '%', PW - M, y, { align: 'right', baseline: 'top' });
         y += 5;
         fill(C.tortora); doc.roundedRect(M, y, CW, 3, 1.5, 1.5, 'F');
-        fill(C.salvia600); doc.roundedRect(M, y, Math.max(CW * pct / 100, 3), 3, 1.5, 1.5, 'F');
+        fill(C.mirtillo600); doc.roundedRect(M, y, Math.max(CW * pct / 100, 3), 3, 1.5, 1.5, 'F');
         y += 8;
       });
       y += 2;
@@ -269,7 +269,7 @@
         doc.text(a.value + '/' + a.max, PW - M, y, { align: 'right', baseline: 'top' });
         y += 5;
         fill(C.tortora); doc.roundedRect(M, y, CW, 3, 1.5, 1.5, 'F');
-        fill(a.isTop ? C.salvia600 : C.tortoraDark);
+        fill(a.isTop ? C.mirtillo600 : C.tortoraDark);
         doc.roundedRect(M, y, Math.max(CW * pct / 100, 3), 3, 1.5, 1.5, 'F');
         y += 7.5;
       });

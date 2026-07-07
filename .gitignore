@@ -4,3 +4,6 @@ EN-HR-Manager-CV-Alberto-Del-Bove-2026.docx.pdf
 
 # File di sistema
 .DS_Store
+
+# Dipendenze di build (tailwindcss)
+node_modules/

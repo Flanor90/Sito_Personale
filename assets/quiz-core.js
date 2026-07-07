@@ -73,7 +73,7 @@
     var pct = Math.round(valSx / (valSx + valDx) * 100);
     return '<div class="mb-3">' +
       '<div class="flex justify-between text-xs font-semibold text-inchiostro/60 mb-1"><span>' + labelSx + ' ' + pct + '%</span><span>' + labelDx + ' ' + (100 - pct) + '%</span></div>' +
-      '<div class="h-2.5 bg-tortora rounded-full overflow-hidden"><div class="h-full bg-salvia-600 rounded-full" style="width:' + pct + '%"></div></div>' +
+      '<div class="h-2.5 bg-tortora rounded-full overflow-hidden"><div class="h-full bg-mirtillo-600 rounded-full" style="width:' + pct + '%"></div></div>' +
       '</div>';
   }
 
@@ -129,11 +129,11 @@
         var html =
           '<p class="text-center max-w-xl mx-auto">' + p.desc + '</p>' +
           '<div class="grid sm:grid-cols-2 gap-5 mt-6">' +
-            '<div class="bg-salvia-50 rounded-2xl p-5"><p class="font-semibold text-notte mb-2.5">I tuoi punti di forza</p><ul class="space-y-2 text-sm">' +
-              p.forza.map(function (f) { return '<li class="flex gap-2"><span class="text-salvia-600 font-bold" aria-hidden="true">✦</span><span>' + f + '</span></li>'; }).join('') +
+            '<div class="bg-mirtillo-50 rounded-2xl p-5"><p class="font-semibold text-notte mb-2.5">I tuoi punti di forza</p><ul class="space-y-2 text-sm">' +
+              p.forza.map(function (f) { return '<li class="flex gap-2"><span class="text-mirtillo-600 font-bold" aria-hidden="true">✦</span><span>' + f + '</span></li>'; }).join('') +
             '</ul></div>' +
             '<div class="bg-crema rounded-2xl p-5"><p class="font-semibold text-notte mb-2.5">Dove cresce il tuo margine</p><ul class="space-y-2 text-sm">' +
-              p.attenzione.map(function (f) { return '<li class="flex gap-2"><span class="text-salvia-600 font-bold" aria-hidden="true">→</span><span>' + f + '</span></li>'; }).join('') +
+              p.attenzione.map(function (f) { return '<li class="flex gap-2"><span class="text-mirtillo-600 font-bold" aria-hidden="true">→</span><span>' + f + '</span></li>'; }).join('') +
             '</ul></div>' +
           '</div>' +
           '<div class="mt-7"><p class="font-semibold text-notte mb-3">I tuoi assi junghiani</p>' +
@@ -205,7 +205,7 @@
           '</div>' +
           '<p class="text-center max-w-xl mx-auto mt-5">' + band.testo + '</p>' +
           '<div class="bg-crema rounded-2xl p-5 mt-6 max-w-xl mx-auto"><p class="font-semibold text-notte mb-2.5">Da dove partire</p><ul class="space-y-2 text-sm">' +
-            band.tips.map(function (t) { return '<li class="flex gap-2"><span class="text-salvia-600 font-bold" aria-hidden="true">→</span><span>' + t + '</span></li>'; }).join('') +
+            band.tips.map(function (t) { return '<li class="flex gap-2"><span class="text-mirtillo-600 font-bold" aria-hidden="true">→</span><span>' + t + '</span></li>'; }).join('') +
           '</ul></div>';
         return { kicker: 'Il tuo carico lavorativo', title: band.nome, code: 'PUNTEGGIO ' + tot + ' / 24', html: html,
           share: 'ho totalizzato ' + tot + ' punti su 24 ("' + band.nome + '")',
@@ -280,11 +280,11 @@
           var v = s[a.k] || 0;
           var pct = Math.round(v / 5 * 100);
           return '<div class="mb-2.5"><div class="flex justify-between text-xs font-semibold text-inchiostro/60 mb-1"><span>' + a.nome + '</span><span>' + v + '/5</span></div>' +
-            '<div class="h-2.5 bg-tortora rounded-full overflow-hidden"><div class="h-full ' + (a.k === top.k ? 'bg-salvia-600' : 'bg-tortora-dark') + ' rounded-full" style="width:' + Math.max(pct, 4) + '%"></div></div></div>';
+            '<div class="h-2.5 bg-tortora rounded-full overflow-hidden"><div class="h-full ' + (a.k === top.k ? 'bg-mirtillo-600' : 'bg-tortora-dark') + ' rounded-full" style="width:' + Math.max(pct, 4) + '%"></div></div></div>';
         }).join('');
         var html =
           '<p class="text-center max-w-xl mx-auto">' + top.desc + '</p>' +
-          '<div class="bg-salvia-50 rounded-2xl p-5 mt-6 max-w-xl mx-auto"><p class="font-semibold text-notte mb-2">Come lavoreremmo insieme</p><p class="text-sm">' + top.terapia + '</p></div>' +
+          '<div class="bg-mirtillo-50 rounded-2xl p-5 mt-6 max-w-xl mx-auto"><p class="font-semibold text-notte mb-2">Come lavoreremmo insieme</p><p class="text-sm">' + top.terapia + '</p></div>' +
           '<div class="mt-7 max-w-xl mx-auto"><p class="font-semibold text-notte mb-3">La mappa delle tue aree</p>' + bars + '</div>';
         return { kicker: 'La tua domanda', title: top.nome, code: 'L\'AREA CHE CHIEDE ATTENZIONE', html: html,
           share: 'come area principale è emersa: ' + top.nome.toLowerCase(),
