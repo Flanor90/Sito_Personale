@@ -35,7 +35,7 @@
     ruolo: 'Psicologo Psicoterapeuta · Analisi della Domanda',
     email: 'alberto.delbove.psicoterapeuta@gmail.com',
     tel: '+39 345 503 2318',
-    sito: 'albertodelbove-psicoterapeuta.it'
+    sito: 'albertodelbove-psicologo.it'
   };
 
   function loadJsPDF() {
