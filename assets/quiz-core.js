@@ -302,6 +302,87 @@
           }
         };
       }
+    },
+
+    adhd: {
+      nome: 'test di auto-osservazione su attenzione e impulsività',
+      chip: 'Attenzione & impulsività (tratti ADHD)',
+      questions: [
+        // Area A: attenzione e organizzazione
+        'Perdo il filo di quello che sto facendo: inizio una cosa e mi ritrovo altrove.',
+        'Faccio fatica a chiudere i dettagli finali di un compito, anche quando la parte difficile è fatta.',
+        'Perdo o dimentico oggetti e impegni: chiavi, telefono, scadenze, appuntamenti.',
+        'Quando leggo o ascolto, la mente parte per conto suo e devo ricominciare da capo.',
+        'Organizzare le attività — da dove iniziare, in che ordine — mi costa più che farle.',
+        // Area I: irrequietezza e impulsività
+        'Mi sento irrequieto: fatico a stare fermo quando la situazione lo richiede.',
+        'Interrompo gli altri o finisco le loro frasi senza volerlo.',
+        'Decido d\'impulso, e a volte me ne pento subito dopo.',
+        'Aspettare il mio turno — in coda, in riunione, in una conversazione — mi pesa più del normale.',
+        'Anche da fermo, dentro vado a mille: pensieri che corrono e non si fermano.'
+      ].map(function (t, i) {
+        var area = i < 5 ? 'A' : 'I';
+        return { text: t, options: LIKERT.map(function (l, v) {
+          var add = { P: v }; add[area] = v;
+          return { label: l, add: add };
+        }) };
+      }),
+      result: function (s) {
+        var tot = s.P || 0;
+        var att = s.A || 0;
+        var imp = s.I || 0;
+        var bands = [
+          { max: 8, nome: 'Poche interferenze', colore: 'text-emerald-700 bg-emerald-100',
+            testo: 'Dalle tue risposte, disattenzione e impulsività non sembrano interferire in modo significativo con le tue giornate. Distrazioni e irrequietezza capitano a tutti: contano la frequenza e il peso che hanno, e qui appaiono contenuti.',
+            tips: ['Se in alcuni periodi la concentrazione cala, guarda prima a sonno, carichi e stress: sono le cause più comuni', 'Rifare il test in un momento diverso può darti un confronto interessante'] },
+          { max: 15, nome: 'Alcuni tratti da osservare', colore: 'text-amber-700 bg-amber-100',
+            testo: 'Alcuni tratti di disattenzione o impulsività si fanno sentire, anche se non sembrano dominare le tue giornate. Vale la pena osservarli: in quali contesti emergono di più? Da quanto tempo ci sono? Ti sono sempre appartenuti o sono recenti?',
+            tips: ['Annota per una settimana i momenti in cui "perdi il filo": spesso emergono pattern precisi (orari, contesti, compiti)', 'Distingui ciò che c\'è da sempre da ciò che è arrivato con un periodo di stress', 'Se questi tratti ti accompagnano fin dall\'infanzia e ti pesano, parlarne con un professionista può chiarire molto'] },
+          { max: 22, nome: 'Interferenza rilevante', colore: 'text-orange-700 bg-orange-100',
+            testo: 'Le tue risposte descrivono tratti di disattenzione e/o impulsività che interferiscono in modo rilevante con lavoro, studio o relazioni. Questo non dice che si tratti di ADHD — molte condizioni producono questi segnali — ma dice che meriti una risposta più precisa di un test online.',
+            tips: ['Un approfondimento con un professionista può distinguere tra ADHD, ansia, stress cronico o altro: la differenza cambia il percorso', 'Nel frattempo, riduci il multitasking e proteggi le fasce orarie in cui rendi meglio', 'Porta con te questo report: è un buon punto di partenza per il colloquio'] },
+          { max: 30, nome: 'Interferenza forte', colore: 'text-red-700 bg-red-100',
+            testo: 'Le tue risposte descrivono un\'interferenza forte e trasversale di disattenzione e impulsività. Qualunque ne sia l\'origine — e solo una valutazione clinica può stabilirlo — non è qualcosa con cui devi semplicemente "conviverci": esistono percorsi di valutazione e strategie concrete che cambiano la qualità delle giornate.',
+            tips: ['Parlane presto con un professionista: una valutazione specialistica (colloquio clinico ed eventuali test neuropsicologici) dà risposte affidabili', 'Diffida dell\'autodiagnosi, in entrambe le direzioni: né "è sicuramente ADHD" né "sono solo pigro"', 'Il primo colloquio serve anche a orientarti: capire insieme quale approfondimento ha senso per te'] }
+        ];
+        var band = bands.find(function (b) { return tot <= b.max; });
+        var pct = Math.round(tot / 30 * 100);
+        var html =
+          '<div class="max-w-lg mx-auto">' +
+            '<div class="flex h-3 rounded-full overflow-hidden" aria-hidden="true"><div class="w-1/4 bg-emerald-400"></div><div class="w-1/4 bg-amber-400"></div><div class="w-1/4 bg-orange-400"></div><div class="w-1/4 bg-red-400"></div></div>' +
+            '<div class="text-notte text-sm leading-none mt-0.5" aria-hidden="true" style="margin-left:max(0%, calc(' + pct + '% - 7px))">▲</div>' +
+            '<p class="text-center font-semibold text-notte mt-2">Punteggio: ' + tot + ' su 30 · <span class="' + band.colore + ' px-2.5 py-0.5 rounded-full text-sm">' + band.nome + '</span></p>' +
+          '</div>' +
+          '<div class="max-w-lg mx-auto mt-6">' +
+            '<div class="mb-2.5"><div class="flex justify-between text-xs font-semibold text-inchiostro/60 mb-1"><span>Attenzione e organizzazione</span><span>' + att + '/15</span></div>' +
+              '<div class="h-2.5 bg-tortora rounded-full overflow-hidden"><div class="h-full bg-mirtillo-600 rounded-full" style="width:' + Math.max(Math.round(att / 15 * 100), 3) + '%"></div></div></div>' +
+            '<div class="mb-1"><div class="flex justify-between text-xs font-semibold text-inchiostro/60 mb-1"><span>Irrequietezza e impulsività</span><span>' + imp + '/15</span></div>' +
+              '<div class="h-2.5 bg-tortora rounded-full overflow-hidden"><div class="h-full bg-mirtillo-600 rounded-full" style="width:' + Math.max(Math.round(imp / 15 * 100), 3) + '%"></div></div></div>' +
+          '</div>' +
+          '<p class="text-center max-w-xl mx-auto mt-5">' + band.testo + '</p>' +
+          '<div class="bg-crema rounded-2xl p-5 mt-6 max-w-xl mx-auto"><p class="font-semibold text-notte mb-2.5">Da dove partire</p><ul class="space-y-2 text-sm">' +
+            band.tips.map(function (t) { return '<li class="flex gap-2"><span class="text-mirtillo-600 font-bold" aria-hidden="true">→</span><span>' + t + '</span></li>'; }).join('') +
+          '</ul></div>' +
+          '<p class="text-xs text-inchiostro/55 max-w-xl mx-auto mt-5 text-center"><strong>Importante:</strong> l\'ADHD si diagnostica solo con una valutazione clinica specialistica. Questo strumento non è diagnostico né standardizzato: è una traccia per capire se vale la pena approfondire, e con chi.</p>';
+        return { kicker: 'La tua auto-osservazione', title: band.nome, code: 'PUNTEGGIO ' + tot + ' / 30', html: html,
+          share: 'ho totalizzato ' + tot + ' punti su 30 ("' + band.nome + '"; attenzione ' + att + '/15, impulsività ' + imp + '/15)',
+          report: {
+            kind: 'punteggio',
+            testName: 'Attenzione e impulsività: quanto pesano?',
+            intro: 'Auto-osservazione sui tratti di disattenzione e impulsività',
+            title: band.nome,
+            code: 'Punteggio ' + tot + ' / 30',
+            score: tot, max: 30, pct: pct,
+            description: band.testo + ' Importante: l\'ADHD si diagnostica solo con una valutazione clinica specialistica. Questo strumento non è diagnostico né standardizzato: è una traccia per capire se vale la pena approfondire, e con chi.',
+            lists: [{ heading: 'Da dove partire', items: band.tips }],
+            gauge: pct,
+            areaBars: [
+              { name: 'Attenzione e organizzazione', value: att, max: 15, isTop: att >= imp },
+              { name: 'Irrequietezza e impulsività', value: imp, max: 15, isTop: imp > att }
+            ]
+          }
+        };
+      }
     }
   };
 

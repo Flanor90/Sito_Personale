@@ -160,7 +160,11 @@
 
     /* ---------- Grafica del risultato ---------- */
     if (rep.kind === 'profilo') { drawAxisBars(rep.bars); }
-    else if (rep.kind === 'punteggio') { drawGauge(rep); }
+    else if (rep.kind === 'punteggio') {
+      drawGauge(rep);
+      // eventuali sotto-scale (es. attenzione/impulsività nel test ADHD)
+      if (rep.areaBars) { drawAreaBars(rep.areaBars); }
+    }
     else if (rep.kind === 'area') { drawAreaBars(rep.areaBars); }
 
     /* ---------- Descrizione ---------- */

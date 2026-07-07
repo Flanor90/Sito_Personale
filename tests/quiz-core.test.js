@@ -16,7 +16,7 @@ function pick(n, index) {
 test('espone l\'API pubblica attesa', () => {
   ['LIKERT', 'jungProfiles', 'axisBar', 'TESTS', 'isValidEmail', 'scoreAnswers', 'evaluate', 'buildEmailBody']
     .forEach((k) => assert.ok(k in QuizCore, `manca ${k}`));
-  assert.deepEqual(Object.keys(QuizCore.TESTS).sort(), ['burnout', 'domanda', 'junghiano']);
+  assert.deepEqual(Object.keys(QuizCore.TESTS).sort(), ['adhd', 'burnout', 'domanda', 'junghiano']);
 });
 
 /* ---------------- Test junghiano ---------------- */
@@ -91,6 +91,62 @@ test('domanda: converge sull\'area dominante', () => {
     const { result } = QuizCore.evaluate('domanda', pick(n, index));
     assert.equal(result.title, area);
   });
+});
+
+/* ---------------- Test ADHD (attenzione & impulsività) ---------------- */
+
+test('adhd: punteggio minimo (0/30) → Poche interferenze', () => {
+  const n = QuizCore.TESTS.adhd.questions.length;
+  assert.equal(n, 10);
+  const { scores, result } = QuizCore.evaluate('adhd', pick(n, 0));
+  assert.equal(scores.P, 0);
+  assert.equal(result.title, 'Poche interferenze');
+  assert.equal(result.code, 'PUNTEGGIO 0 / 30');
+});
+
+test('adhd: punteggio massimo (30/30) → Interferenza forte', () => {
+  const { scores, result } = QuizCore.evaluate('adhd', pick(10, 3));
+  assert.equal(scores.P, 30);
+  assert.equal(scores.A, 15);
+  assert.equal(scores.I, 15);
+  assert.equal(result.title, 'Interferenza forte');
+});
+
+test('adhd: le sotto-scale attenzione/impulsività si separano correttamente', () => {
+  // prime 5 domande (attenzione) al massimo, ultime 5 (impulsività) a zero
+  const answers = [3, 3, 3, 3, 3, 0, 0, 0, 0, 0];
+  const { scores, result } = QuizCore.evaluate('adhd', answers);
+  assert.equal(scores.A, 15);
+  assert.equal(scores.I, 0);
+  assert.equal(scores.P, 15);
+  assert.equal(result.title, 'Alcuni tratti da osservare');
+  const bars = result.report.areaBars;
+  assert.equal(bars[0].value, 15);
+  assert.equal(bars[1].value, 0);
+  assert.ok(bars[0].isTop && !bars[1].isTop);
+});
+
+test('adhd: i confini delle fasce cadono nella banda corretta', () => {
+  const cases = [
+    { answers: [3,3,2,0,0, 0,0,0,0,0], tot: 8,  band: 'Poche interferenze' },
+    { answers: [3,3,3,0,0, 0,0,0,0,0], tot: 9,  band: 'Alcuni tratti da osservare' },
+    { answers: [3,3,3,3,3, 0,0,0,0,0], tot: 15, band: 'Alcuni tratti da osservare' },
+    { answers: [3,3,3,3,3, 1,0,0,0,0], tot: 16, band: 'Interferenza rilevante' },
+    { answers: [3,3,3,3,3, 3,3,2,0,0], tot: 23, band: 'Interferenza forte' }
+  ];
+  cases.forEach(({ answers, tot, band }) => {
+    const { scores, result } = QuizCore.evaluate('adhd', answers);
+    assert.equal(scores.P, tot);
+    assert.equal(result.title, band, `tot ${tot}`);
+  });
+});
+
+test('adhd: risultato e report ribadiscono la natura non diagnostica', () => {
+  const { result } = QuizCore.evaluate('adhd', pick(10, 2));
+  assert.match(result.html, /non è diagnostico/i);
+  assert.match(result.report.description, /valutazione clinica/i);
+  assert.equal(result.report.kind, 'punteggio');
+  assert.equal(result.report.areaBars.length, 2);
 });
 
 /* ---------------- Robustezza dello scoring ---------------- */
