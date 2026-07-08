@@ -204,6 +204,11 @@
     #services-toggle[aria-expanded="true"] i { transform: rotate(180deg); }
     #scroll-progress { transition: width .15s ease-out; }
 
+    /* Selettore lingua IT / EN / ES */
+    .lang-btn { color: #2B2B2B99; transition: background .2s ease, color .2s ease; }
+    .lang-btn:hover { color: #4C507F; }
+    .lang-btn[aria-pressed="true"] { background: #60659B; color: #fff; }
+
     /* Stepper "Come funziona il primo colloquio" */
     .step-tab { color: #2B2B2B99; }
     .step-tab .step-dot { background: #E4DFD8; color: #1B2A3A; }
@@ -250,44 +255,51 @@
         </span>
       </a>
 
-      <ul class="hidden lg:flex items-center gap-6 text-sm font-medium">
-        <li><a href="#chi-sono" class="nav-link" data-target="chi-sono">Chi sono</a></li>
+      <ul class="hidden lg:flex items-center gap-5 text-sm font-medium">
+        <li><a href="#chi-sono" class="nav-link" data-target="chi-sono" data-i18n="nav.chisono">Chi sono</a></li>
 
         <!-- Dropdown Servizi -->
         <li class="relative" id="services-dropdown">
           <button type="button" id="services-toggle" class="nav-link inline-flex items-center gap-1" aria-expanded="false" aria-controls="services-menu" aria-haspopup="true" data-target="servizi">
-            Servizi <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200" aria-hidden="true"></i>
+            <span data-i18n="nav.servizi">Servizi</span> <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200" aria-hidden="true"></i>
           </button>
           <div id="services-menu" class="hidden absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[19rem]">
             <ul class="bg-white rounded-2xl shadow-xl ring-1 ring-tortora/70 p-2">
               <li><a href="#approccio" class="services-link flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-mirtillo-50 transition-colors">
                 <i data-lucide="compass" class="w-5 h-5 mt-0.5 text-mirtillo-700 shrink-0" aria-hidden="true"></i>
-                <span><span class="block font-semibold text-notte">Terapia individuale e di coppia</span><span class="block text-xs text-inchiostro/60">Approccio e Analisi della Domanda</span></span>
+                <span><span class="block font-semibold text-notte" data-i18n="svc.terapia.t">Terapia individuale e di coppia</span><span class="block text-xs text-inchiostro/60" data-i18n="svc.terapia.d">Approccio e Analisi della Domanda</span></span>
               </a></li>
               <li><a href="#expat" class="services-link flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-mirtillo-50 transition-colors">
                 <i data-lucide="plane" class="w-5 h-5 mt-0.5 text-mirtillo-700 shrink-0" aria-hidden="true"></i>
-                <span><span class="block font-semibold text-notte">Italiani all'estero</span><span class="block text-xs text-inchiostro/60">Terapia online in italiano</span></span>
+                <span><span class="block font-semibold text-notte" data-i18n="svc.expat.t">Italiani all'estero</span><span class="block text-xs text-inchiostro/60" data-i18n="svc.expat.d">Terapia online in italiano</span></span>
               </a></li>
               <li><a href="#supervisione" class="services-link flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-mirtillo-50 transition-colors">
                 <i data-lucide="users-round" class="w-5 h-5 mt-0.5 text-mirtillo-700 shrink-0" aria-hidden="true"></i>
-                <span><span class="block font-semibold text-notte">Supervisione clinica</span><span class="block text-xs text-inchiostro/60">Per psicologi, terapeuti ed équipe</span></span>
+                <span><span class="block font-semibold text-notte" data-i18n="svc.superv.t">Supervisione clinica</span><span class="block text-xs text-inchiostro/60" data-i18n="svc.superv.d">Per psicologi, terapeuti ed équipe</span></span>
               </a></li>
               <li><a href="#psicovoice" class="services-link flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-mirtillo-50 transition-colors">
                 <i data-lucide="app-window" class="w-5 h-5 mt-0.5 text-mirtillo-700 shrink-0" aria-hidden="true"></i>
-                <span><span class="block font-semibold text-notte">PsicoVoice</span><span class="block text-xs text-inchiostro/60">La webapp per gli psicologi</span></span>
+                <span><span class="block font-semibold text-notte" data-i18n="svc.psicovoice.t">PsicoVoice</span><span class="block text-xs text-inchiostro/60" data-i18n="svc.psicovoice.d">La webapp per gli psicologi</span></span>
               </a></li>
             </ul>
           </div>
         </li>
 
-        <li><a href="#test" class="nav-link inline-flex items-center gap-1.5 bg-mirtillo-100 text-mirtillo-700 px-3.5 py-1.5 rounded-full hover:bg-mirtillo-200" data-target="test"><i data-lucide="sparkles" class="w-3.5 h-3.5" aria-hidden="true"></i> Test gratuiti</a></li>
-        <li><a href="#portfolio" class="nav-link" data-target="portfolio">Portfolio</a></li>
-        <li><a href="#risorse" class="nav-link" data-target="risorse">Articoli</a></li>
+        <li><a href="#test" class="nav-link inline-flex items-center gap-1.5 bg-mirtillo-100 text-mirtillo-700 px-3.5 py-1.5 rounded-full hover:bg-mirtillo-200" data-target="test"><i data-lucide="sparkles" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="nav.test">Test gratuiti</span></a></li>
+        <li><a href="#portfolio" class="nav-link" data-target="portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="#risorse" class="nav-link" data-target="risorse" data-i18n="nav.articoli">Articoli</a></li>
         <li>
           <a href="#contatti" class="inline-flex items-center gap-2 bg-notte text-white px-4 py-2.5 rounded-full hover:bg-mirtillo-700 transition-colors">
             <i data-lucide="calendar-heart" class="w-4 h-4" aria-hidden="true"></i>
-            Primo colloquio
+            <span data-i18n="nav.primocolloquio">Primo colloquio</span>
           </a>
+        </li>
+        <li>
+          <div class="lang-switch inline-flex items-center rounded-full border border-tortora-dark overflow-hidden text-xs font-semibold" role="group" data-i18n-aria="nav.lang.aria" aria-label="Lingua del sito">
+            <button type="button" class="lang-btn px-2 py-1.5" data-lang="it" aria-pressed="true">IT</button>
+            <button type="button" class="lang-btn px-2 py-1.5" data-lang="en" aria-pressed="false">EN</button>
+            <button type="button" class="lang-btn px-2 py-1.5" data-lang="es" aria-pressed="false">ES</button>
+          </div>
         </li>
       </ul>
 
@@ -301,34 +313,42 @@
 
     <!-- Menu mobile -->
     <div id="mobile-menu" class="lg:hidden hidden border-t border-tortora bg-crema px-5 pb-6 max-h-[calc(100dvh-3.75rem)] overflow-y-auto">
-      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-mirtillo-700 pt-4 pb-1 px-1">Percorsi di terapia</p>
+      <div class="flex items-center justify-between pt-4 px-1">
+        <span class="text-[11px] font-semibold uppercase tracking-[0.15em] text-mirtillo-700" data-i18n="m.lang.label">Lingua</span>
+        <div class="lang-switch inline-flex items-center rounded-full border border-tortora-dark overflow-hidden text-xs font-semibold" role="group" data-i18n-aria="nav.lang.aria" aria-label="Lingua del sito">
+          <button type="button" class="lang-btn px-3 py-1.5" data-lang="it" aria-pressed="true">IT</button>
+          <button type="button" class="lang-btn px-3 py-1.5" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" class="lang-btn px-3 py-1.5" data-lang="es" aria-pressed="false">ES</button>
+        </div>
+      </div>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-mirtillo-700 pt-4 pb-1 px-1" data-i18n="m.group.percorsi">Percorsi di terapia</p>
       <ul class="flex flex-col gap-0.5 text-[1.05rem] font-medium">
-        <li><a href="#chi-sono" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="user" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> Chi sono</a></li>
-        <li><a href="#approccio" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="compass" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> Approccio &amp; terapia</a></li>
-        <li><a href="#expat" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="plane" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> Italiani all'estero</a></li>
-        <li><a href="#test" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="sparkles" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> Test gratuiti</a></li>
+        <li><a href="#chi-sono" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="user" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.chisono">Chi sono</span></a></li>
+        <li><a href="#approccio" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="compass" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.approccio">Approccio &amp; terapia</span></a></li>
+        <li><a href="#expat" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="plane" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.expat">Italiani all'estero</span></a></li>
+        <li><a href="#test" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="sparkles" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.test">Test gratuiti</span></a></li>
       </ul>
-      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-mirtillo-700 pt-4 pb-1 px-1">Per i colleghi</p>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-mirtillo-700 pt-4 pb-1 px-1" data-i18n="m.group.colleghi">Per i colleghi</p>
       <ul class="flex flex-col gap-0.5 text-[1.05rem] font-medium">
-        <li><a href="#supervisione" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="users-round" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> Supervisione clinica</a></li>
-        <li><a href="#psicovoice" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="app-window" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> PsicoVoice</a></li>
+        <li><a href="#supervisione" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="users-round" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.superv">Supervisione clinica</span></a></li>
+        <li><a href="#psicovoice" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="app-window" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.psicovoice">PsicoVoice</span></a></li>
       </ul>
-      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-mirtillo-700 pt-4 pb-1 px-1">Approfondisci</p>
+      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-mirtillo-700 pt-4 pb-1 px-1" data-i18n="m.group.approfondisci">Approfondisci</p>
       <ul class="flex flex-col gap-0.5 text-[1.05rem] font-medium">
-        <li><a href="#percorso" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="briefcase" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> Esperienza &amp; Curriculum</a></li>
-        <li><a href="#portfolio" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="folder-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> Portfolio &amp; Case study</a></li>
-        <li><a href="#risorse" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> Risorse &amp; Articoli</a></li>
+        <li><a href="#percorso" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="briefcase" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.percorso">Esperienza &amp; Curriculum</span></a></li>
+        <li><a href="#portfolio" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="folder-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.portfolio">Portfolio &amp; Case study</span></a></li>
+        <li><a href="#risorse" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.articoli">Risorse &amp; Articoli</span></a></li>
       </ul>
       <!-- Contatto nativo diretto -->
       <div class="grid grid-cols-2 gap-3 mt-5">
         <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="mobile-link inline-flex items-center justify-center gap-2 border-2 border-notte text-notte font-semibold px-4 py-3 rounded-full hover:bg-notte hover:text-white transition-colors">
-          <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i> Email
+          <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="m.email">Email</span>
         </a>
         <a href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20vorrei%20informazioni%20per%20un%20primo%20colloquio." target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-mirtillo-700 text-white font-semibold px-4 py-3 rounded-full hover:bg-mirtillo-600 transition-colors">
-          <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> WhatsApp
+          <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="m.whatsapp">WhatsApp</span>
         </a>
       </div>
-      <a href="#contatti" class="mobile-link block mt-3 text-center bg-notte text-white font-semibold px-4 py-3.5 rounded-full hover:bg-mirtillo-700 transition-colors">Prenota un primo colloquio</a>
+      <a href="#contatti" class="mobile-link block mt-3 text-center bg-notte text-white font-semibold px-4 py-3.5 rounded-full hover:bg-mirtillo-700 transition-colors" data-i18n="m.cta">Prenota un primo colloquio</a>
     </div>
   </header>
 
@@ -340,37 +360,37 @@
         <div>
           <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 bg-mirtillo-100 px-4 py-2 rounded-full mb-6">
             <i data-lucide="video" class="w-4 h-4" aria-hidden="true"></i>
-            Terapia online in tutta Italia e per italiani all'estero · Studio a Itri (LT)
+            <span data-i18n="hero.badge">Terapia online in tutta Italia e per italiani all'estero · Studio a Itri (LT)</span>
           </p>
-          <h1 id="hero-title" class="font-serif text-4xl sm:text-5xl lg:text-[3.4rem] leading-[1.1] text-notte mb-6">
+          <h1 id="hero-title" class="font-serif text-4xl sm:text-5xl lg:text-[3.4rem] leading-[1.1] text-notte mb-6" data-i18n="hero.title">
             Ogni richiesta d'aiuto contiene già una direzione.<br>
             <span class="text-mirtillo-600">Insieme possiamo decifrarla.</span>
           </h1>
-          <p class="text-lg text-inchiostro/80 max-w-xl mb-3">
+          <p class="text-lg text-inchiostro/80 max-w-xl mb-3" data-i18n="hero.p1">
             Sono <strong>Alberto Del Bove</strong>, <strong>psicologo online</strong> e psicoterapeuta psicoanalitico, specialista in <strong>Analisi della Domanda</strong>. Seguo percorsi online in tutta Italia e dall'estero, e in studio a Itri (LT).
           </p>
-          <p class="text-base text-inchiostro/70 max-w-xl mb-8">
+          <p class="text-base text-inchiostro/70 max-w-xl mb-8" data-i18n="hero.p2">
             Alla pratica clinica affianco anni di esperienza nella salute mentale digitale come Clinical Team Lead e Clinical Operations Manager, e sono Founder di <strong>PsicoVoice</strong>. Conosco da vicino la fatica di chi vive momenti difficili, dentro e fuori dal lavoro.
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
             <a href="#contatti" class="inline-flex items-center justify-center gap-2 bg-mirtillo-700 text-white text-base font-semibold px-7 py-4 rounded-full shadow-lg shadow-mirtillo-200 hover:bg-mirtillo-600 hover:-translate-y-0.5 transition-all">
               <i data-lucide="sprout" class="w-5 h-5" aria-hidden="true"></i>
-              Inizia il tuo percorso
+              <span data-i18n="hero.cta1">Inizia il tuo percorso</span>
             </a>
             <a href="#contatti" data-topic="Percorso di coppia" class="couple-cta inline-flex items-center justify-center gap-2 border-2 border-notte text-notte text-base font-semibold px-7 py-[0.9rem] rounded-full hover:bg-notte hover:text-white hover:-translate-y-0.5 transition-all">
               <i data-lucide="heart-handshake" class="w-5 h-5" aria-hidden="true"></i>
-              Percorso di coppia
+              <span data-i18n="hero.cta2">Percorso di coppia</span>
             </a>
           </div>
           <a href="#test" class="group inline-flex items-center gap-2 mt-6 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">
             <i data-lucide="sparkles" class="w-4 h-4" aria-hidden="true"></i>
-            Non sai da dove iniziare? Fai un test gratuito di 2 minuti
+            <span data-i18n="hero.testlink">Non sai da dove iniziare? Fai un test gratuito di 2 minuti</span>
             <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true"></i>
           </a>
           <ul class="flex flex-wrap gap-x-6 gap-y-2 mt-8 text-sm text-inchiostro/60">
-            <li class="flex items-center gap-1.5"><i data-lucide="badge-check" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> Ordine Psicologi Lazio n. 23754</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="graduation-cap" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> Specializzazione SPS Roma, 2022</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="globe" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> IT · EN · ES</li>
+            <li class="flex items-center gap-1.5"><i data-lucide="badge-check" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="hero.badge1">Ordine Psicologi Lazio n. 23754</span></li>
+            <li class="flex items-center gap-1.5"><i data-lucide="graduation-cap" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="hero.badge2">Specializzazione SPS Roma, 2022</span></li>
+            <li class="flex items-center gap-1.5"><i data-lucide="globe" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="hero.badge3">IT · EN · ES</span></li>
           </ul>
         </div>
 
@@ -385,7 +405,7 @@
             <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-mirtillo-100" aria-hidden="true">
               <i data-lucide="message-circle-heart" class="w-5 h-5 text-mirtillo-700"></i>
             </span>
-            <figcaption class="text-sm text-inchiostro/80 leading-snug">Primo colloquio conoscitivo: uno spazio per capire insieme di cosa hai bisogno.</figcaption>
+            <figcaption class="text-sm text-inchiostro/80 leading-snug" data-i18n="hero.figcaption">Primo colloquio conoscitivo: uno spazio per capire insieme di cosa hai bisogno.</figcaption>
           </figure>
         </div>
       </div>
@@ -397,19 +417,19 @@
         <div class="flex items-start gap-4">
           <span class="hidden sm:flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10" aria-hidden="true"><i data-lucide="sparkles" class="w-6 h-6 text-mirtillo-300"></i></span>
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-300 mb-1">Strumenti gratuiti · anonimi · 2-3 minuti · con report PDF</p>
-            <p class="font-serif text-xl sm:text-2xl leading-snug mb-3">Quattro test per iniziare a capirti meglio.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-300 mb-1" data-i18n="teaser.kicker">Strumenti gratuiti · anonimi · 2-3 minuti · con report PDF</p>
+            <p class="font-serif text-xl sm:text-2xl leading-snug mb-3" data-i18n="teaser.title">Quattro test per iniziare a capirti meglio.</p>
             <div class="flex flex-wrap gap-2">
-              <button type="button" data-test="junghiano" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="scan-face" class="w-3.5 h-3.5" aria-hidden="true"></i> Personalità</button>
-              <button type="button" data-test="burnout" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="flame" class="w-3.5 h-3.5" aria-hidden="true"></i> Carico di lavoro</button>
-              <button type="button" data-test="adhd" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="zap" class="w-3.5 h-3.5" aria-hidden="true"></i> Attenzione &amp; impulsività <span class="bg-mirtillo-600 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full">new</span></button>
-              <button type="button" data-test="domanda" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="compass" class="w-3.5 h-3.5" aria-hidden="true"></i> La tua domanda</button>
+              <button type="button" data-test="junghiano" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="scan-face" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="teaser.chip.personalita">Personalità</span></button>
+              <button type="button" data-test="burnout" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="flame" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="teaser.chip.carico">Carico di lavoro</span></button>
+              <button type="button" data-test="adhd" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="zap" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="teaser.chip.adhd">Attenzione &amp; impulsività</span> <span class="bg-mirtillo-600 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full">new</span></button>
+              <button type="button" data-test="domanda" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="compass" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="teaser.chip.domanda">La tua domanda</span></button>
             </div>
           </div>
         </div>
         <div class="flex flex-wrap gap-3 shrink-0">
           <a href="#test" class="inline-flex items-center gap-2 bg-mirtillo-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-mirtillo-500 transition-colors">
-            <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> Fai un test gratuito
+            <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="teaser.cta">Fai un test gratuito</span>
           </a>
         </div>
       </div>
@@ -420,8 +440,8 @@
       <div class="max-w-6xl mx-auto px-5">
         <div class="grid lg:grid-cols-5 gap-12 items-start">
           <div class="lg:col-span-2 reveal">
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Chi sono</p>
-            <h2 id="chi-sono-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6">Una storia in ascolto: <br>tra clinica, persone e organizzazioni</h2>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="chi.kicker">Chi sono</p>
+            <h2 id="chi-sono-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6" data-i18n="chi.title">Una storia in ascolto: <br>tra clinica, persone e organizzazioni</h2>
             <img
               src="https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=800&h=600&q=70"
               alt="Scrivania ordinata con taccuino e luce naturale, a rappresentare il duplice lavoro clinico e organizzativo di Alberto Del Bove"
@@ -429,23 +449,23 @@
               width="800" height="600" loading="lazy">
           </div>
           <div class="lg:col-span-3 space-y-5 text-[1.05rem] text-inchiostro/85 reveal">
-            <p>
+            <p data-i18n="chi.p1">
               Il mio percorso nasce alla <strong>Sapienza di Roma</strong>, dove mi sono laureato in Psicologia Clinica dopo la triennale in Scienze Psicologiche. Dal <strong>2018</strong> sono psicologo abilitato e ho iniziato subito a lavorare su due fronti: la pratica clinica privata e il coordinamento di progetti in organizzazioni socio-sanitarie, dove ho imparato che il malessere delle persone non vive mai nel vuoto, ma dentro relazioni, contesti e culture organizzative precise.
             </p>
-            <p>
+            <p data-i18n="chi.p2">
               Nel <strong>2022</strong> ho concluso la scuola di specializzazione quadriennale in <strong>Psicoterapia Psicoanalitica presso la SPS di Roma</strong>, formandomi nell'<strong>Analisi della Domanda</strong>: un approccio che non si accontenta del sintomo, ma esplora il significato della richiesta d'aiuto dentro la storia e i contesti di chi la porta.
             </p>
-            <p>
+            <p data-i18n="chi.p3">
               Negli stessi anni la mia carriera ha preso una direzione che pochi terapeuti percorrono: in <strong>Unobravo</strong> sono stato <strong>Clinical Team Lead, psicoterapeuta e formatore ECM</strong>, accompagnando il team clinico in una fase di crescita straordinaria, tra qualità, retention ed engagement dei terapeuti. Poi, in <strong>BetterHelp</strong> — la più grande piattaforma di terapia online al mondo — ho lavorato come <strong>Clinical Operations Manager</strong> per i mercati europei.
             </p>
-            <p>
+            <p data-i18n="chi.p4">
               Da questa doppia esperienza è nata <strong>PsicoVoice</strong>, il software di gestione ed esigibilità professionale per psicologi che ho fondato: il punto in cui la mia anima clinica incontra quella digitale e manageriale.
             </p>
-            <p class="font-medium text-notte border-l-4 border-mirtillo pl-5 py-1">
+            <p class="font-medium text-notte border-l-4 border-mirtillo pl-5 py-1" data-i18n="chi.quote">
               Perché tutto questo conta per te? Perché quando mi parli di burnout, di un capo difficile, di un lavoro che ti svuota o di una carriera all'estero, non devo immaginare quel mondo: ci ho lavorato dentro, ogni giorno.
             </p>
             <a href="#contatti" class="group inline-flex items-center gap-2 font-semibold text-mirtillo-700 hover:text-notte transition-colors">
-              Se ti riconosci in queste parole, parliamone: prenota un primo colloquio
+              <span data-i18n="chi.link">Se ti riconosci in queste parole, parliamone: prenota un primo colloquio</span>
               <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true"></i>
             </a>
 
@@ -453,15 +473,15 @@
             <div class="grid grid-cols-3 gap-4 pt-6 mt-2 border-t border-tortora" id="stat-tiles">
               <div class="text-center sm:text-left">
                 <p class="font-serif text-3xl lg:text-4xl text-notte"><span class="stat-num" data-target="8">0</span>+</p>
-                <p class="text-xs text-inchiostro/60 mt-1">anni di pratica clinica</p>
+                <p class="text-xs text-inchiostro/60 mt-1" data-i18n="chi.stat1">anni di pratica clinica</p>
               </div>
               <div class="text-center sm:text-left">
                 <p class="font-serif text-3xl lg:text-4xl text-notte"><span class="stat-num" data-target="3">0</span></p>
-                <p class="text-xs text-inchiostro/60 mt-1">lingue di lavoro</p>
+                <p class="text-xs text-inchiostro/60 mt-1" data-i18n="chi.stat2">lingue di lavoro</p>
               </div>
               <div class="text-center sm:text-left">
                 <p class="font-serif text-3xl lg:text-4xl text-notte"><span class="stat-num" data-target="2">0</span></p>
-                <p class="text-xs text-inchiostro/60 mt-1">setting: online e in studio</p>
+                <p class="text-xs text-inchiostro/60 mt-1" data-i18n="chi.stat3">setting: online e in studio</p>
               </div>
             </div>
           </div>
@@ -473,9 +493,9 @@
     <section id="approccio" class="py-20 lg:py-28 bg-mirtillo-50" aria-labelledby="approccio-title">
       <div class="max-w-6xl mx-auto px-5">
         <div class="max-w-3xl mx-auto text-center mb-14 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Approccio terapeutico</p>
-          <h2 id="approccio-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6">L'Analisi della Domanda: <br>partire da ciò che chiedi, non solo da ciò che senti</h2>
-          <p class="text-lg text-inchiostro/75">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="app.kicker">Approccio terapeutico</p>
+          <h2 id="approccio-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6" data-i18n="app.title">L'Analisi della Domanda: <br>partire da ciò che chiedi, non solo da ciò che senti</h2>
+          <p class="text-lg text-inchiostro/75" data-i18n="app.intro">
             Quando qualcuno chiede aiuto, porta molto più di un sintomo: porta una storia, delle relazioni, un contesto. L'approccio psicoanalitico fondato sull'<strong>Analisi della Domanda</strong> lavora proprio lì — sul significato che ansia, blocchi o fatiche assumono <em>nella tua vita</em>, per trasformare la sofferenza in comprensione e la comprensione in possibilità di sviluppo.
           </p>
         </div>
@@ -483,18 +503,18 @@
         <div class="grid md:grid-cols-3 gap-6 mb-12">
           <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="ear" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-3">Ascolto della domanda</h3>
-            <p class="text-inchiostro/75 text-[0.95rem]">Il primo lavoro non è dare risposte, ma capire insieme cosa stai davvero chiedendo: a te stesso, agli altri, ai tuoi contesti di vita. Spesso è qui che il cambiamento comincia.</p>
+            <h3 class="font-serif text-xl text-notte mb-3" data-i18n="app.c1.t">Ascolto della domanda</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="app.c1.d">Il primo lavoro non è dare risposte, ma capire insieme cosa stai davvero chiedendo: a te stesso, agli altri, ai tuoi contesti di vita. Spesso è qui che il cambiamento comincia.</p>
           </article>
           <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="users" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-3">La persona nei suoi contesti</h3>
-            <p class="text-inchiostro/75 text-[0.95rem]">Famiglia, coppia, lavoro: i sintomi parlano la lingua delle relazioni in cui viviamo. Lavoriamo sul rapporto tra te e i tuoi sistemi di appartenenza, non su un'etichetta diagnostica.</p>
+            <h3 class="font-serif text-xl text-notte mb-3" data-i18n="app.c2.t">La persona nei suoi contesti</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="app.c2.d">Famiglia, coppia, lavoro: i sintomi parlano la lingua delle relazioni in cui viviamo. Lavoriamo sul rapporto tra te e i tuoi sistemi di appartenenza, non su un'etichetta diagnostica.</p>
           </article>
           <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="compass" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-3">Dalla comprensione allo sviluppo</h3>
-            <p class="text-inchiostro/75 text-[0.95rem]">L'obiettivo non è solo stare meglio, ma acquisire strumenti per leggere le situazioni, gestire le relazioni e costruire percorsi di crescita che restino tuoi anche dopo la terapia.</p>
+            <h3 class="font-serif text-xl text-notte mb-3" data-i18n="app.c3.t">Dalla comprensione allo sviluppo</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="app.c3.d">L'obiettivo non è solo stare meglio, ma acquisire strumenti per leggere le situazioni, gestire le relazioni e costruire percorsi di crescita che restino tuoi anche dopo la terapia.</p>
           </article>
         </div>
 
@@ -502,37 +522,37 @@
         <div class="grid md:grid-cols-2 gap-6">
           <article class="relative overflow-hidden bg-notte text-white rounded-3xl p-8 lg:p-10 reveal">
             <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] bg-white/10 px-3 py-1.5 rounded-full mb-5">
-              <i data-lucide="laptop" class="w-4 h-4" aria-hidden="true"></i> Il mio setting principale
+              <i data-lucide="laptop" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="app.online.badge">Il mio setting principale</span>
             </span>
-            <h3 class="font-serif text-2xl mb-4">Terapia online</h3>
-            <p class="text-white/80 mb-5 text-[0.97rem]">
+            <h3 class="font-serif text-2xl mb-4" data-i18n="app.online.t">Terapia online</h3>
+            <p class="text-white/80 mb-5 text-[0.97rem]" data-i18n="app.online.d">
               Lavoro online da anni, con centinaia di percorsi seguiti attraverso le principali piattaforme di terapia digitale. Il setting online, se condotto con metodo, ha la stessa profondità della stanza d'analisi — con alcuni vantaggi in più:
             </p>
             <ul class="space-y-2.5 text-[0.95rem] text-white/85">
-              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> Continuità: la terapia ti segue anche se ti trasferisci, viaggi o vivi all'estero</li>
-              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> Flessibilità di orari, pensata anche per chi ha ritmi di lavoro intensi</li>
-              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> Il comfort di uno spazio tuo, che spesso facilita l'apertura</li>
-              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> Nessun tempo perso negli spostamenti: più energia per il lavoro terapeutico</li>
+              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="app.online.li1">Continuità: la terapia ti segue anche se ti trasferisci, viaggi o vivi all'estero</span></li>
+              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="app.online.li2">Flessibilità di orari, pensata anche per chi ha ritmi di lavoro intensi</span></li>
+              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="app.online.li3">Il comfort di uno spazio tuo, che spesso facilita l'apertura</span></li>
+              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="app.online.li4">Nessun tempo perso negli spostamenti: più energia per il lavoro terapeutico</span></li>
             </ul>
             <a href="#contatti" class="online-cta inline-flex items-center gap-2 mt-7 bg-mirtillo-600 text-white font-semibold px-6 py-3.5 rounded-full hover:bg-mirtillo-500 transition-colors">
-              <i data-lucide="video" class="w-5 h-5" aria-hidden="true"></i> Prenota un colloquio online
+              <i data-lucide="video" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="app.online.cta">Prenota un colloquio online</span>
             </a>
           </article>
           <article class="bg-white rounded-3xl p-8 lg:p-10 shadow-sm reveal">
             <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] bg-mirtillo-100 text-mirtillo-700 px-3 py-1.5 rounded-full mb-5">
-              <i data-lucide="map-pin" class="w-4 h-4" aria-hidden="true"></i> In presenza
+              <i data-lucide="map-pin" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="app.studio.badge">In presenza</span>
             </span>
-            <h3 class="font-serif text-2xl text-notte mb-4">Lo studio di Itri (LT)</h3>
-            <p class="text-inchiostro/75 mb-5 text-[0.97rem]">
+            <h3 class="font-serif text-2xl text-notte mb-4" data-i18n="app.studio.t">Lo studio di Itri (LT)</h3>
+            <p class="text-inchiostro/75 mb-5 text-[0.97rem]" data-i18n="app.studio.d">
               Per chi preferisce l'incontro in presenza, ricevo nel mio studio in <strong>Via Luigi Pirandello 8, Itri</strong>, punto di riferimento anche per Formia, Gaeta, Fondi e il sud pontino.
             </p>
             <ul class="space-y-2.5 text-[0.95rem] text-inchiostro/80">
-              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> Percorsi individuali per adulti e giovani adulti</li>
-              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> Consulenza e sostegno per coppie e famiglie</li>
-              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> Possibilità di formule miste: studio + online</li>
+              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="app.studio.li1">Percorsi individuali per adulti e giovani adulti</span></li>
+              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="app.studio.li2">Consulenza e sostegno per coppie e famiglie</span></li>
+              <li class="flex gap-2.5"><i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="app.studio.li3">Possibilità di formule miste: studio + online</span></li>
             </ul>
             <a href="#contatti" class="studio-cta inline-flex items-center gap-2 mt-7 bg-notte text-white font-semibold px-6 py-3.5 rounded-full hover:bg-mirtillo-700 transition-colors">
-              <i data-lucide="map-pin" class="w-5 h-5" aria-hidden="true"></i> Prenota un colloquio in studio
+              <i data-lucide="map-pin" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="app.studio.cta">Prenota un colloquio in studio</span>
             </a>
           </article>
         </div>
@@ -543,9 +563,9 @@
     <section id="primo-colloquio" class="py-20 lg:py-28 bg-white" aria-labelledby="primo-colloquio-title">
       <div class="max-w-5xl mx-auto px-5">
         <div class="max-w-3xl mx-auto text-center mb-12 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Nessun salto nel buio</p>
-          <h2 id="primo-colloquio-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-5">Come funziona il primo colloquio</h2>
-          <p class="text-inchiostro/75">Quattro passi, nessun impegno: sapere cosa aspettarti è già parte del prendersi cura.</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="pc.kicker">Nessun salto nel buio</p>
+          <h2 id="primo-colloquio-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-5" data-i18n="pc.title">Come funziona il primo colloquio</h2>
+          <p class="text-inchiostro/75" data-i18n="pc.intro">Quattro passi, nessun impegno: sapere cosa aspettarti è già parte del prendersi cura.</p>
         </div>
 
         <!-- Stepper interattivo -->
@@ -553,19 +573,19 @@
           <div id="step-tabs" role="tablist" aria-label="I passi del primo colloquio" class="grid grid-cols-4 gap-2 sm:gap-3 mb-8">
             <button type="button" role="tab" aria-selected="true" id="step-tab-0" aria-controls="step-panel" data-step="0" class="step-tab group flex flex-col items-center gap-2 pt-1 pb-3 rounded-2xl transition-colors">
               <span class="step-dot flex h-11 w-11 items-center justify-center rounded-full font-serif text-lg transition-all">1</span>
-              <span class="text-[11px] sm:text-xs font-semibold leading-tight text-center">Mi scrivi</span>
+              <span class="text-[11px] sm:text-xs font-semibold leading-tight text-center" data-i18n="pc.tab0">Mi scrivi</span>
             </button>
             <button type="button" role="tab" aria-selected="false" id="step-tab-1" aria-controls="step-panel" data-step="1" class="step-tab group flex flex-col items-center gap-2 pt-1 pb-3 rounded-2xl transition-colors">
               <span class="step-dot flex h-11 w-11 items-center justify-center rounded-full font-serif text-lg transition-all">2</span>
-              <span class="text-[11px] sm:text-xs font-semibold leading-tight text-center">Ti rispondo</span>
+              <span class="text-[11px] sm:text-xs font-semibold leading-tight text-center" data-i18n="pc.tab1">Ti rispondo</span>
             </button>
             <button type="button" role="tab" aria-selected="false" id="step-tab-2" aria-controls="step-panel" data-step="2" class="step-tab group flex flex-col items-center gap-2 pt-1 pb-3 rounded-2xl transition-colors">
               <span class="step-dot flex h-11 w-11 items-center justify-center rounded-full font-serif text-lg transition-all">3</span>
-              <span class="text-[11px] sm:text-xs font-semibold leading-tight text-center">Ci conosciamo</span>
+              <span class="text-[11px] sm:text-xs font-semibold leading-tight text-center" data-i18n="pc.tab2">Ci conosciamo</span>
             </button>
             <button type="button" role="tab" aria-selected="false" id="step-tab-3" aria-controls="step-panel" data-step="3" class="step-tab group flex flex-col items-center gap-2 pt-1 pb-3 rounded-2xl transition-colors">
               <span class="step-dot flex h-11 w-11 items-center justify-center rounded-full font-serif text-lg transition-all">4</span>
-              <span class="text-[11px] sm:text-xs font-semibold leading-tight text-center">Decidiamo insieme</span>
+              <span class="text-[11px] sm:text-xs font-semibold leading-tight text-center" data-i18n="pc.tab3">Decidiamo insieme</span>
             </button>
           </div>
 
@@ -576,9 +596,9 @@
 
           <div class="text-center mt-8">
             <a href="#contatti" class="inline-flex items-center gap-2 bg-mirtillo-600 text-white font-semibold px-8 py-4 rounded-full hover:bg-mirtillo-500 transition-colors">
-              <i data-lucide="sprout" class="w-5 h-5" aria-hidden="true"></i> Fai il primo passo
+              <i data-lucide="sprout" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="pc.cta">Fai il primo passo</span>
             </a>
-            <p class="text-xs text-inchiostro/50 mt-3">Il primo colloquio è conoscitivo e non ti impegna a proseguire.</p>
+            <p class="text-xs text-inchiostro/50 mt-3" data-i18n="pc.note">Il primo colloquio è conoscitivo e non ti impegna a proseguire.</p>
           </div>
         </div>
       </div>
@@ -588,26 +608,26 @@
     <section id="expat" class="py-20 lg:py-28 bg-tortora/60" aria-labelledby="expat-title">
       <div class="max-w-6xl mx-auto px-5 grid lg:grid-cols-2 gap-12 items-center">
         <div class="reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Italiani all'estero</p>
-          <h2 id="expat-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6">Psicoterapia online per italiani che vivono all'estero</h2>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="expat.kicker">Italiani all'estero</p>
+          <h2 id="expat-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6" data-i18n="expat.title">Psicoterapia online per italiani che vivono all'estero</h2>
           <div class="space-y-4 text-[1.02rem] text-inchiostro/85">
-            <p>
+            <p data-i18n="expat.p1">
               Vivere in un altro Paese è un'esperienza che trasforma — e che a volte mette alla prova più di quanto si immagini: nostalgia, senso di sradicamento, relazioni da ricostruire, un'identità professionale da ridefinire. E quando arriva il momento di chiedere aiuto, farlo <strong>in una lingua che non è la tua</strong> può rendere tutto più difficile.
             </p>
-            <p>
+            <p data-i18n="expat.p2">
               La psicoterapia lavora con le sfumature: con le parole esatte della tua storia, con i modi di dire di casa, con ciò che resta implicito. Per questo, per molti italiani all'estero, poter fare terapia <strong>nella propria lingua madre</strong> non è un dettaglio: è la condizione perché il lavoro terapeutico vada in profondità.
             </p>
-            <p>
+            <p data-i18n="expat.p3">
               Ho vissuto e lavorato tra <strong>Italia e Spagna</strong> e per anni ho operato in organizzazioni internazionali e remote-first: conosco in prima persona le fatiche e le risorse della vita expat. Le sedute online si adattano al tuo fuso orario e ti accompagnano ovunque ti porti il tuo percorso.
             </p>
           </div>
           <div class="flex flex-wrap gap-3 mt-7">
-            <span class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full text-sm font-medium text-notte shadow-sm"><i data-lucide="languages" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> Sedute in italiano, ovunque tu sia</span>
-            <span class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full text-sm font-medium text-notte shadow-sm"><i data-lucide="clock" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> Orari flessibili sul tuo fuso</span>
-            <span class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full text-sm font-medium text-notte shadow-sm"><i data-lucide="plane" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> Esperienza diretta di vita expat</span>
+            <span class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full text-sm font-medium text-notte shadow-sm"><i data-lucide="languages" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="expat.tag1">Sedute in italiano, ovunque tu sia</span></span>
+            <span class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full text-sm font-medium text-notte shadow-sm"><i data-lucide="clock" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="expat.tag2">Orari flessibili sul tuo fuso</span></span>
+            <span class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full text-sm font-medium text-notte shadow-sm"><i data-lucide="plane" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="expat.tag3">Esperienza diretta di vita expat</span></span>
           </div>
           <a href="#contatti" class="expat-cta inline-flex items-center gap-2 mt-8 bg-mirtillo-700 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-600 transition-colors">
-            <i data-lucide="send" class="w-4 h-4" aria-hidden="true"></i> Scrivimi da dove sei
+            <i data-lucide="send" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="expat.cta">Scrivimi da dove sei</span>
           </a>
         </div>
         <div class="reveal">
@@ -624,68 +644,69 @@
     <section id="test" class="py-20 lg:py-28 bg-crema" aria-labelledby="test-title">
       <div class="max-w-5xl mx-auto px-5">
         <div class="text-center mb-12 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Strumenti interattivi gratuiti</p>
-          <h2 id="test-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-5">Quattro test per iniziare a capirti meglio</h2>
-          <p class="text-inchiostro/75 max-w-2xl mx-auto">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="test.kicker">Strumenti interattivi gratuiti</p>
+          <h2 id="test-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-5" data-i18n="test.title">Quattro test per iniziare a capirti meglio</h2>
+          <p class="text-inchiostro/75 max-w-2xl mx-auto" data-i18n="test.intro">
             Quattro brevi strumenti di auto-osservazione, costruiti con criteri clinici: personalità, peso reale del lavoro, attenzione e impulsività, e ciò che stai davvero cercando. <strong>Gratuiti, anonimi, senza registrazione</strong> — le risposte non lasciano mai il tuo dispositivo.
           </p>
+          <p id="test-lang-note" class="hidden text-sm text-inchiostro/60 italic mt-4"></p>
         </div>
 
         <!-- Hub di scelta -->
         <div id="test-hub" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
-            <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-mirtillo-100 text-mirtillo-700 px-2.5 py-1 rounded-full">Il più amato</span>
+            <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-mirtillo-100 text-mirtillo-700 px-2.5 py-1 rounded-full" data-i18n="test.card1.badge">Il più amato</span>
             <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="scan-face" class="w-7 h-7 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-2">Che tipo psicologico sei?</h3>
-            <p class="text-sm text-inchiostro/70 mb-5 flex-1">9 domande ispirate a C.G. Jung per scoprire dove trovi energia, come leggi il mondo e come decidi. 8 profili, con punti di forza e margini di crescita — nessuna etichetta.</p>
+            <h3 class="font-serif text-xl text-notte mb-2" data-i18n="test.card1.t">Che tipo psicologico sei?</h3>
+            <p class="text-sm text-inchiostro/70 mb-5 flex-1" data-i18n="test.card1.d">9 domande ispirate a C.G. Jung per scoprire dove trovi energia, come leggi il mondo e come decidi. 8 profili, con punti di forza e margini di crescita — nessuna etichetta.</p>
             <p class="flex items-center gap-4 text-xs text-inchiostro/50 mb-4">
-              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> 3 minuti</span>
-              <span class="flex items-center gap-1"><i data-lucide="list-checks" class="w-3.5 h-3.5" aria-hidden="true"></i> 9 domande</span>
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="test.card1.time">3 minuti</span></span>
+              <span class="flex items-center gap-1"><i data-lucide="list-checks" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="test.card1.q">9 domande</span></span>
             </p>
             <button type="button" data-test="junghiano" class="test-start w-full inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-5 py-3 rounded-full hover:bg-mirtillo-700 transition-colors">
-              <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> Inizia il test
+              <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="test.start">Inizia il test</span>
             </button>
           </article>
 
           <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
-            <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full">Per chi lavora troppo</span>
+            <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full" data-i18n="test.card2.badge">Per chi lavora troppo</span>
             <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="flame" class="w-7 h-7 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-2">Quanto ti sta costando il lavoro?</h3>
-            <p class="text-sm text-inchiostro/70 mb-5 flex-1">8 situazioni concrete per misurare il tuo livello di logorio: energie, distacco, recupero. Un punteggio chiaro su 24, quattro fasce di lettura e i segnali da non ignorare.</p>
+            <h3 class="font-serif text-xl text-notte mb-2" data-i18n="test.card2.t">Quanto ti sta costando il lavoro?</h3>
+            <p class="text-sm text-inchiostro/70 mb-5 flex-1" data-i18n="test.card2.d">8 situazioni concrete per misurare il tuo livello di logorio: energie, distacco, recupero. Un punteggio chiaro su 24, quattro fasce di lettura e i segnali da non ignorare.</p>
             <p class="flex items-center gap-4 text-xs text-inchiostro/50 mb-4">
-              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> 2 minuti</span>
-              <span class="flex items-center gap-1"><i data-lucide="list-checks" class="w-3.5 h-3.5" aria-hidden="true"></i> 8 domande</span>
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="test.card2.time">2 minuti</span></span>
+              <span class="flex items-center gap-1"><i data-lucide="list-checks" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="test.card2.q">8 domande</span></span>
             </p>
             <button type="button" data-test="burnout" class="test-start w-full inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-5 py-3 rounded-full hover:bg-mirtillo-700 transition-colors">
-              <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> Inizia il test
+              <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="test.start">Inizia il test</span>
             </button>
           </article>
 
           <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
-            <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-notte text-white px-2.5 py-1 rounded-full">Il più profondo</span>
+            <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-notte text-white px-2.5 py-1 rounded-full" data-i18n="test.card3.badge">Il più profondo</span>
             <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="compass" class="w-7 h-7 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-2">Cosa stai chiedendo, davvero?</h3>
-            <p class="text-sm text-inchiostro/70 mb-5 flex-1">5 domande ispirate all'Analisi della Domanda per mettere a fuoco l'area della tua vita che sta chiedendo attenzione: relazioni, lavoro, identità o direzione.</p>
+            <h3 class="font-serif text-xl text-notte mb-2" data-i18n="test.card3.t">Cosa stai chiedendo, davvero?</h3>
+            <p class="text-sm text-inchiostro/70 mb-5 flex-1" data-i18n="test.card3.d">5 domande ispirate all'Analisi della Domanda per mettere a fuoco l'area della tua vita che sta chiedendo attenzione: relazioni, lavoro, identità o direzione.</p>
             <p class="flex items-center gap-4 text-xs text-inchiostro/50 mb-4">
-              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> 2 minuti</span>
-              <span class="flex items-center gap-1"><i data-lucide="list-checks" class="w-3.5 h-3.5" aria-hidden="true"></i> 5 domande</span>
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="test.card3.time">2 minuti</span></span>
+              <span class="flex items-center gap-1"><i data-lucide="list-checks" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="test.card3.q">5 domande</span></span>
             </p>
             <button type="button" data-test="domanda" class="test-start w-full inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-5 py-3 rounded-full hover:bg-mirtillo-700 transition-colors">
-              <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> Inizia il test
+              <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="test.start">Inizia il test</span>
             </button>
           </article>
 
           <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
-            <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-mirtillo-600 text-white px-2.5 py-1 rounded-full">Novità</span>
+            <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-mirtillo-600 text-white px-2.5 py-1 rounded-full" data-i18n="test.card4.badge">Novità</span>
             <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="zap" class="w-7 h-7 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-2">Attenzione e impulsività: quanto pesano?</h3>
-            <p class="text-sm text-inchiostro/70 mb-5 flex-1">10 situazioni quotidiane ispirate ai questionari di screening dell'ADHD adulto. Non è una diagnosi: è una traccia per capire se vale la pena approfondire con un professionista.</p>
+            <h3 class="font-serif text-xl text-notte mb-2" data-i18n="test.card4.t">Attenzione e impulsività: quanto pesano?</h3>
+            <p class="text-sm text-inchiostro/70 mb-5 flex-1" data-i18n="test.card4.d">10 situazioni quotidiane ispirate ai questionari di screening dell'ADHD adulto. Non è una diagnosi: è una traccia per capire se vale la pena approfondire con un professionista.</p>
             <p class="flex items-center gap-4 text-xs text-inchiostro/50 mb-4">
-              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> 3 minuti</span>
-              <span class="flex items-center gap-1"><i data-lucide="list-checks" class="w-3.5 h-3.5" aria-hidden="true"></i> 10 domande</span>
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="test.card4.time">3 minuti</span></span>
+              <span class="flex items-center gap-1"><i data-lucide="list-checks" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="test.card4.q">10 domande</span></span>
             </p>
             <button type="button" data-test="adhd" class="test-start w-full inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-5 py-3 rounded-full hover:bg-mirtillo-700 transition-colors">
-              <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> Inizia il test
+              <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="test.start">Inizia il test</span>
             </button>
           </article>
         </div>
@@ -694,7 +715,7 @@
         <div id="quiz-panel" class="quiz-step hidden bg-white rounded-3xl shadow-lg p-7 sm:p-10">
           <div class="flex items-center justify-between gap-3 mb-2">
             <span id="quiz-test-chip" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] bg-mirtillo-100 text-mirtillo-700 px-3 py-1.5 rounded-full"></span>
-            <button type="button" id="quiz-exit" class="text-sm text-inchiostro/60 underline underline-offset-2 hover:text-notte">Tutti i test</button>
+            <button type="button" id="quiz-exit" class="text-sm text-inchiostro/60 underline underline-offset-2 hover:text-notte" data-i18n="test.alltests">Tutti i test</button>
           </div>
           <div class="flex items-center justify-between mb-2 text-sm text-inchiostro/60">
             <span id="quiz-progress-label"></span>
@@ -705,7 +726,7 @@
           <h3 id="quiz-question-text" class="font-serif text-xl sm:text-2xl text-notte mb-7" aria-live="polite"></h3>
           <div id="quiz-options" class="grid gap-3"></div>
           <button type="button" id="quiz-back" class="hidden mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-inchiostro/60 hover:text-notte transition-colors">
-            <i data-lucide="arrow-left" class="w-4 h-4" aria-hidden="true"></i> Domanda precedente
+            <i data-lucide="arrow-left" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="test.back">Domanda precedente</span>
           </button>
         </div>
 
@@ -719,43 +740,43 @@
             <p id="quiz-result-code" class="text-sm font-semibold tracking-[0.25em] text-mirtillo-600 mb-6"></p>
           </div>
           <div id="quiz-result-body" class="text-inchiostro/85 space-y-4"></div>
-          <p class="text-xs text-inchiostro/50 max-w-lg mx-auto text-center mt-6 mb-8">Questo strumento offre spunti di auto-osservazione: non è un test diagnostico e non sostituisce una valutazione professionale.</p>
+          <p class="text-xs text-inchiostro/50 max-w-lg mx-auto text-center mt-6 mb-8" data-i18n="test.result.disclaimer">Questo strumento offre spunti di auto-osservazione: non è un test diagnostico e non sostituisce una valutazione professionale.</p>
           <div class="flex flex-col sm:flex-row justify-center gap-3 mb-6">
             <button type="button" id="quiz-download" class="inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-700 transition-colors">
-              <i data-lucide="file-down" class="w-5 h-5" aria-hidden="true"></i> <span id="quiz-download-label">Scarica il report in PDF</span>
+              <i data-lucide="file-down" class="w-5 h-5" aria-hidden="true"></i> <span id="quiz-download-label" data-i18n="test.download">Scarica il report in PDF</span>
             </button>
           </div>
           <div class="bg-mirtillo-50 rounded-2xl p-6 mb-6 text-center">
-            <p class="font-medium text-notte mb-4">Vuoi dare parole a questo risultato? Prenota un colloquio e condividilo con me: sarà un ottimo punto di partenza.</p>
+            <p class="font-medium text-notte mb-4" data-i18n="test.result.share.q">Vuoi dare parole a questo risultato? Prenota un colloquio e condividilo con me: sarà un ottimo punto di partenza.</p>
             <button type="button" id="quiz-to-form" class="inline-flex items-center gap-2 bg-mirtillo-700 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-600 transition-colors">
-              <i data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> Prenota e condividi il risultato
+              <i data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="test.result.share.cta">Prenota e condividi il risultato</span>
             </button>
           </div>
           <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-            <button type="button" id="quiz-restart" class="text-inchiostro/60 underline underline-offset-2 hover:text-notte">Rifai questo test</button>
-            <button type="button" id="quiz-other" class="text-inchiostro/60 underline underline-offset-2 hover:text-notte">Prova un altro test</button>
+            <button type="button" id="quiz-restart" class="text-inchiostro/60 underline underline-offset-2 hover:text-notte" data-i18n="test.restart">Rifai questo test</button>
+            <button type="button" id="quiz-other" class="text-inchiostro/60 underline underline-offset-2 hover:text-notte" data-i18n="test.other">Prova un altro test</button>
           </div>
         </div>
 
         <!-- FAQ -->
         <div class="mt-16 max-w-3xl mx-auto reveal">
-          <h3 class="font-serif text-2xl text-notte text-center mb-6">Domande frequenti sui test</h3>
+          <h3 class="font-serif text-2xl text-notte text-center mb-6" data-i18n="test.faq.title">Domande frequenti sui test</h3>
           <div class="space-y-3">
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Questi test sono una diagnosi psicologica? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">No. Sono strumenti di auto-osservazione costruiti con criteri clinici, pensati per accendere una riflessione — non per classificarti. Una valutazione vera nasce solo dall'incontro con un professionista: se un risultato ti colpisce, il primo colloquio è il posto giusto per approfondirlo.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="test.faq1.q">Questi test sono una diagnosi psicologica?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="test.faq1.a">No. Sono strumenti di auto-osservazione costruiti con criteri clinici, pensati per accendere una riflessione — non per classificarti. Una valutazione vera nasce solo dall'incontro con un professionista: se un risultato ti colpisce, il primo colloquio è il posto giusto per approfondirlo.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Dove finiscono le mie risposte? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Da nessuna parte: i test funzionano interamente nel tuo browser. Le risposte non vengono salvate, tracciate né inviate — il risultato lo vedi solo tu, e sei tu a decidere se condividerlo con me nel modulo di contatto.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="test.faq2.q">Dove finiscono le mie risposte?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="test.faq2.a">Da nessuna parte: i test funzionano interamente nel tuo browser. Le risposte non vengono salvate, tracciate né inviate — il risultato lo vedi solo tu, e sei tu a decidere se condividerlo con me nel modulo di contatto.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Quanto durano e quanto costano? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Dai 2 ai 3 minuti ciascuno, e sono completamente gratuiti. Puoi rifarli quante volte vuoi: anche osservare come cambiano le tue risposte nel tempo è un'informazione interessante.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="test.faq3.q">Quanto durano e quanto costano?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="test.faq3.a">Dai 2 ai 3 minuti ciascuno, e sono completamente gratuiti. Puoi rifarli quante volte vuoi: anche osservare come cambiano le tue risposte nel tempo è un'informazione interessante.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Cosa faccio con il risultato? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Puoi tenerlo per te come spunto, oppure condividerlo con me con un clic: il pulsante sotto ogni risultato precompila il modulo di contatto. Nel primo colloquio partiremo da lì — da ciò che il test ha mosso, più che dal punteggio in sé.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="test.faq4.q">Cosa faccio con il risultato?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="test.faq4.a">Puoi tenerlo per te come spunto, oppure condividerlo con me con un clic: il pulsante sotto ogni risultato precompila il modulo di contatto. Nel primo colloquio partiremo da lì — da ciò che il test ha mosso, più che dal punteggio in sé.</p>
             </details>
           </div>
         </div>
@@ -825,9 +846,9 @@
     <section id="percorso" class="py-20 lg:py-28 bg-white" aria-labelledby="percorso-title">
       <div class="max-w-6xl mx-auto px-5">
         <div class="max-w-3xl mb-14 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Esperienza &amp; Curriculum</p>
-          <h2 id="percorso-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4">Le tappe di un percorso doppio</h2>
-          <p class="text-inchiostro/75">Dal presente alle radici: da una parte il lavoro clinico e organizzativo, dall'altra una formazione che non si è mai fermata.</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="perc.kicker">Esperienza &amp; Curriculum</p>
+          <h2 id="percorso-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="perc.title">Le tappe di un percorso doppio</h2>
+          <p class="text-inchiostro/75" data-i18n="perc.intro">Dal presente alle radici: da una parte il lavoro clinico e organizzativo, dall'altra una formazione che non si è mai fermata.</p>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-14 lg:gap-16 mb-16">
@@ -835,38 +856,38 @@
           <div class="reveal">
             <h3 class="font-serif text-2xl text-notte mb-8 flex items-center gap-2.5">
               <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-notte" aria-hidden="true"><i data-lucide="briefcase" class="w-5 h-5 text-mirtillo-300"></i></span>
-              Esperienza professionale
+              <span data-i18n="perc.lavoro.h">Esperienza professionale</span>
             </h3>
             <ol class="relative border-s-2 border-tortora-dark space-y-9 ps-8">
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-notte ring-4 ring-white" aria-hidden="true"></span>
-                <p class="text-sm font-semibold text-mirtillo-700 mb-1">Oggi · PsicoVoice</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Founder</h4>
-                <p class="text-inchiostro/75 text-[0.93rem]">PsicoVoice è il software di gestione ed esigibilità professionale per psicologi che ho fondato: il punto d'incontro tra la mia anima clinica e quella digitale e manageriale.</p>
+                <p class="text-sm font-semibold text-mirtillo-700 mb-1"><span data-i18n="perc.today">Oggi</span> · PsicoVoice</p>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.l1.h">Founder</h4>
+                <p class="text-inchiostro/75 text-[0.93rem]" data-i18n="perc.l1.d">PsicoVoice è il software di gestione ed esigibilità professionale per psicologi che ho fondato: il punto d'incontro tra la mia anima clinica e quella digitale e manageriale.</p>
               </li>
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-mirtillo-600 ring-4 ring-white" aria-hidden="true"></span>
                 <p class="text-sm font-semibold text-mirtillo-700 mb-1">2025 – 2026 · BetterHelp</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Clinical Operations Manager (EU)</h4>
-                <p class="text-inchiostro/75 text-[0.93rem]">Nella più grande piattaforma di terapia online al mondo ho collaborato alla qualità clinica e alle operations sui mercati europei: selezione dei professionisti, standard di servizio e conformità normativa.</p>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.l2.h">Clinical Operations Manager (EU)</h4>
+                <p class="text-inchiostro/75 text-[0.93rem]" data-i18n="perc.l2.d">Nella più grande piattaforma di terapia online al mondo ho collaborato alla qualità clinica e alle operations sui mercati europei: selezione dei professionisti, standard di servizio e conformità normativa.</p>
               </li>
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-mirtillo-600 ring-4 ring-white" aria-hidden="true"></span>
                 <p class="text-sm font-semibold text-mirtillo-700 mb-1">2021 – 2025 · Unobravo</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Clinical Team Lead, psicoterapeuta e formatore ECM</h4>
-                <p class="text-inchiostro/75 text-[0.93rem]">Nella principale piattaforma italiana di psicologia online ho collaborato a qualità clinica, retention ed engagement del team di terapeuti, curandone selezione, sviluppo e formazione accreditata ECM.</p>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.l3.h">Clinical Team Lead, psicoterapeuta e formatore ECM</h4>
+                <p class="text-inchiostro/75 text-[0.93rem]" data-i18n="perc.l3.d">Nella principale piattaforma italiana di psicologia online ho collaborato a qualità clinica, retention ed engagement del team di terapeuti, curandone selezione, sviluppo e formazione accreditata ECM.</p>
               </li>
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-mirtillo-600 ring-4 ring-white" aria-hidden="true"></span>
-                <p class="text-sm font-semibold text-mirtillo-700 mb-1">Dal 2018 · Pratica privata</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Psicologo e Psicoterapeuta</h4>
-                <p class="text-inchiostro/75 text-[0.93rem]">Percorsi di psicoterapia online e in studio, tra Italia e Spagna, con adulti, coppie e famiglie.</p>
+                <p class="text-sm font-semibold text-mirtillo-700 mb-1" data-i18n="perc.l4.date">Dal 2018 · Pratica privata</p>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.l4.h">Psicologo e Psicoterapeuta</h4>
+                <p class="text-inchiostro/75 text-[0.93rem]" data-i18n="perc.l4.d">Percorsi di psicoterapia online e in studio, tra Italia e Spagna, con adulti, coppie e famiglie.</p>
               </li>
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-mirtillo-600 ring-4 ring-white" aria-hidden="true"></span>
-                <p class="text-sm font-semibold text-mirtillo-700 mb-1">2018 – 2021 · Organizzazioni socio-sanitarie</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Psicologo &amp; Project Manager</h4>
-                <p class="text-inchiostro/75 text-[0.93rem]">Coordinamento di programmi di inclusione ed employability, assessment delle competenze e gestione di team multidisciplinari in contesti residenziali e territoriali.</p>
+                <p class="text-sm font-semibold text-mirtillo-700 mb-1" data-i18n="perc.l5.date">2018 – 2021 · Organizzazioni socio-sanitarie</p>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.l5.h">Psicologo &amp; Project Manager</h4>
+                <p class="text-inchiostro/75 text-[0.93rem]" data-i18n="perc.l5.d">Coordinamento di programmi di inclusione ed employability, assessment delle competenze e gestione di team multidisciplinari in contesti residenziali e territoriali.</p>
               </li>
             </ol>
           </div>
@@ -875,37 +896,37 @@
           <div class="reveal">
             <h3 class="font-serif text-2xl text-notte mb-8 flex items-center gap-2.5">
               <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-mirtillo-100" aria-hidden="true"><i data-lucide="graduation-cap" class="w-5 h-5 text-mirtillo-700"></i></span>
-              Formazione
+              <span data-i18n="perc.form.h">Formazione</span>
             </h3>
             <ol class="relative border-s-2 border-tortora-dark space-y-9 ps-8">
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-notte ring-4 ring-white" aria-hidden="true"></span>
-                <p class="text-sm font-semibold text-mirtillo-700 mb-1 flex items-center gap-2 flex-wrap">Da gennaio 2026 · Arden University (UK) <span class="text-[10px] font-bold uppercase tracking-wider bg-mirtillo-100 text-mirtillo-700 px-2 py-0.5 rounded-full">In corso</span></p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">MSc in Strategic Human Resource Management (CIPD Level 7)</h4>
-                <p class="text-inchiostro/75 text-[0.93rem]">Master accreditato CIPD, CMI, SHRM e HRCI: talent e reward, people analytics, employment relations e diritto del lavoro, benessere e performance, sviluppo organizzativo e change. Affiliate Member del Chartered Management Institute (CMI).</p>
-                <a href="#portfolio" class="group inline-flex items-center gap-1.5 mt-2.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Guarda tre case study dal Master <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true"></i></a>
+                <p class="text-sm font-semibold text-mirtillo-700 mb-1 flex items-center gap-2 flex-wrap"><span data-i18n="perc.f1.date">Da gennaio 2026 · Arden University (UK)</span> <span class="text-[10px] font-bold uppercase tracking-wider bg-mirtillo-100 text-mirtillo-700 px-2 py-0.5 rounded-full" data-i18n="perc.inprogress">In corso</span></p>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.f1.h">MSc in Strategic Human Resource Management (CIPD Level 7)</h4>
+                <p class="text-inchiostro/75 text-[0.93rem]" data-i18n="perc.f1.d">Master accreditato CIPD, CMI, SHRM e HRCI: talent e reward, people analytics, employment relations e diritto del lavoro, benessere e performance, sviluppo organizzativo e change. Affiliate Member del Chartered Management Institute (CMI).</p>
+                <a href="#portfolio" class="group inline-flex items-center gap-1.5 mt-2.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="perc.f1.link">Guarda tre case study dal Master</span> <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true"></i></a>
               </li>
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-mirtillo-600 ring-4 ring-white" aria-hidden="true"></span>
                 <p class="text-sm font-semibold text-mirtillo-700 mb-1">2018 – 2022 · SPS Roma</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Specializzazione in Psicoterapia Psicoanalitica</h4>
-                <p class="text-inchiostro/75 text-[0.93rem]">Scuola quadriennale orientata all'Analisi della Domanda: l'approccio che guida tutto il mio lavoro clinico.</p>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.f2.h">Specializzazione in Psicoterapia Psicoanalitica</h4>
+                <p class="text-inchiostro/75 text-[0.93rem]" data-i18n="perc.f2.d">Scuola quadriennale orientata all'Analisi della Domanda: l'approccio che guida tutto il mio lavoro clinico.</p>
               </li>
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-mirtillo-600 ring-4 ring-white" aria-hidden="true"></span>
                 <p class="text-sm font-semibold text-mirtillo-700 mb-1">2018 · Ordine degli Psicologi del Lazio</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Abilitazione e iscrizione all'Albo (n. 23754)</h4>
-                <p class="text-inchiostro/75 text-[0.93rem]">Psicologo abilitato all'esercizio della professione dal 26 marzo 2018.</p>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.f3.h">Abilitazione e iscrizione all'Albo (n. 23754)</h4>
+                <p class="text-inchiostro/75 text-[0.93rem]" data-i18n="perc.f3.d">Psicologo abilitato all'esercizio della professione dal 26 marzo 2018.</p>
               </li>
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-mirtillo-600 ring-4 ring-white" aria-hidden="true"></span>
                 <p class="text-sm font-semibold text-mirtillo-700 mb-1">2014 – 2016 · Sapienza Università di Roma</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Laurea magistrale in Psicologia Clinica</h4>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.f4.h">Laurea magistrale in Psicologia Clinica</h4>
               </li>
               <li>
                 <span class="absolute -start-[9px] mt-1.5 h-4 w-4 rounded-full bg-mirtillo-600 ring-4 ring-white" aria-hidden="true"></span>
                 <p class="text-sm font-semibold text-mirtillo-700 mb-1">2010 – 2014 · Sapienza Università di Roma</p>
-                <h4 class="font-serif text-lg text-notte mb-1.5">Laurea triennale in Scienze Psicologiche</h4>
+                <h4 class="font-serif text-lg text-notte mb-1.5" data-i18n="perc.f5.h">Laurea triennale in Scienze Psicologiche</h4>
               </li>
             </ol>
           </div>
@@ -913,7 +934,7 @@
 
         <div class="grid md:grid-cols-2 gap-8 reveal">
           <div>
-            <h3 class="font-serif text-lg text-notte mb-4 flex items-center gap-2"><i data-lucide="heart-pulse" class="w-5 h-5 text-mirtillo-600" aria-hidden="true"></i> Competenze cliniche</h3>
+            <h3 class="font-serif text-lg text-notte mb-4 flex items-center gap-2"><i data-lucide="heart-pulse" class="w-5 h-5 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="perc.skills.clin">Competenze cliniche</span></h3>
             <ul class="flex flex-wrap gap-2" aria-label="Elenco competenze cliniche">
               <li class="bg-mirtillo-100 text-mirtillo-700 text-sm font-medium px-4 py-1.5 rounded-full">Psicoterapia psicoanalitica</li>
               <li class="bg-mirtillo-100 text-mirtillo-700 text-sm font-medium px-4 py-1.5 rounded-full">Analisi della Domanda</li>
@@ -926,7 +947,7 @@
             </ul>
           </div>
           <div>
-            <h3 class="font-serif text-lg text-notte mb-4 flex items-center gap-2"><i data-lucide="network" class="w-5 h-5 text-notte" aria-hidden="true"></i> Competenze manageriali</h3>
+            <h3 class="font-serif text-lg text-notte mb-4 flex items-center gap-2"><i data-lucide="network" class="w-5 h-5 text-notte" aria-hidden="true"></i> <span data-i18n="perc.skills.mgr">Competenze manageriali</span></h3>
             <ul class="flex flex-wrap gap-2" aria-label="Elenco competenze manageriali">
               <li class="bg-notte text-white text-sm font-medium px-4 py-1.5 rounded-full">People Management</li>
               <li class="bg-notte text-white text-sm font-medium px-4 py-1.5 rounded-full">Clinical Operations</li>
@@ -942,9 +963,9 @@
 
         <!-- CTA di raccordo: la storia è il motivo per scrivere -->
         <div class="mt-14 bg-mirtillo-50 rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 reveal">
-          <p class="font-serif text-xl sm:text-2xl text-notte text-center sm:text-left leading-snug">Questa è la mia storia. <span class="text-mirtillo-700">Il primo colloquio serve a raccontarmi la tua.</span></p>
+          <p class="font-serif text-xl sm:text-2xl text-notte text-center sm:text-left leading-snug" data-i18n="perc.story">Questa è la mia storia. <span class="text-mirtillo-700">Il primo colloquio serve a raccontarmi la tua.</span></p>
           <a href="#contatti" class="shrink-0 inline-flex items-center gap-2 bg-mirtillo-600 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-500 transition-colors">
-            <i data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> Prenota un primo colloquio
+            <i data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="perc.story.cta">Prenota un primo colloquio</span>
           </a>
         </div>
       </div>
@@ -954,9 +975,9 @@
     <section id="portfolio" class="py-20 lg:py-28 bg-crema" aria-labelledby="portfolio-title">
       <div class="max-w-6xl mx-auto px-5">
         <div class="max-w-3xl mb-12 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Portfolio · MSc Strategic HRM</p>
-          <h2 id="portfolio-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4">Tre case study tra persone, organizzazioni e dati</h2>
-          <p class="text-inchiostro/75">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="pf.kicker">Portfolio · MSc Strategic HRM</p>
+          <h2 id="portfolio-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="pf.title">Tre case study tra persone, organizzazioni e dati</h2>
+          <p class="text-inchiostro/75" data-i18n="pf.intro">
             Da gennaio 2026 studio <strong>Strategic Human Resource Management</strong> (MSc, CIPD Level 7) alla Arden University. Questi tre lavori accademici raccontano l'altra metà del mio sguardo: come leggo le organizzazioni — piattaforme, team, dati — con la stessa attenzione critica con cui in terapia ascolto le persone.
           </p>
         </div>
@@ -964,60 +985,60 @@
         <div class="grid md:grid-cols-3 gap-6">
           <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="layers" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Strategic Planning &amp; Ethics</p>
-            <h3 class="font-serif text-xl text-notte mb-3 leading-snug">Un'unica missione, due forze lavoro</h3>
-            <p class="text-sm text-inchiostro/70 mb-5 flex-1">Una piattaforma italiana di salute mentale digitale: 300 dipendenti e 7.000 professionisti in partita IVA. Il modello regge sulla carta — ma una ristrutturazione gestita a due velocità e una decisione mai motivata mostrano dove strategia ed etica si separano.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="pf.c1.kicker">Strategic Planning &amp; Ethics</p>
+            <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="pf.c1.t">Un'unica missione, due forze lavoro</h3>
+            <p class="text-sm text-inchiostro/70 mb-5 flex-1" data-i18n="pf.c1.d">Una piattaforma italiana di salute mentale digitale: 300 dipendenti e 7.000 professionisti in partita IVA. Il modello regge sulla carta — ma una ristrutturazione gestita a due velocità e una decisione mai motivata mostrano dove strategia ed etica si separano.</p>
             <ul class="flex flex-wrap gap-1.5 mb-5" aria-label="Framework utilizzati nel case study">
               <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">McKinsey 7S</li>
               <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">Kotter &amp; Lewin</li>
-              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">CSR di Carroll</li>
-              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">Lenti etiche</li>
+              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full" data-i18n="pf.c1.chip3">CSR di Carroll</li>
+              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full" data-i18n="pf.c1.chip4">Lenti etiche</li>
             </ul>
             <p class="flex items-center gap-4 text-xs text-inchiostro/50 mb-4">
-              <span class="flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5" aria-hidden="true"></i> Report accademico</span>
-              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> 6 min di lettura</span>
+              <span class="flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="pf.c1.meta1">Report accademico</span></span>
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="pf.c1.meta2">6 min di lettura</span></span>
             </p>
-            <button type="button" data-article="cs-strategia" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi il case study <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+            <button type="button" data-article="cs-strategia" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="pf.readcs">Leggi il case study</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
           </article>
 
           <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="bar-chart-3" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">People Analytics</p>
-            <h3 class="font-serif text-xl text-notte mb-3 leading-snug">I dati che un'azienda guarda — e quelli che non raccoglie</h3>
-            <p class="text-sm text-inchiostro/70 mb-5 flex-1">Un'azienda SaaS globale, 370 persone in dodici paesi: le performance si misurano ogni mese, ma nessuno raccoglie engagement, motivi d'uscita, ritorno della formazione. Un'analisi di come i dati sulle persone diventano valore — o restano solo controllo.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="pf.c2.kicker">People Analytics</p>
+            <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="pf.c2.t">I dati che un'azienda guarda — e quelli che non raccoglie</h3>
+            <p class="text-sm text-inchiostro/70 mb-5 flex-1" data-i18n="pf.c2.d">Un'azienda SaaS globale, 370 persone in dodici paesi: le performance si misurano ogni mese, ma nessuno raccoglie engagement, motivi d'uscita, ritorno della formazione. Un'analisi di come i dati sulle persone diventano valore — o restano solo controllo.</p>
             <ul class="flex flex-wrap gap-1.5 mb-5" aria-label="Framework utilizzati nel case study">
               <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">DIKW</li>
-              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">Modello di Ulrich</li>
+              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full" data-i18n="pf.c2.chip2">Modello di Ulrich</li>
               <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">VUCA</li>
-              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">Stakeholder theory</li>
+              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full" data-i18n="pf.c2.chip4">Stakeholder theory</li>
             </ul>
             <p class="flex items-center gap-4 text-xs text-inchiostro/50 mb-4">
-              <span class="flex items-center gap-1"><i data-lucide="presentation" class="w-3.5 h-3.5" aria-hidden="true"></i> Presentazione + podcast</span>
-              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> 5 min di lettura</span>
+              <span class="flex items-center gap-1"><i data-lucide="presentation" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="pf.c2.meta1">Presentazione + podcast</span></span>
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="pf.c2.meta2">5 min di lettura</span></span>
             </p>
-            <button type="button" data-article="cs-analytics" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi il case study <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+            <button type="button" data-article="cs-analytics" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="pf.readcs">Leggi il case study</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
           </article>
 
           <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="scale" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Employment Relations &amp; Law</p>
-            <h3 class="font-serif text-xl text-notte mb-3 leading-snug">Il terapeuta e l'algoritmo</h3>
-            <p class="text-sm text-inchiostro/70 mb-5 flex-1">Una piattaforma globale di terapia online, 30.000 terapeuti contractor: le regole del lavoro non le negozia nessuno, perché sono scritte nel software. Relazioni industriali, voice e contratto psicologico dove il management è un algoritmo — e cosa dice il diritto italiano ed europeo.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="pf.c3.kicker">Employment Relations &amp; Law</p>
+            <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="pf.c3.t">Il terapeuta e l'algoritmo</h3>
+            <p class="text-sm text-inchiostro/70 mb-5 flex-1" data-i18n="pf.c3.d">Una piattaforma globale di terapia online, 30.000 terapeuti contractor: le regole del lavoro non le negozia nessuno, perché sono scritte nel software. Relazioni industriali, voice e contratto psicologico dove il management è un algoritmo — e cosa dice il diritto italiano ed europeo.</p>
             <ul class="flex flex-wrap gap-1.5 mb-5" aria-label="Framework utilizzati nel case study">
-              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">Sistema di Dunlop</li>
+              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full" data-i18n="pf.c3.chip1">Sistema di Dunlop</li>
               <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">Employee voice</li>
-              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">Contratto psicologico</li>
+              <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full" data-i18n="pf.c3.chip3">Contratto psicologico</li>
               <li class="text-[11px] font-medium bg-crema text-inchiostro/70 px-2.5 py-1 rounded-full">D.lgs 81/2015</li>
             </ul>
             <p class="flex items-center gap-4 text-xs text-inchiostro/50 mb-4">
-              <span class="flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5" aria-hidden="true"></i> Report accademico</span>
-              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> 6 min di lettura</span>
+              <span class="flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="pf.c3.meta1">Report accademico</span></span>
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="pf.c3.meta2">6 min di lettura</span></span>
             </p>
-            <button type="button" data-article="cs-relazioni" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi il case study <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+            <button type="button" data-article="cs-relazioni" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="pf.readcs">Leggi il case study</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
           </article>
         </div>
 
-        <p class="mt-8 text-xs text-inchiostro/50 max-w-3xl reveal">
+        <p class="mt-8 text-xs text-inchiostro/50 max-w-3xl reveal" data-i18n="pf.disclaimer">
           I tre elaborati nascono come assessment del Master e sono qui riassunti in forma divulgativa. Le organizzazioni analizzate sono anonimizzate, come negli originali; dati ed episodi citati provengono dagli elaborati stessi e da fonti pubbliche.
         </p>
       </div>
@@ -1027,35 +1048,35 @@
     <section id="supervisione" class="py-20 lg:py-28 bg-tortora/40" aria-labelledby="supervisione-title">
       <div class="max-w-6xl mx-auto px-5">
         <div class="max-w-3xl mb-14 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Per psicologi, psicoterapeuti ed équipe</p>
-          <h2 id="supervisione-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6">Supervisione clinica: uno spazio terzo per pensare il tuo lavoro</h2>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="sup.kicker">Per psicologi, psicoterapeuti ed équipe</p>
+          <h2 id="supervisione-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-6" data-i18n="sup.title">Supervisione clinica: uno spazio terzo per pensare il tuo lavoro</h2>
           <div class="space-y-4 text-[1.05rem] text-inchiostro/85">
-            <p>
+            <p data-i18n="sup.p1">
               La supervisione non è un controllo sul tuo operato, né un luogo dove ricevere la "risposta giusta". È uno <strong>spazio terzo</strong> in cui fermarsi a pensare insieme un caso, una relazione terapeutica, un impasse — e ritrovare la libertà di muoversi quando il lavoro clinico si fa denso, confuso o troppo carico.
             </p>
-            <p>
+            <p data-i18n="sup.p2">
               Spesso ciò che chiamiamo "difficoltà con un paziente" è in realtà una <strong>domanda che il caso rivolge a noi</strong>: al nostro modo di ascoltare, ai nostri punti ciechi, ai contesti in cui lavoriamo. La supervisione serve proprio a dare parole a questa domanda.
             </p>
           </div>
         </div>
 
         <!-- Il modello -->
-        <p class="text-sm font-semibold text-notte mb-5 reveal">Come le conduco: l'Analisi della Domanda applicata alla supervisione</p>
+        <p class="text-sm font-semibold text-notte mb-5 reveal" data-i18n="sup.model.label">Come le conduco: l'Analisi della Domanda applicata alla supervisione</p>
         <div class="grid md:grid-cols-3 gap-6 mb-14">
           <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="ear" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-3">Il caso e la sua domanda</h3>
-            <p class="text-inchiostro/75 text-[0.95rem]">Partiamo dal materiale clinico che porti — sedute, sogni, momenti di stallo — per mettere a fuoco cosa il paziente sta davvero chiedendo, a sé e a te, oltre il sintomo dichiarato.</p>
+            <h3 class="font-serif text-xl text-notte mb-3" data-i18n="sup.c1.t">Il caso e la sua domanda</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="sup.c1.d">Partiamo dal materiale clinico che porti — sedute, sogni, momenti di stallo — per mettere a fuoco cosa il paziente sta davvero chiedendo, a sé e a te, oltre il sintomo dichiarato.</p>
           </article>
           <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="refresh-cw" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-3">La relazione e il controtransfert</h3>
-            <p class="text-inchiostro/75 text-[0.95rem]">Ciò che senti in seduta — noia, fastidio, protezione, urgenza — non è un disturbo da correggere ma uno strumento di conoscenza. Impariamo a leggerlo come informazione sul caso.</p>
+            <h3 class="font-serif text-xl text-notte mb-3" data-i18n="sup.c2.t">La relazione e il controtransfert</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="sup.c2.d">Ciò che senti in seduta — noia, fastidio, protezione, urgenza — non è un disturbo da correggere ma uno strumento di conoscenza. Impariamo a leggerlo come informazione sul caso.</p>
           </article>
           <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="building-2" class="w-6 h-6 text-mirtillo-700"></i></span>
-            <h3 class="font-serif text-xl text-notte mb-3">Il contesto e l'istituzione</h3>
-            <p class="text-inchiostro/75 text-[0.95rem]">Nessun caso vive nel vuoto: servizio, piattaforma, budget, mandato. Avendo guidato team clinici in aziende della salute mentale digitale, porto uno sguardo anche sulle dinamiche organizzative in cui lavori.</p>
+            <h3 class="font-serif text-xl text-notte mb-3" data-i18n="sup.c3.t">Il contesto e l'istituzione</h3>
+            <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="sup.c3.d">Nessun caso vive nel vuoto: servizio, piattaforma, budget, mandato. Avendo guidato team clinici in aziende della salute mentale digitale, porto uno sguardo anche sulle dinamiche organizzative in cui lavori.</p>
           </article>
         </div>
 
@@ -1064,24 +1085,24 @@
           <div class="grid sm:grid-cols-2 gap-6">
             <article class="bg-notte text-white rounded-3xl p-8 reveal">
               <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 mb-5" aria-hidden="true"><i data-lucide="laptop" class="w-5 h-5 text-mirtillo-300"></i></span>
-              <h3 class="font-serif text-xl mb-3">Online</h3>
-              <p class="text-white/80 text-[0.95rem]">In videochiamata, ovunque tu eserciti. Ho supervisionato e formato terapeuti da remoto per anni: il setting online, se tenuto con metodo, ha la stessa densità di quello in presenza.</p>
+              <h3 class="font-serif text-xl mb-3" data-i18n="sup.online.t">Online</h3>
+              <p class="text-white/80 text-[0.95rem]" data-i18n="sup.online.d">In videochiamata, ovunque tu eserciti. Ho supervisionato e formato terapeuti da remoto per anni: il setting online, se tenuto con metodo, ha la stessa densità di quello in presenza.</p>
             </article>
             <article class="bg-white rounded-3xl p-8 shadow-sm reveal">
               <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="map-pin" class="w-5 h-5 text-mirtillo-700"></i></span>
-              <h3 class="font-serif text-xl text-notte mb-3">In presenza</h3>
-              <p class="text-inchiostro/75 text-[0.95rem]">Nello studio di Itri (LT), per chi preferisce l'incontro dal vivo o per cicli di supervisione periodici, anche in formula mista con le sedute online.</p>
+              <h3 class="font-serif text-xl text-notte mb-3" data-i18n="sup.studio.t">In presenza</h3>
+              <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="sup.studio.d">Nello studio di Itri (LT), per chi preferisce l'incontro dal vivo o per cicli di supervisione periodici, anche in formula mista con le sedute online.</p>
             </article>
           </div>
           <article class="bg-white rounded-3xl p-8 shadow-sm reveal flex flex-col">
-            <h3 class="font-serif text-xl text-notte mb-4">Formati disponibili</h3>
+            <h3 class="font-serif text-xl text-notte mb-4" data-i18n="sup.formats.t">Formati disponibili</h3>
             <ul class="space-y-3 text-[0.95rem] text-inchiostro/80 mb-6">
-              <li class="flex gap-3"><i data-lucide="user" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span><strong class="text-notte">Individuale</strong> — un percorso sui tuoi casi e sul tuo stile clinico, per neo-iscritti o colleghi esperti.</span></li>
-              <li class="flex gap-3"><i data-lucide="users" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span><strong class="text-notte">Di gruppo</strong> — piccoli gruppi di intervisione tra pari, dove il caso di uno diventa pensiero di tutti.</span></li>
-              <li class="flex gap-3"><i data-lucide="users-round" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span><strong class="text-notte">Per équipe e servizi</strong> — supervisione d'istituzione per team clinici, cooperative e piattaforme.</span></li>
+              <li class="flex gap-3"><i data-lucide="user" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span><strong class="text-notte" data-i18n="sup.formats.li1.b">Individuale</strong> <span data-i18n="sup.formats.li1.d">— un percorso sui tuoi casi e sul tuo stile clinico, per neo-iscritti o colleghi esperti.</span></span></li>
+              <li class="flex gap-3"><i data-lucide="users" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span><strong class="text-notte" data-i18n="sup.formats.li2.b">Di gruppo</strong> <span data-i18n="sup.formats.li2.d">— piccoli gruppi di intervisione tra pari, dove il caso di uno diventa pensiero di tutti.</span></span></li>
+              <li class="flex gap-3"><i data-lucide="users-round" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span><strong class="text-notte" data-i18n="sup.formats.li3.b">Per équipe e servizi</strong> <span data-i18n="sup.formats.li3.d">— supervisione d'istituzione per team clinici, cooperative e piattaforme.</span></span></li>
             </ul>
             <a href="#contatti" data-topic="Supervisione clinica" class="supervision-cta mt-auto inline-flex items-center justify-center gap-2 bg-mirtillo-700 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-600 transition-colors">
-              <i data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> Richiedi una supervisione
+              <i data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="sup.cta">Richiedi una supervisione</span>
             </a>
           </article>
         </div>
@@ -1092,9 +1113,9 @@
     <section id="risorse" class="py-20 lg:py-28 bg-mirtillo-50" aria-labelledby="risorse-title">
       <div class="max-w-6xl mx-auto px-5">
         <div class="max-w-3xl mb-12 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Risorse &amp; Articoli</p>
-          <h2 id="risorse-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4">Spunti per iniziare a riflettere</h2>
-          <p class="text-inchiostro/75">Brevi letture su temi che incontro ogni giorno, in terapia e nelle organizzazioni.</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="ris.kicker">Risorse &amp; Articoli</p>
+          <h2 id="risorse-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="ris.title">Spunti per iniziare a riflettere</h2>
+          <p class="text-inchiostro/75" data-i18n="ris.intro">Brevi letture su temi che incontro ogni giorno, in terapia e nelle organizzazioni.</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-6">
@@ -1103,10 +1124,10 @@
                  alt="Scrivania di lavoro con documenti e computer, immagine di copertina dell'articolo sul burnout e lo stress lavoro-correlato"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
             <div class="p-6">
-              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Lavoro &amp; benessere</p>
-              <h3 class="font-serif text-xl text-notte mb-3 leading-snug">Burnout: quando è il contesto a chiederti troppo</h3>
-              <p class="text-sm text-inchiostro/70 mb-4">Il burnout non è una debolezza personale: è una relazione malata tra persona e organizzazione. Riconoscere i segnali precoci — cinismo, esaurimento, distacco — è il primo passo per non normalizzarli.</p>
-              <button type="button" data-article="burnout" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="ris.a1.cat">Lavoro &amp; benessere</p>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="ris.a1.t">Burnout: quando è il contesto a chiederti troppo</h3>
+              <p class="text-sm text-inchiostro/70 mb-4" data-i18n="ris.a1.d">Il burnout non è una debolezza personale: è una relazione malata tra persona e organizzazione. Riconoscere i segnali precoci — cinismo, esaurimento, distacco — è il primo passo per non normalizzarli.</p>
+              <button type="button" data-article="burnout" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="ris.readmore">Leggi l'articolo</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
             </div>
           </article>
 
@@ -1115,10 +1136,10 @@
                  alt="Persona che guarda il mare in un momento di quiete, immagine di copertina dell'articolo sull'ansia e gli attacchi di panico"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
             <div class="p-6">
-              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Ansia</p>
-              <h3 class="font-serif text-xl text-notte mb-3 leading-snug">L'ansia non è un nemico: è un messaggio da tradurre</h3>
-              <p class="text-sm text-inchiostro/70 mb-4">Attacchi di panico e ansia generalizzata spaventano, ma raramente arrivano "dal nulla". Spesso segnalano un conflitto tra ciò che viviamo e ciò che desideriamo: ascoltarli è più utile che combatterli.</p>
-              <button type="button" data-article="ansia" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="ris.a2.cat">Ansia</p>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="ris.a2.t">L'ansia non è un nemico: è un messaggio da tradurre</h3>
+              <p class="text-sm text-inchiostro/70 mb-4" data-i18n="ris.a2.d">Attacchi di panico e ansia generalizzata spaventano, ma raramente arrivano "dal nulla". Spesso segnalano un conflitto tra ciò che viviamo e ciò che desideriamo: ascoltarli è più utile che combatterli.</p>
+              <button type="button" data-article="ansia" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="ris.readmore">Leggi l'articolo</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
             </div>
           </article>
 
@@ -1127,10 +1148,10 @@
                  alt="Persona che scrive su un diario in un ambiente tranquillo, immagine di copertina dell'articolo sull'analisi della propria domanda di aiuto"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
             <div class="p-6">
-              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Analisi della Domanda</p>
-              <h3 class="font-serif text-xl text-notte mb-3 leading-snug">"Cosa sto chiedendo davvero?" Il potere di capire la propria domanda</h3>
-              <p class="text-sm text-inchiostro/70 mb-4">Dietro "voglio smettere di stare male" c'è sempre una richiesta più precisa: essere visti, cambiare un rapporto, ritrovare una direzione. La terapia inizia quando questa domanda trova le sue parole.</p>
-              <button type="button" data-article="domanda" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="ris.a3.cat">Analisi della Domanda</p>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="ris.a3.t">"Cosa sto chiedendo davvero?" Il potere di capire la propria domanda</h3>
+              <p class="text-sm text-inchiostro/70 mb-4" data-i18n="ris.a3.d">Dietro "voglio smettere di stare male" c'è sempre una richiesta più precisa: essere visti, cambiare un rapporto, ritrovare una direzione. La terapia inizia quando questa domanda trova le sue parole.</p>
+              <button type="button" data-article="domanda" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="ris.readmore">Leggi l'articolo</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
             </div>
           </article>
 
@@ -1139,10 +1160,10 @@
                  alt="Aereo in volo al tramonto, immagine di copertina dell'articolo sulla condizione psicologica di chi vive all'estero"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
             <div class="p-6">
-              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Vivere all'estero</p>
-              <h3 class="font-serif text-xl text-notte mb-3 leading-snug">Vivere altrove: la fatica invisibile di chi parte</h3>
-              <p class="text-sm text-inchiostro/70 mb-4">L'espatrio è raccontato come un'avventura, ma è anche un lutto silenzioso: lingua, riti, appartenenze. Dare un nome a questa fatica è il primo passo per abitare davvero il posto in cui si è scelto di vivere.</p>
-              <button type="button" data-article="expat" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="ris.a6.cat">Vivere all'estero</p>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="ris.a6.t">Vivere altrove: la fatica invisibile di chi parte</h3>
+              <p class="text-sm text-inchiostro/70 mb-4" data-i18n="ris.a6.d">L'espatrio è raccontato come un'avventura, ma è anche un lutto silenzioso: lingua, riti, appartenenze. Dare un nome a questa fatica è il primo passo per abitare davvero il posto in cui si è scelto di vivere.</p>
+              <button type="button" data-article="expat" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="ris.readmore">Leggi l'articolo</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
             </div>
           </article>
 
@@ -1151,10 +1172,10 @@
                  alt="Clessidra con la sabbia che scorre, immagine di copertina dell'articolo sull'ADHD adulto e la distrazione come protezione"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
             <div class="p-6">
-              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Attenzione &amp; trauma</p>
-              <h3 class="font-serif text-xl text-notte mb-3 leading-snug">ADHD adulto: e se la distrazione fosse anche una protezione?</h3>
-              <p class="text-sm text-inchiostro/70 mb-4">Non tutta la disattenzione ha la stessa storia. In chiave psicoanalitica, distrarsi e non fermarsi mai possono essere anche un modo per non sentire: capire da cosa ci si distrae cambia il percorso di cura.</p>
-              <button type="button" data-article="adhd" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="ris.a4.cat">Attenzione &amp; trauma</p>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="ris.a4.t">ADHD adulto: e se la distrazione fosse anche una protezione?</h3>
+              <p class="text-sm text-inchiostro/70 mb-4" data-i18n="ris.a4.d">Non tutta la disattenzione ha la stessa storia. In chiave psicoanalitica, distrarsi e non fermarsi mai possono essere anche un modo per non sentire: capire da cosa ci si distrae cambia il percorso di cura.</p>
+              <button type="button" data-article="adhd" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="ris.readmore">Leggi l'articolo</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
             </div>
           </article>
 
@@ -1163,10 +1184,10 @@
                  alt="Mano che scrive una lettera con la penna, immagine di copertina dell'articolo sulla psicoterapia nella lingua madre per italiani all'estero"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
             <div class="p-6">
-              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Vivere all'estero</p>
-              <h3 class="font-serif text-xl text-notte mb-3 leading-snug">Fare terapia nella lingua madre: perché le parole di casa arrivano più in profondità</h3>
-              <p class="text-sm text-inchiostro/70 mb-4">Si può vivere benissimo in una seconda lingua — e accorgersi che, quando si tratta di dire il dolore, le parole straniere non pesano. L'inconscio ha un accento: in terapia fa la differenza.</p>
-              <button type="button" data-article="linguamadre" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="ris.a5.cat">Vivere all'estero</p>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="ris.a5.t">Fare terapia nella lingua madre: perché le parole di casa arrivano più in profondità</h3>
+              <p class="text-sm text-inchiostro/70 mb-4" data-i18n="ris.a5.d">Si può vivere benissimo in una seconda lingua — e accorgersi che, quando si tratta di dire il dolore, le parole straniere non pesano. L'inconscio ha un accento: in terapia fa la differenza.</p>
+              <button type="button" data-article="linguamadre" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="ris.readmore">Leggi l'articolo</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
             </div>
           </article>
 
@@ -1175,10 +1196,10 @@
                  alt="Penna stilografica su un quaderno di appunti, immagine di copertina dell'articolo personale in cui Alberto Del Bove racconta il suo percorso"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
             <div class="p-6">
-              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Su di me</p>
-              <h3 class="font-serif text-xl text-notte mb-3 leading-snug">Perché faccio questo mestiere (e perché in due mondi)</h3>
-              <p class="text-sm text-inchiostro/70 mb-4">Psicoterapeuta e People Manager: due parole che sembrano lontane e che invece, nella mia storia, si sono sempre parlate. Un racconto personale su come sono arrivato fin qui.</p>
-              <button type="button" data-article="chisono" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="ris.a7.cat">Su di me</p>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="ris.a7.t">Perché faccio questo mestiere (e perché in due mondi)</h3>
+              <p class="text-sm text-inchiostro/70 mb-4" data-i18n="ris.a7.d">Psicoterapeuta e People Manager: due parole che sembrano lontane e che invece, nella mia storia, si sono sempre parlate. Un racconto personale su come sono arrivato fin qui.</p>
+              <button type="button" data-article="chisono" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="ris.readmore">Leggi l'articolo</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
             </div>
           </article>
         </div>
@@ -1190,7 +1211,7 @@
       <div class="max-w-6xl mx-auto px-5">
         <div class="grid lg:grid-cols-5 gap-10 items-center bg-gradient-to-br from-notte to-notte-light rounded-3xl p-8 sm:p-10 lg:p-12 text-white reveal">
           <div class="lg:col-span-3">
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-300 mb-5">Un progetto che ho fondato · per i colleghi psicologi</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-300 mb-5" data-i18n="pv.kicker">Un progetto che ho fondato · per i colleghi psicologi</p>
             <!-- Logo PsicoVoice -->
             <a href="https://www.psicovoice.it" target="_blank" rel="noopener" class="inline-flex items-center gap-3 mb-6 group" aria-label="Vai a PsicoVoice">
               <svg width="52" height="52" viewBox="0 0 100 100" role="img" aria-label="Logo PsicoVoice" class="rounded-2xl shadow-md shrink-0">
@@ -1204,20 +1225,20 @@
               </svg>
               <span class="font-serif text-2xl sm:text-3xl leading-none">Psico<span class="text-mirtillo-300">Voice</span></span>
             </a>
-            <h2 id="psicovoice-title" class="font-serif text-2xl lg:text-3xl leading-tight mb-4">La webapp che semplifica fatture e gestione dei pazienti</h2>
-            <p class="text-white/80 mb-7 max-w-xl text-[1.02rem]">
+            <h2 id="psicovoice-title" class="font-serif text-2xl lg:text-3xl leading-tight mb-4" data-i18n="pv.title">La webapp che semplifica fatture e gestione dei pazienti</h2>
+            <p class="text-white/80 mb-7 max-w-xl text-[1.02rem]" data-i18n="pv.p">
               Ho creato <strong class="text-white">PsicoVoice</strong> per liberare psicologi e psicoterapeuti dalla burocrazia: fatturazione, esigibilità, gestione di pazienti e appuntamenti in un unico strumento, pensato da chi il mestiere lo conosce da dentro.
             </p>
             <a href="https://www.psicovoice.it" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-mirtillo-600 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-500 transition-colors">
-              <i data-lucide="external-link" class="w-5 h-5" aria-hidden="true"></i> Scopri PsicoVoice · www.psicovoice.it
+              <i data-lucide="external-link" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="pv.cta">Scopri PsicoVoice · www.psicovoice.it</span>
             </a>
           </div>
           <div class="lg:col-span-2">
             <ul class="space-y-3 bg-white/5 rounded-2xl p-6 backdrop-blur-sm">
-              <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="receipt" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> Fatturazione ed esigibilità senza pensieri</li>
-              <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="users" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> Anagrafica e cartelle dei pazienti ordinate</li>
-              <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="calendar-check" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> Appuntamenti e promemoria in un colpo d'occhio</li>
-              <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="shield-check" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> Pensata su misura per la professione psicologica</li>
+              <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="receipt" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="pv.li1">Fatturazione ed esigibilità senza pensieri</span></li>
+              <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="users" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="pv.li2">Anagrafica e cartelle dei pazienti ordinate</span></li>
+              <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="calendar-check" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="pv.li3">Appuntamenti e promemoria in un colpo d'occhio</span></li>
+              <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="shield-check" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="pv.li4">Pensata su misura per la professione psicologica</span></li>
             </ul>
           </div>
         </div>
@@ -1228,9 +1249,9 @@
     <section id="contatti" class="py-20 lg:py-28 bg-crema" aria-labelledby="contatti-title">
       <div class="max-w-6xl mx-auto px-5">
         <div class="max-w-3xl mb-12 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3">Contatti &amp; Sede</p>
-          <h2 id="contatti-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4">Il primo passo è una domanda</h2>
-          <p class="text-inchiostro/75 text-lg">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="con.kicker">Contatti &amp; Sede</p>
+          <h2 id="contatti-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="con.title">Il primo passo è una domanda</h2>
+          <p class="text-inchiostro/75 text-lg" data-i18n="con.intro">
             Questo non è un questionario diagnostico: è il primo spazio in cui la tua domanda viene ascoltata. Raccontami quello che ti va, come ti viene. <strong>Ti ricontatto entro 24–48 ore</strong> per fissare un primo colloquio conoscitivo, online o in studio.
           </p>
         </div>
@@ -1240,104 +1261,104 @@
           <form id="contact-form" class="lg:col-span-3 bg-white rounded-3xl shadow-lg p-7 sm:p-10 reveal" novalidate>
             <div class="grid sm:grid-cols-2 gap-5 mb-5">
               <div>
-                <label for="cf-nome" class="block text-sm font-semibold text-notte mb-1.5">Nome e cognome <span class="text-mirtillo-700" aria-hidden="true">*</span></label>
+                <label for="cf-nome" class="block text-sm font-semibold text-notte mb-1.5"><span data-i18n="con.f.nome">Nome e cognome</span> <span class="text-mirtillo-700" aria-hidden="true">*</span></label>
                 <input type="text" id="cf-nome" name="nome" required autocomplete="name"
                        class="w-full rounded-xl border border-tortora-dark bg-crema/50 px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors"
-                       placeholder="Il tuo nome">
+                       placeholder="Il tuo nome" data-i18n-ph="con.f.nome.ph">
               </div>
               <div>
-                <label for="cf-email" class="block text-sm font-semibold text-notte mb-1.5">Email <span class="text-mirtillo-700" aria-hidden="true">*</span></label>
+                <label for="cf-email" class="block text-sm font-semibold text-notte mb-1.5"><span data-i18n="con.f.email">Email</span> <span class="text-mirtillo-700" aria-hidden="true">*</span></label>
                 <input type="email" id="cf-email" name="email" required autocomplete="email"
                        class="w-full rounded-xl border border-tortora-dark bg-crema/50 px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors"
-                       placeholder="nome@esempio.it">
+                       placeholder="nome@esempio.it" data-i18n-ph="con.f.email.ph">
               </div>
             </div>
             <div class="grid sm:grid-cols-2 gap-5 mb-7">
               <div>
-                <label for="cf-telefono" class="block text-sm font-semibold text-notte mb-1.5">Telefono <span class="text-inchiostro/40 font-normal">(facoltativo)</span></label>
+                <label for="cf-telefono" class="block text-sm font-semibold text-notte mb-1.5"><span data-i18n="con.f.tel">Telefono</span> <span class="text-inchiostro/40 font-normal" data-i18n="con.f.tel.opt">(facoltativo)</span></label>
                 <input type="tel" id="cf-telefono" name="telefono" autocomplete="tel"
                        class="w-full rounded-xl border border-tortora-dark bg-crema/50 px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors"
                        placeholder="+39 ...">
               </div>
               <div>
-                <label for="cf-setting" class="block text-sm font-semibold text-notte mb-1.5">Preferenza di setting</label>
+                <label for="cf-setting" class="block text-sm font-semibold text-notte mb-1.5" data-i18n="con.f.setting">Preferenza di setting</label>
                 <select id="cf-setting" name="setting"
                         class="w-full rounded-xl border border-tortora-dark bg-crema/50 px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors">
-                  <option value="Online">Online</option>
-                  <option value="In studio a Itri (LT)">In studio a Itri (LT)</option>
-                  <option value="Non so ancora">Non so ancora</option>
+                  <option value="Online" data-i18n="con.f.setting.online">Online</option>
+                  <option value="In studio a Itri (LT)" data-i18n="con.f.setting.studio">In studio a Itri (LT)</option>
+                  <option value="Non so ancora" data-i18n="con.f.setting.nonso">Non so ancora</option>
                 </select>
               </div>
             </div>
 
             <fieldset class="mb-7">
-              <legend class="text-sm font-semibold text-notte mb-1.5">Di cosa vorresti parlare?</legend>
-              <p class="text-xs text-inchiostro/55 mb-4">Seleziona uno o più temi, solo se ti va: aiuta me ad accoglierti meglio, non è obbligatorio.</p>
+              <legend class="text-sm font-semibold text-notte mb-1.5" data-i18n="con.f.temi.legend">Di cosa vorresti parlare?</legend>
+              <p class="text-xs text-inchiostro/55 mb-4" data-i18n="con.f.temi.help">Seleziona uno o più temi, solo se ti va: aiuta me ad accoglierti meglio, non è obbligatorio.</p>
               <div class="grid sm:grid-cols-2 gap-2.5">
                 <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
                   <input type="checkbox" name="temi" value="Ansia / Attacchi di panico" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]">Ansia / Attacchi di panico</span>
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.ansia">Ansia / Attacchi di panico</span>
                 </label>
                 <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
                   <input type="checkbox" name="temi" value="Stress lavorativo / Burnout" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]">Stress lavorativo / Burnout</span>
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.burnout">Stress lavorativo / Burnout</span>
                 </label>
                 <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
                   <input type="checkbox" name="temi" value="Difficoltà relazionali" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]">Difficoltà relazionali</span>
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.rel">Difficoltà relazionali</span>
                 </label>
                 <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
                   <input type="checkbox" name="temi" value="Crescita personale" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]">Crescita personale</span>
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.crescita">Crescita personale</span>
                 </label>
                 <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
                   <input type="checkbox" name="temi" value="Orientamento professionale" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]">Orientamento professionale</span>
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.orient">Orientamento professionale</span>
                 </label>
                 <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
                   <input type="checkbox" name="temi" value="Vivo all'estero" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]">Vivo all'estero</span>
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.estero">Vivo all'estero</span>
                 </label>
                 <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
                   <input type="checkbox" name="temi" value="Percorso di coppia" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]">Percorso di coppia</span>
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.coppia">Percorso di coppia</span>
                 </label>
                 <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
                   <input type="checkbox" name="temi" value="Supervisione clinica" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]">Supervisione clinica (per colleghi)</span>
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.superv">Supervisione clinica (per colleghi)</span>
                 </label>
               </div>
-              <p id="temi-feedback" class="hidden mt-3 text-sm text-mirtillo-700 font-medium" aria-live="polite">Grazie: partiremo da qui.</p>
+              <p id="temi-feedback" class="hidden mt-3 text-sm text-mirtillo-700 font-medium" aria-live="polite" data-i18n="con.f.temi.feedback">Grazie: partiremo da qui.</p>
             </fieldset>
 
             <div class="mb-6">
-              <label for="cf-messaggio" class="block text-sm font-semibold text-notte mb-1.5">Il tuo messaggio</label>
+              <label for="cf-messaggio" class="block text-sm font-semibold text-notte mb-1.5" data-i18n="con.f.msg">Il tuo messaggio</label>
               <textarea id="cf-messaggio" name="messaggio" rows="5"
                         class="w-full rounded-xl border border-tortora-dark bg-crema/50 px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors resize-y"
-                        placeholder="Scrivimi liberamente: cosa ti porta qui, da quanto tempo, cosa vorresti cambiasse…"></textarea>
+                        placeholder="Scrivimi liberamente: cosa ti porta qui, da quanto tempo, cosa vorresti cambiasse…" data-i18n-ph="con.f.msg.ph"></textarea>
             </div>
 
             <p id="form-feedback" class="hidden mb-5 rounded-xl px-4 py-3 text-sm" role="status" aria-live="polite"></p>
 
             <div class="flex flex-col sm:flex-row gap-3">
               <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-6 py-4 rounded-full hover:bg-mirtillo-700 transition-colors">
-                <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i> Invia via Email
+                <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="con.f.send.email">Invia via Email</span>
               </button>
               <button type="button" id="whatsapp-send" class="flex-1 inline-flex items-center justify-center gap-2 bg-mirtillo-700 text-white font-semibold px-6 py-4 rounded-full hover:bg-mirtillo-600 transition-colors">
-                <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> Scrivimi su WhatsApp
+                <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="con.f.send.wa">Scrivimi su WhatsApp</span>
               </button>
             </div>
             <p class="text-center mt-3 text-sm">
-              <button type="button" id="copy-message" class="text-inchiostro/60 underline underline-offset-2 hover:text-notte">Oppure copia il messaggio</button>
-              <span class="text-inchiostro/45">e invialo come preferisci</span>
+              <button type="button" id="copy-message" class="text-inchiostro/60 underline underline-offset-2 hover:text-notte" data-i18n="con.f.copy">Oppure copia il messaggio</button>
+              <span class="text-inchiostro/45" data-i18n="con.f.copy.and">e invialo come preferisci</span>
             </p>
-            <p class="text-xs text-inchiostro/50 mt-4">I tuoi dati vengono usati esclusivamente per ricontattarti e sono trattati con riservatezza, nel rispetto del segreto professionale e del GDPR.</p>
+            <p class="text-xs text-inchiostro/50 mt-4" data-i18n="con.f.privacy">I tuoi dati vengono usati esclusivamente per ricontattarti e sono trattati con riservatezza, nel rispetto del segreto professionale e del GDPR.</p>
           </form>
 
           <!-- INFO + MAPPA -->
           <div class="lg:col-span-2 space-y-6 reveal">
             <div class="bg-white rounded-3xl shadow-sm p-7">
-              <h3 class="font-serif text-xl text-notte mb-5">Recapiti diretti</h3>
+              <h3 class="font-serif text-xl text-notte mb-5" data-i18n="con.info.t">Recapiti diretti</h3>
               <ul class="space-y-4 text-[0.95rem]">
                 <li>
                   <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="flex items-start gap-3 group">
@@ -1352,7 +1373,7 @@
                   <a href="https://wa.me/393455032318" target="_blank" rel="noopener" class="flex items-start gap-3 group">
                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mirtillo-100" aria-hidden="true"><i data-lucide="phone" class="w-5 h-5 text-mirtillo-700"></i></span>
                     <span>
-                      <span class="block text-xs uppercase tracking-wider text-inchiostro/50">Telefono / WhatsApp</span>
+                      <span class="block text-xs uppercase tracking-wider text-inchiostro/50" data-i18n="con.info.tel">Telefono / WhatsApp</span>
                       <span class="font-medium text-notte group-hover:text-mirtillo-700 transition-colors">+39 345 503 2318</span>
                     </span>
                   </a>
@@ -1378,7 +1399,7 @@
                 <li class="flex items-start gap-3">
                   <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mirtillo-100" aria-hidden="true"><i data-lucide="map-pin" class="w-5 h-5 text-mirtillo-700"></i></span>
                   <span>
-                    <span class="block text-xs uppercase tracking-wider text-inchiostro/50">Studio</span>
+                    <span class="block text-xs uppercase tracking-wider text-inchiostro/50" data-i18n="con.info.studio">Studio</span>
                     <span class="font-medium text-notte">Via Luigi Pirandello 8, 04020 Itri (LT)</span>
                   </span>
                 </li>
@@ -1392,43 +1413,43 @@
                 title="Mappa della zona dello studio di psicoterapia a Itri, in provincia di Latina"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
-              <p class="px-6 py-4 text-sm text-inchiostro/60">Lo studio si trova a Itri, in provincia di Latina, facilmente raggiungibile da Formia, Gaeta, Fondi, Sperlonga e da tutto il sud pontino.</p>
+              <p class="px-6 py-4 text-sm text-inchiostro/60" data-i18n="con.map.note">Lo studio si trova a Itri, in provincia di Latina, facilmente raggiungibile da Formia, Gaeta, Fondi, Sperlonga e da tutto il sud pontino.</p>
             </div>
 
             <div class="bg-notte text-white rounded-3xl p-7">
-              <h3 class="font-serif text-xl mb-3 flex items-center gap-2"><i data-lucide="video" class="w-5 h-5 text-mirtillo-300" aria-hidden="true"></i> Modalità online</h3>
-              <p class="text-white/75 text-sm">Le sedute online si svolgono in videochiamata su piattaforme sicure, con la stessa riservatezza dello studio. Disponibilità in fasce orarie estese, anche per chi vive in un fuso orario diverso.</p>
+              <h3 class="font-serif text-xl mb-3 flex items-center gap-2"><i data-lucide="video" class="w-5 h-5 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="con.online.t">Modalità online</span></h3>
+              <p class="text-white/75 text-sm" data-i18n="con.online.d">Le sedute online si svolgono in videochiamata su piattaforme sicure, con la stessa riservatezza dello studio. Disponibilità in fasce orarie estese, anche per chi vive in un fuso orario diverso.</p>
             </div>
           </div>
         </div>
 
         <!-- FAQ sul percorso: le risposte a un tab di distanza da chi esita davanti al form -->
         <div class="mt-16 max-w-3xl mx-auto reveal">
-          <h3 class="font-serif text-2xl text-notte text-center mb-6">Domande frequenti sul percorso</h3>
+          <h3 class="font-serif text-2xl text-notte text-center mb-6" data-i18n="con.faq.title">Domande frequenti sul percorso</h3>
           <div class="space-y-3">
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Quanto costa una seduta? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Il costo viene definito con chiarezza al primo contatto, prima di iniziare: nessuna sorpresa. Il primo colloquio conoscitivo serve anche a questo — capire insieme di cosa hai bisogno e concordare costi e frequenza in modo trasparente.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="con.faq1.q">Quanto costa una seduta?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="con.faq1.a">Il costo viene definito con chiarezza al primo contatto, prima di iniziare: nessuna sorpresa. Il primo colloquio conoscitivo serve anche a questo — capire insieme di cosa hai bisogno e concordare costi e frequenza in modo trasparente.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Quanto dura una seduta e ogni quanto ci si vede? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Una seduta dura di norma circa 50 minuti. La frequenza — solitamente settimanale — non è una regola imposta: la definiamo insieme in base a ciò che porti e alla fase del percorso.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="con.faq2.q">Quanto dura una seduta e ogni quanto ci si vede?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="con.faq2.a">Una seduta dura di norma circa 50 minuti. La frequenza — solitamente settimanale — non è una regola imposta: la definiamo insieme in base a ciò che porti e alla fase del percorso.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Come funziona, in pratica, una seduta online? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Ci colleghiamo in videochiamata su una piattaforma sicura, all'orario concordato. Ti servono solo una connessione stabile e uno spazio riservato in cui parlare liberamente. La riservatezza è la stessa dello studio, garantita dal segreto professionale.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="con.faq3.q">Come funziona, in pratica, una seduta online?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="con.faq3.a">Ci colleghiamo in videochiamata su una piattaforma sicura, all'orario concordato. Ti servono solo una connessione stabile e uno spazio riservato in cui parlare liberamente. La riservatezza è la stessa dello studio, garantita dal segreto professionale.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Che differenza c'è tra psicologo e psicoterapeuta? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Lo psicologo è laureato in psicologia e abilitato dall'Ordine; lo psicoterapeuta ha in più una specializzazione quadriennale che lo abilita a curare con la psicoterapia. Io sono psicologo dal 2018 e psicoterapeuta psicoanalitico, specializzato alla SPS di Roma nel 2022.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="con.faq4.q">Che differenza c'è tra psicologo e psicoterapeuta?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="con.faq4.a">Lo psicologo è laureato in psicologia e abilitato dall'Ordine; lo psicoterapeuta ha in più una specializzazione quadriennale che lo abilita a curare con la psicoterapia. Io sono psicologo dal 2018 e psicoterapeuta psicoanalitico, specializzato alla SPS di Roma nel 2022.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Quello che dico resta tra noi? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Sì. Tutto ciò che emerge in seduta è protetto dal segreto professionale, a cui sono tenuto per legge e per deontologia. Anche i tuoi dati di contatto sono trattati nel rispetto del GDPR, solo per ricontattarti.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="con.faq5.q">Quello che dico resta tra noi?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="con.faq5.a">Sì. Tutto ciò che emerge in seduta è protetto dal segreto professionale, a cui sono tenuto per legge e per deontologia. Anche i tuoi dati di contatto sono trattati nel rispetto del GDPR, solo per ricontattarti.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
-              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none">Le sedute sono detraibili? <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75">Sì: le sedute di psicoterapia sono prestazioni sanitarie e la fattura è detraibile come spesa sanitaria nella dichiarazione dei redditi, secondo le regole vigenti. Riceverai regolare fattura per ogni seduta.</p>
+              <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="con.faq6.q">Le sedute sono detraibili?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="con.faq6.a">Sì: le sedute di psicoterapia sono prestazioni sanitarie e la fattura è detraibile come spesa sanitaria nella dichiarazione dei redditi, secondo le regole vigenti. Riceverai regolare fattura per ogni seduta.</p>
             </details>
           </div>
         </div>
@@ -1443,17 +1464,17 @@
       <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 pb-8 border-b border-white/10">
         <div class="text-center md:text-left">
           <p class="font-serif text-xl text-white mb-1">Dott. Alberto Del Bove</p>
-          <p class="text-sm">Psicologo Psicoterapeuta · Specialista in Analisi della Domanda</p>
-          <p class="text-sm mt-1">Iscrizione Ordine degli Psicologi del Lazio n. 23754 (dal 2018)</p>
+          <p class="text-sm" data-i18n="foot.role">Psicologo Psicoterapeuta · Specialista in Analisi della Domanda</p>
+          <p class="text-sm mt-1" data-i18n="foot.board">Iscrizione Ordine degli Psicologi del Lazio n. 23754 (dal 2018)</p>
         </div>
         <nav aria-label="Navigazione footer">
           <ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-            <li><a href="#chi-sono" class="hover:text-white transition-colors">Chi sono</a></li>
-            <li><a href="#approccio" class="hover:text-white transition-colors">Approccio</a></li>
-            <li><a href="#expat" class="hover:text-white transition-colors">Italiani all'estero</a></li>
-            <li><a href="#portfolio" class="hover:text-white transition-colors">Portfolio</a></li>
-            <li><a href="#psicovoice" class="hover:text-white transition-colors">PsicoVoice</a></li>
-            <li><a href="#contatti" class="hover:text-white transition-colors">Contatti</a></li>
+            <li><a href="#chi-sono" class="hover:text-white transition-colors" data-i18n="foot.nav.chisono">Chi sono</a></li>
+            <li><a href="#approccio" class="hover:text-white transition-colors" data-i18n="foot.nav.approccio">Approccio</a></li>
+            <li><a href="#expat" class="hover:text-white transition-colors" data-i18n="foot.nav.expat">Italiani all'estero</a></li>
+            <li><a href="#portfolio" class="hover:text-white transition-colors" data-i18n="foot.nav.portfolio">Portfolio</a></li>
+            <li><a href="#psicovoice" class="hover:text-white transition-colors" data-i18n="foot.nav.psicovoice">PsicoVoice</a></li>
+            <li><a href="#contatti" class="hover:text-white transition-colors" data-i18n="foot.nav.contatti">Contatti</a></li>
           </ul>
         </nav>
         <div class="flex gap-3">
@@ -1472,8 +1493,8 @@
         </div>
       </div>
       <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
-        <p>© <span id="footer-year">2026</span> Alberto Del Bove · P.IVA 02988610594 · Tutti i diritti riservati</p>
-        <p>Founder di <a href="https://www.psicovoice.it" target="_blank" rel="noopener" class="text-mirtillo-300 font-medium hover:text-white transition-colors underline underline-offset-2">PsicoVoice</a> — gestione ed esigibilità professionale per psicologi</p>
+        <p>© <span id="footer-year">2026</span> Alberto Del Bove · P.IVA 02988610594 · <span data-i18n="foot.rights">Tutti i diritti riservati</span></p>
+        <p><span data-i18n="foot.founder">Founder di</span> <a href="https://www.psicovoice.it" target="_blank" rel="noopener" class="text-mirtillo-300 font-medium hover:text-white transition-colors underline underline-offset-2">PsicoVoice</a> <span data-i18n="foot.founder.tail">— gestione ed esigibilità professionale per psicologi</span></p>
       </div>
     </div>
   </footer>
@@ -1506,13 +1527,13 @@
   <div id="contact-bar" class="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-crema/95 backdrop-blur-md border-t border-tortora-dark shadow-[0_-4px_20px_rgba(27,42,58,0.08)] transition-transform duration-300 translate-y-full" role="region" aria-label="Contatti rapidi">
     <div class="grid grid-cols-3 gap-1.5 px-3 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))]">
       <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-notte hover:bg-tortora/60 transition-colors">
-        <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold">Email</span>
+        <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold" data-i18n="bar.email">Email</span>
       </a>
       <a href="tel:+393455032318" class="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-notte hover:bg-tortora/60 transition-colors">
-        <i data-lucide="phone" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold">Chiama</span>
+        <i data-lucide="phone" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold" data-i18n="bar.chiama">Chiama</span>
       </a>
       <a href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20vorrei%20informazioni%20per%20un%20primo%20colloquio." target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-1 py-2 rounded-xl bg-mirtillo-700 text-white hover:bg-mirtillo-600 transition-colors">
-        <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold">WhatsApp</span>
+        <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i><span class="text-xs font-semibold" data-i18n="bar.whatsapp">WhatsApp</span>
       </a>
     </div>
   </div>
@@ -1521,11 +1542,11 @@
   <div id="contact-dock" class="hidden sm:flex fixed bottom-6 right-6 z-40 flex-col items-end gap-3 transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
     <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="group inline-flex items-center gap-2 bg-white text-notte font-semibold pl-3 pr-4 py-3 rounded-full shadow-xl shadow-notte/15 ring-1 ring-tortora hover:ring-mirtillo-600 transition-all" aria-label="Scrivimi una email">
       <span class="flex h-8 w-8 items-center justify-center rounded-full bg-mirtillo-100"><i data-lucide="mail" class="w-4 h-4 text-mirtillo-700" aria-hidden="true"></i></span>
-      <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-[7rem] transition-all duration-300">Email</span>
+      <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-[7rem] transition-all duration-300" data-i18n="bar.email">Email</span>
     </a>
     <a href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20vorrei%20informazioni%20per%20un%20primo%20colloquio." target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-mirtillo-700 text-white font-semibold pl-3 pr-5 py-3 rounded-full shadow-xl shadow-notte/20 hover:bg-mirtillo-600 transition-all" aria-label="Scrivimi su WhatsApp per un primo colloquio">
       <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15"><i data-lucide="message-circle" class="w-4 h-4" aria-hidden="true"></i></span>
-      Scrivimi su WhatsApp
+      <span data-i18n="dock.whatsapp">Scrivimi su WhatsApp</span>
     </a>
   </div>
   <!-- Spaziatore per non coprire il fondo pagina su mobile -->
@@ -1536,6 +1557,8 @@
   <script src="assets/quiz-core.js"></script>
   <!-- Generatore del report PDF (jsPDF caricato in lazy solo al download) -->
   <script src="assets/report-pdf.js"></script>
+  <!-- Internazionalizzazione IT / EN / ES (italiano di default, fallback all'italiano) -->
+  <script src="assets/i18n.js"></script>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
 
@@ -1904,17 +1927,37 @@
     /* ============================================================
        STEPPER — Come funziona il primo colloquio
        ============================================================ */
-    const STEPS = [
-      { title: '1 · Mi scrivi, come ti viene', body: 'Usa il modulo, WhatsApp o una semplice email: non serve trovare le parole giuste. Due righe su cosa ti porta qui bastano — al resto ci pensiamo insieme.' },
-      { title: '2 · Ti rispondo entro 24–48 ore', body: 'Ti ricontatto personalmente per proporti giorno e orario del primo colloquio. Se hai preferenze di fascia oraria o di setting (online o studio), le rispettiamo.' },
-      { title: '3 · Primo colloquio conoscitivo', body: 'Circa 50 minuti, online o in studio a Itri. È uno spazio per raccontarti e per capire insieme cosa stai davvero chiedendo: non un esame, non una diagnosi lampo.' },
-      { title: '4 · Decidiamo insieme, senza impegno', body: 'Alla fine facciamo il punto: se e come proseguire, con quale frequenza, con quali obiettivi. Puoi anche prenderti del tempo per pensarci — il percorso inizia solo se lo scegli tu.' }
-    ];
+    const STEPS_BY_LANG = {
+      it: [
+        { title: '1 · Mi scrivi, come ti viene', body: 'Usa il modulo, WhatsApp o una semplice email: non serve trovare le parole giuste. Due righe su cosa ti porta qui bastano — al resto ci pensiamo insieme.' },
+        { title: '2 · Ti rispondo entro 24–48 ore', body: 'Ti ricontatto personalmente per proporti giorno e orario del primo colloquio. Se hai preferenze di fascia oraria o di setting (online o studio), le rispettiamo.' },
+        { title: '3 · Primo colloquio conoscitivo', body: 'Circa 50 minuti, online o in studio a Itri. È uno spazio per raccontarti e per capire insieme cosa stai davvero chiedendo: non un esame, non una diagnosi lampo.' },
+        { title: '4 · Decidiamo insieme, senza impegno', body: 'Alla fine facciamo il punto: se e come proseguire, con quale frequenza, con quali obiettivi. Puoi anche prenderti del tempo per pensarci — il percorso inizia solo se lo scegli tu.' }
+      ],
+      en: [
+        { title: '1 · You write to me, however it comes', body: 'Use the form, WhatsApp or a simple email: no need to find the right words. Two lines on what brings you here are enough — we\'ll work out the rest together.' },
+        { title: '2 · I reply within 24–48 hours', body: 'I get back to you personally to propose a day and time for the first session. If you have preferences of time slot or setting (online or in person), we\'ll respect them.' },
+        { title: '3 · First exploratory session', body: 'About 50 minutes, online or in person in Itri. It\'s a space to tell your story and to understand together what you\'re really asking for: not an exam, not a snap diagnosis.' },
+        { title: '4 · We decide together, no commitment', body: 'At the end we take stock: whether and how to continue, at what frequency, with what goals. You can also take time to think it over — the path begins only if you choose it.' }
+      ],
+      es: [
+        { title: '1 · Me escribes, como te salga', body: 'Usa el formulario, WhatsApp o un simple email: no hace falta encontrar las palabras justas. Dos líneas sobre qué te trae aquí bastan — del resto nos ocupamos juntos.' },
+        { title: '2 · Te respondo en 24–48 horas', body: 'Te contacto personalmente para proponerte día y hora de la primera sesión. Si tienes preferencias de franja horaria o de modalidad (online o presencial), las respetamos.' },
+        { title: '3 · Primera sesión de conocimiento', body: 'Unos 50 minutos, online o presencial en Itri. Es un espacio para contarte y entender juntos qué estás pidiendo de verdad: no un examen, ni un diagnóstico exprés.' },
+        { title: '4 · Decidimos juntos, sin compromiso', body: 'Al final hacemos balance: si continuar y cómo, con qué frecuencia, con qué objetivos. También puedes tomarte tiempo para pensarlo — el proceso empieza solo si lo eliges tú.' }
+      ]
+    };
+    function currentSteps() {
+      var lang = (window.SiteI18N && window.SiteI18N.lang) || 'it';
+      return STEPS_BY_LANG[lang] || STEPS_BY_LANG.it;
+    }
     const stepPanel = document.getElementById('step-panel');
     const stepTabs = Array.from(document.querySelectorAll('.step-tab'));
+    let currentStepIndex = 0;
     function showStep(i) {
-      const s = STEPS[i];
+      const s = currentSteps()[i];
       if (!s || !stepPanel) { return; }
+      currentStepIndex = i;
       document.getElementById('step-title').textContent = s.title;
       document.getElementById('step-body').textContent = s.body;
       stepPanel.setAttribute('aria-labelledby', 'step-tab-' + i);
@@ -1930,7 +1973,7 @@
         tab.addEventListener('keydown', function (e) {
           if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
             e.preventDefault();
-            const next = (i + (e.key === 'ArrowRight' ? 1 : STEPS.length - 1)) % STEPS.length;
+            const next = (i + (e.key === 'ArrowRight' ? 1 : currentSteps().length - 1)) % currentSteps().length;
             stepTabs[next].focus(); showStep(next);
           }
         });
@@ -2171,7 +2214,45 @@
           'Il rischio strategico non sta nel disegno del modello duale, che risponde in modo coerente al contesto, ma nella sua esecuzione: dove le pratiche quotidiane erodono il confine giuridico su cui il modello si regge, il "best fit" diventa fragile. La raccomandazione centrale è un cambio di ruolo per la funzione HR: da esecutore di decisioni già prese ad architetto dei processi — canali di consultazione per i collaboratori, criteri trasparenti e documentati, prima che i costi si materializzino.',
           '## Cosa mi porto',
           'Che le organizzazioni si possono leggere con la stessa attenzione con cui si ascoltano le persone: guardando la distanza tra ciò che dichiarano e ciò che fanno, e i sintomi — turnover, silenzi, conflitti — con cui quella distanza chiede di essere vista.'
-        ]
+        ],
+        en: {
+          kicker: 'Case study · Strategic Planning & Ethical Decision Making',
+          title: 'One mission, two workforces',
+          ctaText: 'These are the themes I write and train on, alongside my clinical work. If you\'d like to exchange ideas, get in touch.',
+          ctaLabel: 'Get in touch',
+          body: [
+            'Final assignment for the Strategic Planning and Ethical Decision Making module (MSc Strategic HRM, Arden University). The organisation analysed — anonymised as "PsyHealth" — is an Italian digital mental-health platform: 300 employees and around 7,000 psychologists and psychotherapists collaborating as self-employed (Partita IVA), a growth from 30 to 7,300 people in six years, and Società Benefit (benefit corporation) status.',
+            '## The question',
+            'Can an organisation with a declared social mission — formalised in its own statute — stay faithful to its values when its workforce is split into two populations treated very differently? And what happens when operational practices (scheduling, exclusivity, KPI monitoring) progressively bring self-employed collaboration closer to the hetero-organised work defined by art. 2 of Legislative Decree 81/2015?',
+            '## The analysis',
+            'McKinsey\'s 7S model shows an organisation aligned on the "hard" elements — strategy, structure, systems — and divided on the "soft" ones: training, development and performance management speak two different languages to employees and contractors. The structure mirrors Atkinson\'s Flexible Firm: a stable core and a numerically flexible periphery that nonetheless delivers almost all of the clinical service. The 2024 restructuring, read through Kotter\'s and Lewin\'s models, reveals the critical point: for employees almost every step of well-managed change was respected; for contractors, almost none. The measurable result is contractor turnover rising from 25% to 34% in a single year.',
+            '## Ethics and social responsibility',
+            'Carroll\'s CSR pyramid and Elkington\'s Triple Bottom Line frame the most uncomfortable question for a benefit corporation: is the social mission genuine or mainly positioning? The assignment then analyses a specific decision — the non-renewal of ten clinical coordinators, without consultation or communicated criteria — through three ethical lenses: consequentialist, deontological and virtue ethics. The decision fails all three, and Kahneman\'s System 1/System 2 framework suggests why: a fast, intuitive choice, never subjected to a documented cost-benefit analysis.',
+            '## The conclusions',
+            'The strategic risk lies not in the design of the dual model, which responds coherently to its context, but in its execution: where everyday practice erodes the legal boundary the model rests on, "best fit" becomes fragile. The central recommendation is a change of role for the HR function: from executor of decisions already made to architect of the processes — consultation channels for contractors, transparent and documented criteria — before the costs materialise.',
+            '## What I take from it',
+            'That organisations can be read with the same attention we give to people: by looking at the gap between what they declare and what they do, and at the symptoms — turnover, silences, conflict — through which that gap asks to be seen.'
+          ]
+        },
+        es: {
+          kicker: 'Caso de estudio · Strategic Planning & Ethical Decision Making',
+          title: 'Una sola misión, dos plantillas',
+          ctaText: 'Estos son los temas sobre los que escribo y me formo, junto al trabajo clínico. Si quieres intercambiar ideas, escríbeme.',
+          ctaLabel: 'Escríbeme',
+          body: [
+            'Trabajo final del módulo Strategic Planning and Ethical Decision Making (MSc Strategic HRM, Arden University). La organización analizada — anonimizada como "PsyHealth" — es una plataforma italiana de salud mental digital: 300 empleados y unos 7.000 psicólogos y psicoterapeutas que colaboran como autónomos (Partita IVA), un crecimiento de 30 a 7.300 personas en seis años, y estatus de Società Benefit (empresa de beneficio).',
+            '## La pregunta',
+            '¿Puede una organización con una misión social declarada — y formalizada en sus estatutos — mantenerse fiel a sus valores cuando su plantilla está dividida en dos poblaciones tratadas de forma muy distinta? ¿Y qué ocurre cuando las prácticas operativas (planificación, exclusividad, seguimiento por KPI) acercan progresivamente la colaboración autónoma al trabajo hetero-organizado que define el art. 2 del Decreto Legislativo 81/2015?',
+            '## El análisis',
+            'El modelo 7S de McKinsey muestra una organización alineada en los elementos "duros" — estrategia, estructura, sistemas — y dividida en los "blandos": formación, desarrollo y gestión del desempeño hablan dos idiomas distintos a empleados y colaboradores. La estructura reproduce la Flexible Firm de Atkinson: un núcleo estable y una periferia numéricamente flexible que, sin embargo, presta casi todo el servicio clínico. La reestructuración de 2024, leída con los modelos de Kotter y Lewin, revela el punto crítico: para los empleados se respetaron casi todos los pasos de un cambio bien gestionado; para los colaboradores, casi ninguno. El resultado medible es una rotación de colaboradores que sube del 25% al 34% en un solo año.',
+            '## Ética y responsabilidad social',
+            'La pirámide de RSC de Carroll y el Triple Bottom Line de Elkington plantean la pregunta más incómoda para una empresa de beneficio: ¿la misión social es genuina o sobre todo posicionamiento? El trabajo analiza después una decisión concreta — la no renovación de diez coordinadores clínicos, sin consulta ni criterios comunicados — a través de tres lentes éticas: consecuencialista, deontológica y de la ética de las virtudes. La decisión falla en las tres, y el marco Sistema 1/Sistema 2 de Kahneman sugiere por qué: una elección rápida e intuitiva, nunca sometida a un análisis coste-beneficio documentado.',
+            '## Las conclusiones',
+            'El riesgo estratégico no está en el diseño del modelo dual, que responde de forma coherente a su contexto, sino en su ejecución: donde la práctica cotidiana erosiona el límite legal en el que el modelo se apoya, el "best fit" se vuelve frágil. La recomendación central es un cambio de rol para la función de RR. HH.: de ejecutora de decisiones ya tomadas a arquitecta de los procesos — canales de consulta para los colaboradores, criterios transparentes y documentados — antes de que los costes se materialicen.',
+            '## Lo que me llevo',
+            'Que las organizaciones se pueden leer con la misma atención con la que se escucha a las personas: mirando la distancia entre lo que declaran y lo que hacen, y los síntomas — rotación, silencios, conflictos — con los que esa distancia pide ser vista.'
+          ]
+        }
       },
       'cs-analytics': {
         kicker: 'Case study · People Analytics and Value Creation',
@@ -2190,7 +2271,45 @@
           'Una roadmap in quattro fasi, dove la sequenza è il punto: prima l\'ascolto (pulse survey, exit interview), perché chiude il punto cieco più grande e genera i dati da cui tutto il resto dipende; poi feedback a 360 gradi e calibrazione contro i bias del valutatore unico; quindi la governance dei dati; infine una dashboard integrata. Ascoltare prima rende sensato tutto quello che viene dopo.',
           '## Cosa mi porto',
           'Che i numeri sulle persone dicono la verità solo se qualcuno raccoglie anche le voci: un sistema che misura le performance ma non l\'esperienza di chi lavora ottimizza il breve periodo al prezzo della tenuta futura.'
-        ]
+        ],
+        en: {
+          kicker: 'Case study · People Analytics and Value Creation',
+          title: 'The data a company watches — and the data it never collects',
+          ctaText: 'These are the themes I write and train on, alongside my clinical work. If you\'d like to exchange ideas, get in touch.',
+          ctaLabel: 'Get in touch',
+          body: [
+            'A piece from the People Analytics and Value Creation module (MSc Strategic HRM, Arden University), delivered as a 15-slide deck with a 15-minute commentary podcast. The organisation — anonymised as "YTEK" — is a global SaaS company in revenue-management technology: around 370 people across twelve countries, remote-first, with a mixed workforce of employees and contractors.',
+            '## The question',
+            'Does people data become value for the organisation, or does it stay merely a tool of control? The core thesis of the analysis: YTEK generates information from data, but has not yet converted it into strategic intelligence — and that gap weighs on its long-term resilience.',
+            '## The analysis',
+            'Mapping the data across the employee lifecycle reveals a sharp asymmetry: performance is measured every month with ratings, thresholds and consequences, while engagement, retention and exits are collected by no one. The DIKW hierarchy (from raw data to decision) shows how a score becomes knowledge only when someone links it to a cause — in this case, a skills gap after a technology migration. Ulrich\'s model locates the problem: the HR function handles administration and change well, but the Employee Advocate role — the workers\' voice — is almost absent, and data travels only top-down.',
+            '## The worked example',
+            'The most instructive case is an internal reskilling academy, born from the data (falling ratings, rising rework hours) and ending with an exam: technical capability was rebuilt in-house, avoiding replacement costs. But the return on that investment was never measured — the company can show that the training happened, not the value it produced. The distinction between activity and value is the heart of the whole piece.',
+            '## The recommendations',
+            'A four-phase roadmap, where the sequence is the point: first listening (pulse surveys, exit interviews), because it closes the biggest blind spot and generates the data everything else depends on; then 360-degree feedback and calibration against single-rater bias; then data governance; finally an integrated dashboard. Listening first is what makes everything after it meaningful.',
+            '## What I take from it',
+            'That the numbers about people tell the truth only if someone also gathers the voices: a system that measures performance but not the experience of those who work optimises the short term at the cost of future resilience.'
+          ]
+        },
+        es: {
+          kicker: 'Caso de estudio · People Analytics and Value Creation',
+          title: 'Los datos que una empresa mira — y los que no recoge',
+          ctaText: 'Estos son los temas sobre los que escribo y me formo, junto al trabajo clínico. Si quieres intercambiar ideas, escríbeme.',
+          ctaLabel: 'Escríbeme',
+          body: [
+            'Trabajo del módulo People Analytics and Value Creation (MSc Strategic HRM, Arden University), presentado como un deck de 15 diapositivas con un pódcast de comentario de 15 minutos. La organización — anonimizada como "YTEK" — es una empresa SaaS global de tecnología de revenue management: unas 370 personas en doce países, estructura remote-first, con una plantilla mixta de empleados y colaboradores.',
+            '## La pregunta',
+            '¿Los datos de personas se convierten en valor para la organización, o siguen siendo solo una herramienta de control? La tesis central del análisis: YTEK genera información a partir de los datos, pero aún no la ha convertido en inteligencia estratégica — y esa brecha pesa sobre su resiliencia a largo plazo.',
+            '## El análisis',
+            'El mapeo de los datos a lo largo del employee lifecycle revela una asimetría nítida: el desempeño se mide cada mes con valoraciones, umbrales y consecuencias, mientras que el compromiso, la retención y las salidas no los recoge nadie. La jerarquía DIKW (del dato bruto a la decisión) muestra cómo una puntuación se vuelve conocimiento solo cuando alguien la vincula a una causa — en este caso, una brecha de competencias tras una migración tecnológica. El modelo de Ulrich localiza el problema: la función de RR. HH. gestiona bien la administración y el cambio, pero el rol de Employee Advocate — la voz de los trabajadores — está casi ausente, y los datos viajan solo de arriba abajo.',
+            '## El worked example',
+            'El caso más instructivo es una academia interna de reskilling, nacida de los datos (valoraciones a la baja, horas de rework al alza) y concluida con un examen: la capacidad técnica se reconstruyó internamente, evitando los costes de sustitución. Pero el retorno de esa inversión nunca se midió — la empresa puede demostrar que la formación tuvo lugar, no el valor que produjo. La distinción entre actividad y valor es el corazón de todo el trabajo.',
+            '## Las recomendaciones',
+            'Una hoja de ruta en cuatro fases, donde la secuencia es lo importante: primero la escucha (pulse surveys, entrevistas de salida), porque cierra el mayor punto ciego y genera los datos de los que depende todo lo demás; luego feedback de 360 grados y calibración contra el sesgo del evaluador único; después la gobernanza de los datos; por último un dashboard integrado. Escuchar primero es lo que da sentido a todo lo que viene después.',
+            '## Lo que me llevo',
+            'Que los números sobre las personas dicen la verdad solo si alguien recoge también las voces: un sistema que mide el desempeño pero no la experiencia de quien trabaja optimiza el corto plazo a costa de la solidez futura.'
+          ]
+        }
       },
       'cs-relazioni': {
         kicker: 'Case study · Employment Relations & Employment Law',
@@ -2209,7 +2328,45 @@
           'Una tabella strategica collega ogni problema alla sua base teorica e a un\'azione concreta: un forum consultivo elettivo dei clinici con accesso alle decisioni di piattaforma, KPI pubblicati e appellabili, gestione dei conflitti riportata all\'interno con procedure scritte e mediazione, supervisione clinica di supporto al posto del solo monitoraggio algoritmico, e un audit del modello contrattuale secondo il principio "substance over form".',
           '## Cosa mi porto',
           'Che nelle organizzazioni della cura il benessere dei professionisti non è un tema HR tra gli altri: è il prodotto. Un terapeuta trattato come unità di servizio intercambiabile non può offrire la qualità di presenza che la piattaforma stessa vende.'
-        ]
+        ],
+        en: {
+          kicker: 'Case study · Employment Relations & Employment Law',
+          title: 'The therapist and the algorithm',
+          ctaText: 'These are the themes I write and train on, alongside my clinical work. If you\'d like to exchange ideas, get in touch.',
+          ctaLabel: 'Get in touch',
+          body: [
+            'A piece from the Strategic Employment Relations and Employment Law module (MSc Strategic HRM, Arden University). The organisation analysed — anonymised as "BestPsy" — is a global online-therapy platform that engages around 30,000 therapists as independent contractors across more than twenty countries. The focus is the Italian operation: a standardised, algorithm-mediated model dropped into a context with no union and no collective bargaining.',
+            '## The question',
+            'What happens to employment relations when no one negotiates the rules, because they are written into the software? Response-time windows enforced by in-app prompts, clients allocated and withdrawn automatically, personal dashboards measuring each person against thresholds that are never disclosed: the "web of rules" of Dunlop\'s theory, encoded in the platform itself.',
+            '## The analysis',
+            'Fox\'s frames of reference and Purcell and Sisson\'s typology describe a strongly centralised, individualist management style in which conflict does not disappear: it changes form, becoming passive resistance and attrition. The analysis of voice (Marchington, Dundon) shows only direct, shallow channels — informational surveys and town halls — with no representation: the condition Morrison and Milliken call organisational silence, where management mistakes silence for satisfaction. On engagement, Kahn\'s framework and Saks\'s distinction reveal professionals highly committed to the clinical work but thinly attached to the organisation. And the psychological contract — read through Siegrist\'s effort-reward imbalance, Colquitt\'s organisational justice and Thompson and Bunderson\'s "ideological currency" — shows the deepest wound: for those who care for others, the violation of declared values (as in the public case of health-data sharing sanctioned by the FTC) is not an ordinary breach, it is a professional betrayal.',
+            '## The legal picture',
+            'The legal exposure is layered: the Italian doctrine of hetero-organisation (art. 2, Legislative Decree 81/2015, with the case law on riders), the EU Platform Work Directive with its presumption of employment, the Transparency Decree on the duty to disclose automated decision systems, art. 2087 of the Civil Code on protecting psychophysical integrity. None of the exposures is decisive on its own; it is the accumulation that makes the model fragile — legally as well as ethically.',
+            '## The recommendations',
+            'A strategic table links each problem to its theoretical basis and a concrete action: an elected clinicians\' consultation forum with access to platform decisions, published and appealable KPIs, conflict management brought back in-house with written procedures and mediation, supportive clinical supervision in place of monitoring alone, and an audit of the contractor model against the "substance over form" principle.',
+            '## What I take from it',
+            'That in care organisations the wellbeing of the professionals is not one HR topic among others: it is the product. A therapist treated as an interchangeable service unit cannot offer the quality of presence the platform itself sells.'
+          ]
+        },
+        es: {
+          kicker: 'Caso de estudio · Employment Relations & Employment Law',
+          title: 'El terapeuta y el algoritmo',
+          ctaText: 'Estos son los temas sobre los que escribo y me formo, junto al trabajo clínico. Si quieres intercambiar ideas, escríbeme.',
+          ctaLabel: 'Escríbeme',
+          body: [
+            'Trabajo del módulo Strategic Employment Relations and Employment Law (MSc Strategic HRM, Arden University). La organización analizada — anonimizada como "BestPsy" — es una plataforma global de terapia online que contrata a unos 30.000 terapeutas como autónomos en más de veinte países. El foco es la operación italiana: un modelo estandarizado y mediado por el algoritmo, insertado en un contexto sin sindicato ni negociación colectiva.',
+            '## La pregunta',
+            '¿Qué le ocurre a las relaciones laborales cuando nadie negocia las reglas, porque están escritas en el software? Ventanas de tiempo de respuesta impuestas por notificaciones en la app, clientes asignados y retirados automáticamente, paneles personales que miden a cada uno contra umbrales nunca declarados: el "web of rules" de la teoría de Dunlop, codificado en la propia plataforma.',
+            '## El análisis',
+            'Los frames de Fox y la tipología de Purcell y Sisson describen un estilo de gestión fuertemente centralizado e individualista, en el que el conflicto no desaparece: cambia de forma, convirtiéndose en resistencia pasiva y abandono. El análisis de la voz (Marchington, Dundon) muestra solo canales directos y superficiales — encuestas y town halls informativos — sin representación alguna: la condición que Morrison y Milliken llaman silencio organizativo, donde la dirección confunde el silencio con la satisfacción. En el plano del compromiso, el marco de Kahn y la distinción de Saks revelan profesionales muy dedicados al trabajo clínico pero débilmente ligados a la organización. Y el contrato psicológico — leído con el desequilibrio esfuerzo-recompensa de Siegrist, la justicia organizativa de Colquitt y la "moneda ideológica" de Thompson y Bunderson — muestra la herida más profunda: para quien cuida, la violación de los valores declarados (como en el caso público de compartición de datos sanitarios sancionado por la FTC) no es un incumplimiento cualquiera, es una traición profesional.',
+            '## El marco jurídico',
+            'La exposición legal es estratificada: la doctrina italiana de la hetero-organización (art. 2, Decreto Legislativo 81/2015, con la jurisprudencia sobre los riders), la Directiva de la UE sobre trabajo en plataformas con su presunción de laboralidad, el Decreto de Transparencia sobre el deber de informar de los sistemas de decisión automatizados, el art. 2087 del Código Civil sobre la tutela de la integridad psicofísica. Ninguna de las exposiciones es decisiva por sí sola; es la acumulación la que vuelve frágil el modelo — jurídica además de éticamente.',
+            '## Las recomendaciones',
+            'Una tabla estratégica vincula cada problema con su base teórica y una acción concreta: un foro consultivo electo de los clínicos con acceso a las decisiones de la plataforma, KPI publicados y recurribles, gestión de conflictos devuelta a lo interno con procedimientos escritos y mediación, supervisión clínica de apoyo en lugar del mero seguimiento algorítmico, y una auditoría del modelo contractual según el principio de "substance over form".',
+            '## Lo que me llevo',
+            'Que en las organizaciones del cuidado el bienestar de los profesionales no es un tema de RR. HH. entre otros: es el producto. Un terapeuta tratado como una unidad de servicio intercambiable no puede ofrecer la calidad de presencia que la propia plataforma vende.'
+          ]
+        }
       }
     };
 
@@ -2218,14 +2375,34 @@
     const articleTitle = document.getElementById('article-modal-title');
     const articleBody = document.getElementById('article-modal-body');
     let lastFocusedEl = null;
+    let currentArticleId = null;
+
+    // Note mostrate in cima al modale quando il contenuto lungo non è ancora
+    // tradotto nella lingua attiva (l'italiano resta il testo integrale).
+    const ARTICLE_LANG_NOTE = {
+      en: 'This in-depth article is currently available in Italian only.',
+      es: 'Este artículo en profundidad está disponible por ahora solo en italiano.'
+    };
 
     function openArticle(id) {
-      const art = articles[id];
-      if (!art) { return; }
+      const base = articles[id];
+      if (!base) { return; }
+      currentArticleId = id;
+      const lang = (window.SiteI18N && window.SiteI18N.lang) || 'it';
+      // Usa la variante tradotta se esiste (es. i case study), altrimenti l'italiano
+      const art = (lang !== 'it' && base[lang]) ? base[lang] : base;
+      const untranslated = (lang !== 'it' && !base[lang]);
       lastFocusedEl = document.activeElement;
+      articleModal.setAttribute('lang', untranslated ? 'it' : lang);
       articleKicker.textContent = art.kicker;
       articleTitle.textContent = art.title;
       articleBody.innerHTML = '';
+      if (untranslated && ARTICLE_LANG_NOTE[lang]) {
+        const note = document.createElement('p');
+        note.className = 'text-xs text-inchiostro/55 italic border-l-2 border-mirtillo pl-3';
+        note.textContent = ARTICLE_LANG_NOTE[lang];
+        articleBody.appendChild(note);
+      }
       art.body.forEach(function (paragraph) {
         // Le righe che iniziano con "## " diventano sottotitoli (usati nei case study)
         if (paragraph.indexOf('## ') === 0) {
@@ -2240,8 +2417,10 @@
         }
       });
       // CTA personalizzabile per tipo di contenuto (articoli vs case study)
-      document.getElementById('article-cta-text').textContent = art.ctaText || 'Ti sei riconosciuto in queste righe? Possiamo partire da qui.';
-      document.getElementById('article-cta-label').textContent = art.ctaLabel || 'Prenota un primo colloquio';
+      const defText = (window.SiteI18N && window.SiteI18N.t('art.cta.text.default')) || 'Ti sei riconosciuto in queste righe? Possiamo partire da qui.';
+      const defLabel = (window.SiteI18N && window.SiteI18N.t('art.cta.default')) || 'Prenota un primo colloquio';
+      document.getElementById('article-cta-text').textContent = art.ctaText || defText;
+      document.getElementById('article-cta-label').textContent = art.ctaLabel || defLabel;
       articleModal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
       articleModal.scrollTop = 0;
@@ -2275,6 +2454,38 @@
       window.open(url, '_blank', 'noopener');
       showFeedback('Si sta aprendo WhatsApp con il tuo messaggio già pronto: ti risponderò il prima possibile.', false);
     });
+
+    /* ============================================================
+       i18n — ridisegna i contenuti dinamici al cambio di lingua
+       (i testi statici con data-i18n li aggiorna già il motore)
+       ============================================================ */
+    const TEST_LANG_NOTE = {
+      en: 'Note: the interactive tests are currently available in Italian only.',
+      es: 'Nota: los tests interactivos están disponibles por ahora solo en italiano.'
+    };
+    function refreshDynamicI18n(lang) {
+      // Stepper "Come funziona il primo colloquio"
+      if (stepTabs.length) { showStep(currentStepIndex); }
+      // Articolo/case study aperto: ricaricalo nella lingua attiva
+      if (currentArticleId && articleModal && !articleModal.classList.contains('hidden')) {
+        openArticle(currentArticleId);
+      }
+      // Nota sui test (contenuto interno ancora in italiano)
+      const note = document.getElementById('test-lang-note');
+      if (note) {
+        if (TEST_LANG_NOTE[lang]) {
+          note.textContent = TEST_LANG_NOTE[lang];
+          note.classList.remove('hidden');
+        } else {
+          note.classList.add('hidden');
+        }
+      }
+    }
+    if (window.SiteI18N) {
+      window.SiteI18N.onChange(refreshDynamicI18n);
+      // Stato iniziale (la lingua è già stata applicata dal motore all'avvio)
+      refreshDynamicI18n(window.SiteI18N.lang);
+    }
   });
   </script>
 </body>
