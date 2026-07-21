@@ -304,6 +304,25 @@
       'pf.readcs': 'Read the case study',
       'pf.disclaimer': 'The three pieces were written as Master\'s assessments and are summarised here in accessible form. The organisations analysed are anonymised, as in the originals; data and episodes cited come from the assessments themselves and from public sources.',
 
+      /* --- Compendi & Guide (pubblicazioni a pagamento) --- */
+      'nav.compendi': 'Compendia',
+      'm.compendi': 'Compendia & Guides',
+      'comp.kicker': 'Compendia & Guides',
+      'comp.title': 'In-depth clinical writing, meant to be read in full',
+      'comp.intro': 'Every week I publish new compendia and guides: long, carefully written texts for those who want to go deep. Here you\'ll find a free excerpt of each; the full text is available on Gumroad.',
+      'comp.c1.badge': 'For therapists',
+      'comp.c1.t': 'Adult ADHD: a psychodynamic reading',
+      'comp.c1.d': 'A compendium for psychodynamically oriented psychotherapists who meet adult patients with ADHD, without reducing the person to their executive functioning.',
+      'comp.c2.badge': 'For those living with ADHD',
+      'comp.c2.t': 'Adult ADHD: a guide to understanding yourself',
+      'comp.c2.d': 'A guide for adults with ADHD (or who suspect they have it): clear words to understand yourself, stories to recognise yourself in, strategies on your side.',
+      'comp.c3.badge': 'For clinicians',
+      'comp.c3.t': 'Adult ADHD: a psychodynamic compendium',
+      'comp.c3.d': 'The English edition of the compendium for clinicians: the same psychodynamic reading of adult ADHD, written for colleagues who work in English.',
+      'comp.readexcerpt': 'Read the excerpt',
+      'comp.buy': 'Buy on Gumroad',
+      'comp.note': 'The excerpts published here are a small preview: the full text, with every chapter, is reserved for those who buy the publication on Gumroad.',
+
       /* --- PsicoVoice --- */
       'pv.kicker': 'A project I founded · for fellow psychologists',
       'pv.title': 'The web app that simplifies invoices and patient management',
@@ -670,6 +689,25 @@
       'pf.c3.meta2': '6 min de lectura',
       'pf.readcs': 'Leer el caso de estudio',
       'pf.disclaimer': 'Los tres trabajos nacen como evaluaciones del Máster y aquí se resumen en forma divulgativa. Las organizaciones analizadas están anonimizadas, como en los originales; los datos y episodios citados provienen de los propios trabajos y de fuentes públicas.',
+
+      /* --- Compendios y Guías (publicaciones de pago) --- */
+      'nav.compendi': 'Compendios',
+      'm.compendi': 'Compendios y Guías',
+      'comp.kicker': 'Compendios y Guías',
+      'comp.title': 'Textos clínicos en profundidad, para leer por completo',
+      'comp.intro': 'Cada semana publico nuevos compendios y guías: textos largos y cuidados, para quien quiere ir a fondo. Aquí encuentras un extracto gratuito de cada uno; el texto completo está disponible en Gumroad.',
+      'comp.c1.badge': 'Para terapeutas',
+      'comp.c1.t': 'TDAH adulto: una mirada psicodinámica',
+      'comp.c1.d': 'Un compendio para psicoterapeutas de orientación psicodinámica que atienden a pacientes adultos con TDAH, sin reducir a la persona a su funcionamiento ejecutivo.',
+      'comp.c2.badge': 'Para quien convive con el TDAH',
+      'comp.c2.t': 'TDAH en la adultez: una guía para entenderte',
+      'comp.c2.d': 'Una guía para adultos con TDAH (o que sospechan tenerlo): palabras claras para entenderte, historias en las que reconocerte, estrategias de tu lado.',
+      'comp.c3.badge': 'Para clínicos',
+      'comp.c3.t': 'TDAH adulto: un compendio psicodinámico',
+      'comp.c3.d': 'La edición inglesa del compendio para clínicos: la misma mirada psicodinámica sobre el TDAH adulto, pensada para colegas que trabajan en inglés.',
+      'comp.readexcerpt': 'Leer el extracto',
+      'comp.buy': 'Comprar en Gumroad',
+      'comp.note': 'Los extractos publicados aquí son una pequeña vista previa: el texto íntegro, con todos los capítulos, está reservado a quien compra la publicación en Gumroad.',
 
       /* --- PsicoVoice --- */
       'pv.kicker': 'Un proyecto que fundé · para colegas psicólogos',

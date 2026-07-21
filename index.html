@@ -288,6 +288,7 @@
         <li><a href="#test" class="nav-link inline-flex items-center gap-1.5 bg-mirtillo-100 text-mirtillo-700 px-3.5 py-1.5 rounded-full hover:bg-mirtillo-200" data-target="test"><i data-lucide="sparkles" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="nav.test">Test gratuiti</span></a></li>
         <li><a href="#portfolio" class="nav-link" data-target="portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
         <li><a href="#risorse" class="nav-link" data-target="risorse" data-i18n="nav.articoli">Articoli</a></li>
+        <li><a href="#compendi" class="nav-link" data-target="compendi" data-i18n="nav.compendi">Compendi</a></li>
         <li>
           <a href="#contatti" class="inline-flex items-center gap-2 bg-notte text-white px-4 py-2.5 rounded-full hover:bg-mirtillo-700 transition-colors">
             <i data-lucide="calendar-heart" class="w-4 h-4" aria-hidden="true"></i>
@@ -338,6 +339,7 @@
         <li><a href="#percorso" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="briefcase" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.percorso">Esperienza &amp; Curriculum</span></a></li>
         <li><a href="#portfolio" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="folder-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.portfolio">Portfolio &amp; Case study</span></a></li>
         <li><a href="#risorse" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.articoli">Risorse &amp; Articoli</span></a></li>
+        <li><a href="#compendi" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-marked" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.compendi">Compendi &amp; Guide</span></a></li>
       </ul>
       <!-- Contatto nativo diretto -->
       <div class="grid grid-cols-2 gap-3 mt-5">
@@ -1206,6 +1208,72 @@
       </div>
     </section>
 
+    <!-- ==================== COMPENDI & GUIDE (pubblicazioni a pagamento) ==================== -->
+    <section id="compendi" class="py-20 lg:py-28 bg-crema" aria-labelledby="compendi-title">
+      <div class="max-w-6xl mx-auto px-5">
+        <div class="max-w-3xl mb-12 reveal">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="comp.kicker">Compendi &amp; Guide</p>
+          <h2 id="compendi-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="comp.title">Approfondimenti clinici, da leggere per intero</h2>
+          <p class="text-inchiostro/75" data-i18n="comp.intro">Ogni settimana pubblico nuovi compendi e guide: testi lunghi, curati, per chi vuole andare a fondo. Qui trovi un estratto gratuito di ciascuno; il testo completo è disponibile su Gumroad.</p>
+        </div>
+
+        <div id="compendi-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Compendio per terapeuti (IT) -->
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+            <img src="assets/cover-adhd-clinici.png" alt="Copertina del compendio «ADHD in età adulta: uno sguardo psicodinamico», per psicoterapeuti" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
+            <div class="p-6 flex flex-col grow">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-mirtillo-700 bg-mirtillo-100 px-2.5 py-1 rounded-full"><i data-lucide="graduation-cap" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="comp.c1.badge">Per terapeuti</span></span>
+                <span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-inchiostro/50 border border-tortora-dark rounded-full px-2 py-1">IT</span>
+              </div>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="comp.c1.t">ADHD adulto: uno sguardo psicodinamico</h3>
+              <p class="text-sm text-inchiostro/70 mb-5 grow" data-i18n="comp.c1.d">Un compendio per psicoterapeuti a orientamento psicodinamico che incontrano pazienti adulti con ADHD, senza ridurre la persona al suo funzionamento esecutivo.</p>
+              <div class="flex flex-col gap-2.5 mt-auto">
+                <button type="button" data-article="comp-adhd-clinici" class="article-open inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="comp.readexcerpt">Leggi l'estratto</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+                <a href="https://psicovoice.gumroad.com/l/adhd-psicodinamico" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-notte text-white text-sm font-semibold px-5 py-3 rounded-full hover:bg-mirtillo-700 transition-colors"><i data-lucide="shopping-cart" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="comp.buy">Acquista su Gumroad</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Guida per pazienti (IT) -->
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+            <img src="assets/cover-adhd-pazienti.png" alt="Copertina della guida «ADHD da adulto: capire la tua mente», una guida gentile per pazienti" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
+            <div class="p-6 flex flex-col grow">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-mirtillo-700 bg-mirtillo-100 px-2.5 py-1 rounded-full"><i data-lucide="heart-handshake" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="comp.c2.badge">Per chi convive con l'ADHD</span></span>
+                <span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-inchiostro/50 border border-tortora-dark rounded-full px-2 py-1">IT</span>
+              </div>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="comp.c2.t">ADHD da adulto: una guida per capirti</h3>
+              <p class="text-sm text-inchiostro/70 mb-5 grow" data-i18n="comp.c2.d">Una guida per adulti con ADHD (o con il sospetto di averlo): parole chiare per capirti, storie in cui riconoscerti, strategie che stanno dalla tua parte.</p>
+              <div class="flex flex-col gap-2.5 mt-auto">
+                <button type="button" data-article="comp-adhd-pazienti" class="article-open inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="comp.readexcerpt">Leggi l'estratto</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+                <a href="https://psicovoice.gumroad.com/l/adhd-da-adulto-guida" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-notte text-white text-sm font-semibold px-5 py-3 rounded-full hover:bg-mirtillo-700 transition-colors"><i data-lucide="shopping-cart" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="comp.buy">Acquista su Gumroad</span></a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Compendium for clinicians (EN) · visibile su sito EN ed ES -->
+          <article data-langs="en es" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+            <img src="assets/cover-adhd-en.png" alt="Cover of the compendium «Adult ADHD: a psychodynamic view», for psychotherapists" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
+            <div class="p-6 flex flex-col grow">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-mirtillo-700 bg-mirtillo-100 px-2.5 py-1 rounded-full"><i data-lucide="graduation-cap" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="comp.c3.badge">For clinicians</span></span>
+                <span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-inchiostro/50 border border-tortora-dark rounded-full px-2 py-1">EN</span>
+              </div>
+              <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="comp.c3.t">Adult ADHD: a psychodynamic compendium</h3>
+              <p class="text-sm text-inchiostro/70 mb-5 grow" data-i18n="comp.c3.d">La versione inglese del compendio per clinici: lo stesso sguardo psicodinamico sull'ADHD adulto, pensato per colleghi che lavorano in inglese.</p>
+              <div class="flex flex-col gap-2.5 mt-auto">
+                <button type="button" data-article="comp-adhd-en" class="article-open inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="comp.readexcerpt">Leggi l'estratto</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
+                <a href="https://psicovoice.gumroad.com/l/adult-adhd-psychodynamic" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-notte text-white text-sm font-semibold px-5 py-3 rounded-full hover:bg-mirtillo-700 transition-colors"><i data-lucide="shopping-cart" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="comp.buy">Acquista su Gumroad</span></a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <p class="text-xs text-inchiostro/55 mt-8 max-w-3xl reveal" data-i18n="comp.note">Gli estratti qui pubblicati sono una piccola anteprima: il testo integrale, con tutti i capitoli, è riservato a chi acquista la pubblicazione su Gumroad.</p>
+      </div>
+    </section>
+
     <!-- ==================== PSICOVOICE (per colleghi psicologi) ==================== -->
     <section id="psicovoice" class="py-16 lg:py-20 bg-white" aria-labelledby="psicovoice-title">
       <div class="max-w-6xl mx-auto px-5">
@@ -1513,7 +1581,7 @@
         <div class="mt-9 bg-mirtillo-50 rounded-2xl p-6 text-center">
           <p id="article-cta-text" class="font-medium text-notte mb-4">Ti sei riconosciuto in queste righe? Possiamo partire da qui.</p>
           <button type="button" id="article-cta" class="inline-flex items-center gap-2 bg-mirtillo-700 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-600 transition-colors">
-            <i data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> <span id="article-cta-label">Prenota un primo colloquio</span>
+            <i id="article-cta-icon" data-lucide="calendar-heart" class="w-5 h-5" aria-hidden="true"></i> <span id="article-cta-label">Prenota un primo colloquio</span>
           </button>
         </div>
       </article>
@@ -2117,6 +2185,134 @@
        ARTICOLI — lettore modale
        ============================================================ */
     const articles = {
+      'comp-adhd-clinici': {
+        kicker: 'Estratto gratuito · Compendio per terapeuti',
+        title: 'ADHD adulto: uno sguardo psicodinamico',
+        buyHref: 'https://psicovoice.gumroad.com/l/adhd-psicodinamico',
+        ctaText: 'Questo è solo l\'inizio: il compendio completo raccoglie tutti i capitoli, dalla teoria al materiale clinico.',
+        ctaLabel: 'Acquista il compendio su Gumroad',
+        body: [
+          'Questo compendio nasce da una convinzione semplice: che sull\'ADHD in età adulta lo sguardo psicodinamico abbia ancora qualcosa da dire, e che dirlo non significhi opporsi al dato neurobiologico, ma abitare lo spazio che quel dato lascia scoperto.',
+          'La letteratura corrente sull\'ADHD adulto è in larghissima parte neurobiologica e cognitivo-comportamentale. È una conoscenza preziosa, che questo testo non contesta. Ma il clinico che lavora in chiave psicodinamica incontra, nella stanza, qualcosa che quelle mappe non esauriscono: un modo di stare in relazione, una storia dell\'attenzione e della sua interruzione, un significato che il sintomo porta con sé.',
+          'Il paziente adulto con ADHD non arriva quasi mai portando «un deficit». Arriva portando una vita: relazioni che si interrompono, progetti abbandonati sul più bello, un senso cronico di non essere all\'altezza. Il nostro compito comincia lì: non nel confermare o smentire la diagnosi, ma nel restituire alla persona la possibilità di pensarsi.',
+          '— Fine dell\'estratto —',
+          'Nel compendio completo: il dibattito teorico, la funzione psichica in gioco, il quadro clinico riletto in seduta, la diagnosi differenziale, transfert e controtransfert, le scelte tecniche, il lavoro sul coping, il rapporto con il farmaco e il materiale clinico.'
+        ],
+        en: {
+          kicker: 'Free excerpt · Compendium for therapists',
+          title: 'Adult ADHD: a psychodynamic reading',
+          buyHref: 'https://psicovoice.gumroad.com/l/adhd-psicodinamico',
+          ctaText: 'This is only the opening: the full compendium gathers every chapter, from theory to clinical material. (Italian edition.)',
+          ctaLabel: 'Buy the compendium on Gumroad',
+          body: [
+            'This compendium grows from a simple conviction: that on adult ADHD the psychodynamic gaze still has something to say, and that saying it does not mean opposing the neurobiological evidence, but inhabiting the space that evidence leaves uncovered.',
+            'The current literature on adult ADHD is overwhelmingly neurobiological and cognitive-behavioural. It is valuable knowledge, and this text does not contest it. But the clinician who works psychodynamically meets, in the consulting room, something those maps do not exhaust: a way of being in relationship, a history of attention and its interruption, a meaning the symptom carries.',
+            'The adult patient with ADHD almost never arrives carrying "a deficit." They arrive carrying a life: relationships that break off, projects abandoned at the crucial moment, a chronic sense of not measuring up. Our task begins there: not in confirming or refuting the diagnosis, but in restoring to the person the possibility of thinking about themselves.',
+            '— End of excerpt —',
+            'The full compendium (in Italian) covers: the theoretical debate, the psychic function at stake, the clinical picture re-read in session, differential diagnosis, transference and countertransference, technical choices, the work on coping, the relationship with medication, and clinical material.'
+          ]
+        },
+        es: {
+          kicker: 'Extracto gratuito · Compendio para terapeutas',
+          title: 'TDAH adulto: una mirada psicodinámica',
+          buyHref: 'https://psicovoice.gumroad.com/l/adhd-psicodinamico',
+          ctaText: 'Esto es solo el comienzo: el compendio completo reúne todos los capítulos, de la teoría al material clínico. (Edición en italiano.)',
+          ctaLabel: 'Compra el compendio en Gumroad',
+          body: [
+            'Este compendio nace de una convicción simple: que sobre el TDAH en la edad adulta la mirada psicodinámica todavía tiene algo que decir, y que decirlo no significa oponerse al dato neurobiológico, sino habitar el espacio que ese dato deja descubierto.',
+            'La literatura actual sobre el TDAH adulto es, en gran parte, neurobiológica y cognitivo-conductual. Es un conocimiento valioso, que este texto no cuestiona. Pero el clínico que trabaja en clave psicodinámica encuentra, en la consulta, algo que esos mapas no agotan: un modo de estar en relación, una historia de la atención y de su interrupción, un significado que el síntoma trae consigo.',
+            'El paciente adulto con TDAH casi nunca llega trayendo «un déficit». Llega trayendo una vida: relaciones que se interrumpen, proyectos abandonados en el mejor momento, una sensación crónica de no estar a la altura. Nuestra tarea empieza ahí: no en confirmar o desmentir el diagnóstico, sino en devolver a la persona la posibilidad de pensarse.',
+            '— Fin del extracto —',
+            'El compendio completo (en italiano) incluye: el debate teórico, la función psíquica en juego, el cuadro clínico releído en sesión, el diagnóstico diferencial, transferencia y contratransferencia, las decisiones técnicas, el trabajo sobre el afrontamiento, la relación con el fármaco y el material clínico.'
+          ]
+        }
+      },
+      'comp-adhd-pazienti': {
+        kicker: 'Estratto gratuito · Guida per pazienti',
+        title: 'ADHD da adulto: una guida per capirti',
+        buyHref: 'https://psicovoice.gumroad.com/l/adhd-da-adulto-guida',
+        ctaText: 'La guida completa continua con le strategie che stanno dalla tua parte e con come chiedere aiuto quando serve.',
+        ctaLabel: 'Acquista la guida su Gumroad',
+        body: [
+          'Se hai aperto questa guida, forse è perché una parola — ADHD — ha cominciato a girarti in testa. Magari hai fatto una diagnosi da poco, magari ancora te lo stai chiedendo. In ogni caso, probabilmente porti con te una lunga storia: cose lasciate a metà, la sensazione di non essere all\'altezza.',
+          'Voglio dirti subito una cosa, e vorrei che la leggessi piano: non sei pigro, e non sei rotto. La tua mente funziona in un modo, e quel modo ha una storia, un senso, e anche dei punti di forza che magari non hai mai imparato a vedere.',
+          'Questa guida serve a questo: darti parole chiare per capirti, storie in cui riconoscerti, e qualche strategia che non cerca di «aggiustarti», ma di stare dalla tua parte. Non è un manuale, non è una terapia: è più come una lunga chiacchierata con qualcuno che prova a spiegarti come funzioni — con rispetto, e senza fretta.',
+          '— Fine dell\'estratto —',
+          'Nella guida completa: come funziona la tua attenzione, perché a volte il caos ha un senso, le strategie che stanno dalla tua parte, e come (e quando) chiedere aiuto a un professionista.'
+        ],
+        en: {
+          kicker: 'Free excerpt · Guide for patients',
+          title: 'Adult ADHD: a guide to understanding yourself',
+          buyHref: 'https://psicovoice.gumroad.com/l/adhd-da-adulto-guida',
+          ctaText: 'The full guide continues with the strategies that are on your side, and with how to ask for help when you need it. (Italian edition.)',
+          ctaLabel: 'Buy the guide on Gumroad',
+          body: [
+            'If you have opened this guide, perhaps it is because a word — ADHD — has started going round in your head. Maybe you were diagnosed recently, maybe you are still wondering. Either way, you probably carry a long history with you: things left half-done, the feeling of not measuring up.',
+            'I want to tell you one thing right away, and I would like you to read it slowly: you are not lazy, and you are not broken. Your mind works in a certain way, and that way has a history, a meaning, and strengths too that perhaps you have never learned to see.',
+            'This guide is for exactly that: to give you clear words to understand yourself, stories you can recognise yourself in, and a few strategies that do not try to "fix" you, but to stand on your side. It is not a manual, not a therapy: it is more like a long conversation with someone trying to explain how you work — with respect, and without hurry.',
+            '— End of excerpt —',
+            'The full guide (in Italian) covers: how your attention works, why chaos sometimes makes sense, the strategies that are on your side, and how (and when) to ask a professional for help.'
+          ]
+        },
+        es: {
+          kicker: 'Extracto gratuito · Guía para pacientes',
+          title: 'TDAH en la adultez: una guía para entenderte',
+          buyHref: 'https://psicovoice.gumroad.com/l/adhd-da-adulto-guida',
+          ctaText: 'La guía completa continúa con las estrategias que están de tu lado y con cómo pedir ayuda cuando hace falta. (Edición en italiano.)',
+          ctaLabel: 'Compra la guía en Gumroad',
+          body: [
+            'Si has abierto esta guía, quizás sea porque una palabra — TDAH — ha empezado a darte vueltas en la cabeza. Puede que te hayan diagnosticado hace poco, puede que todavía te lo estés preguntando. En cualquier caso, probablemente cargas con una larga historia: cosas dejadas a medias, la sensación de no estar a la altura.',
+            'Quiero decirte una cosa de inmediato, y me gustaría que la leyeras despacio: no eres perezoso, y no estás roto. Tu mente funciona de una manera, y esa manera tiene una historia, un sentido, y también puntos fuertes que quizás nunca has aprendido a ver.',
+            'Esta guía sirve para eso: darte palabras claras para entenderte, historias en las que reconocerte, y algunas estrategias que no buscan «arreglarte», sino estar de tu lado. No es un manual, no es una terapia: es más como una larga conversación con alguien que intenta explicarte cómo funcionas — con respeto, y sin prisa.',
+            '— Fin del extracto —',
+            'La guía completa (en italiano) incluye: cómo funciona tu atención, por qué a veces el caos tiene un sentido, las estrategias que están de tu lado, y cómo (y cuándo) pedir ayuda a un profesional.'
+          ]
+        }
+      },
+      'comp-adhd-en': {
+        kicker: 'Estratto gratuito · Compendio in inglese',
+        title: 'Adult ADHD: a psychodynamic compendium',
+        buyHref: 'https://psicovoice.gumroad.com/l/adult-adhd-psychodynamic',
+        ctaText: 'Questa è l\'edizione inglese del compendio per clinici: il testo completo raccoglie tutti i capitoli, dalla teoria al materiale clinico.',
+        ctaLabel: 'Acquista il compendio (EN) su Gumroad',
+        body: [
+          'Questo è l\'estratto della versione inglese del compendio, pensata per colleghi che lavorano in lingua inglese. Di seguito trovi l\'anteprima nella lingua originale.',
+          'This compendium grows from a simple conviction: that on adult ADHD the psychodynamic gaze still has something to say, and that saying it does not mean opposing the neurobiological evidence, but inhabiting the space that evidence leaves uncovered.',
+          'The clinician who works psychodynamically meets, in the consulting room, something the neurobiological maps do not exhaust: a way of being in relationship, a history of attention and its interruption, a meaning the symptom carries that does not dissolve the moment we call it a "deficit."',
+          'The adult patient with ADHD almost never arrives carrying "a deficit." They arrive carrying a life. Our task begins there: not in confirming or refuting the diagnosis, but in restoring to the person the possibility of thinking about themselves.',
+          '— End of excerpt —',
+          'The full compendium covers: the theoretical debate, the psychic function at stake, the clinical picture re-read in session, differential diagnosis, transference and countertransference, technical choices, the work on coping, the relationship with medication, and clinical material.'
+        ],
+        en: {
+          kicker: 'Free excerpt · Compendium for clinicians',
+          title: 'Adult ADHD: a psychodynamic compendium',
+          buyHref: 'https://psicovoice.gumroad.com/l/adult-adhd-psychodynamic',
+          ctaText: 'This is only the opening: the full compendium gathers every chapter, from theory to clinical material.',
+          ctaLabel: 'Buy the compendium on Gumroad',
+          body: [
+            'This compendium grows from a simple conviction: that on adult ADHD the psychodynamic gaze still has something to say, and that saying it does not mean opposing the neurobiological evidence but inhabiting the space that evidence leaves uncovered.',
+            'The current literature on adult ADHD is overwhelmingly neurobiological and cognitive-behavioural. It is valuable knowledge, and this text does not contest it. But the clinician who works psychodynamically meets, in the consulting room, something those maps do not exhaust: a way of being in relationship, a history of attention and its interruption, a meaning the symptom carries that does not dissolve the moment we call it a "deficit."',
+            'The adult patient with ADHD almost never arrives carrying "a deficit." They arrive carrying a life: relationships that break off, projects abandoned at the crucial moment, a chronic sense of not measuring up. Our task begins there: not in confirming or refuting the diagnosis, but in restoring to the person the possibility of thinking about themselves.',
+            '— End of excerpt —',
+            'The full compendium covers: the theoretical debate, the psychic function at stake, the clinical picture re-read in session, differential diagnosis, transference and countertransference, technical choices, the work on coping, the relationship with medication, and clinical material.'
+          ]
+        },
+        es: {
+          kicker: 'Extracto gratuito · Compendio en inglés',
+          title: 'TDAH adulto: un compendio psicodinámico (EN)',
+          buyHref: 'https://psicovoice.gumroad.com/l/adult-adhd-psychodynamic',
+          ctaText: 'Esta es la edición inglesa del compendio para clínicos: el texto completo reúne todos los capítulos, de la teoría al material clínico.',
+          ctaLabel: 'Compra el compendio (EN) en Gumroad',
+          body: [
+            'Este es el extracto de la versión inglesa del compendio, pensada para colegas que trabajan en lengua inglesa. A continuación encontrarás la vista previa en el idioma original (inglés).',
+            'This compendium grows from a simple conviction: that on adult ADHD the psychodynamic gaze still has something to say, and that saying it does not mean opposing the neurobiological evidence, but inhabiting the space that evidence leaves uncovered.',
+            'The clinician who works psychodynamically meets, in the consulting room, something the neurobiological maps do not exhaust: a way of being in relationship, a history of attention and its interruption, a meaning the symptom carries.',
+            'The adult patient with ADHD almost never arrives carrying "a deficit." They arrive carrying a life. Our task begins there: not in confirming or refuting the diagnosis, but in restoring to the person the possibility of thinking about themselves.',
+            '— End of excerpt —',
+            'The full compendium covers: the theoretical debate, the psychic function at stake, the clinical picture re-read in session, differential diagnosis, transference and countertransference, technical choices, coping, medication, and clinical material.'
+          ]
+        }
+      },
       burnout: {
         kicker: 'Lavoro & benessere',
         title: 'Burnout: quando è il contesto a chiederti troppo',
@@ -2376,6 +2572,7 @@
     const articleBody = document.getElementById('article-modal-body');
     let lastFocusedEl = null;
     let currentArticleId = null;
+    let currentBuyHref = null;
 
     // Note mostrate in cima al modale quando il contenuto lungo non è ancora
     // tradotto nella lingua attiva (l'italiano resta il testo integrale).
@@ -2416,11 +2613,16 @@
           articleBody.appendChild(p);
         }
       });
-      // CTA personalizzabile per tipo di contenuto (articoli vs case study)
+      // CTA personalizzabile per tipo di contenuto (articoli, case study, compendi a pagamento)
       const defText = (window.SiteI18N && window.SiteI18N.t('art.cta.text.default')) || 'Ti sei riconosciuto in queste righe? Possiamo partire da qui.';
       const defLabel = (window.SiteI18N && window.SiteI18N.t('art.cta.default')) || 'Prenota un primo colloquio';
       document.getElementById('article-cta-text').textContent = art.ctaText || defText;
       document.getElementById('article-cta-label').textContent = art.ctaLabel || defLabel;
+      // Se l'articolo ha un link d'acquisto (compendi/guide a pagamento), la CTA
+      // diventa un pulsante che apre Gumroad; altrimenti scorre ai contatti.
+      currentBuyHref = art.buyHref || null;
+      const ctaIcon = document.getElementById('article-cta-icon');
+      ctaIcon.setAttribute('data-lucide', currentBuyHref ? 'shopping-cart' : 'calendar-heart');
       articleModal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
       articleModal.scrollTop = 0;
@@ -2443,6 +2645,11 @@
       if (e.key === 'Escape' && !articleModal.classList.contains('hidden')) { closeArticle(); }
     });
     document.getElementById('article-cta').addEventListener('click', function () {
+      // Compendi/guide a pagamento: apri Gumroad in una nuova scheda.
+      if (currentBuyHref) {
+        window.open(currentBuyHref, '_blank', 'noopener');
+        return;
+      }
       closeArticle();
       document.getElementById('contatti').scrollIntoView({ behavior: 'smooth' });
     });
@@ -2480,6 +2687,30 @@
           note.classList.add('hidden');
         }
       }
+      // Compendi & Guide: mostra solo le pubblicazioni pertinenti alla lingua
+      // del sito (IT → i due italiani; EN/ES → il compendio in inglese).
+      filterCompendi(lang);
+    }
+
+    // Filtra le card dei compendi in base all'attributo data-langs.
+    function filterCompendi(lang) {
+      const cards = document.querySelectorAll('#compendi .compendi-card');
+      if (!cards.length) { return; }
+      let visible = 0;
+      cards.forEach(function (card) {
+        const langs = (card.getAttribute('data-langs') || '').split(/\s+/);
+        const show = langs.indexOf(lang) !== -1;
+        card.classList.toggle('hidden', !show);
+        if (show) { visible++; }
+      });
+      // Se per questa lingua non c'è nessuna pubblicazione, nascondi la sezione
+      // e le relative voci di menu.
+      const section = document.getElementById('compendi');
+      if (section) { section.classList.toggle('hidden', visible === 0); }
+      document.querySelectorAll('[data-target="compendi"], a[href="#compendi"]').forEach(function (link) {
+        const li = link.closest('li') || link;
+        li.classList.toggle('hidden', visible === 0);
+      });
     }
     if (window.SiteI18N) {
       window.SiteI18N.onChange(refreshDynamicI18n);
