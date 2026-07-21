@@ -288,7 +288,7 @@
         <li><a href="#test" class="nav-link inline-flex items-center gap-1.5 bg-mirtillo-100 text-mirtillo-700 px-3.5 py-1.5 rounded-full hover:bg-mirtillo-200" data-target="test"><i data-lucide="sparkles" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="nav.test">Test gratuiti</span></a></li>
         <li><a href="#portfolio" class="nav-link" data-target="portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
         <li><a href="#risorse" class="nav-link" data-target="risorse" data-i18n="nav.articoli">Articoli</a></li>
-        <li><a href="#compendi" class="nav-link" data-target="compendi" data-i18n="nav.compendi">Compendi</a></li>
+        <li><a href="#compendi" class="nav-link inline-flex items-center gap-1.5 whitespace-nowrap" data-target="compendi"><span data-i18n="nav.compendi">Compendi</span> <span class="bg-mirtillo-600 text-white text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-full" data-i18n="nav.compendi.badge">novità</span></a></li>
         <li>
           <a href="#contatti" class="inline-flex items-center gap-2 bg-notte text-white px-4 py-2.5 rounded-full hover:bg-mirtillo-700 transition-colors">
             <i data-lucide="calendar-heart" class="w-4 h-4" aria-hidden="true"></i>
@@ -339,7 +339,7 @@
         <li><a href="#percorso" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="briefcase" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.percorso">Esperienza &amp; Curriculum</span></a></li>
         <li><a href="#portfolio" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="folder-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.portfolio">Portfolio &amp; Case study</span></a></li>
         <li><a href="#risorse" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.articoli">Risorse &amp; Articoli</span></a></li>
-        <li><a href="#compendi" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-marked" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.compendi">Compendi &amp; Guide</span></a></li>
+        <li><a href="#compendi" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-marked" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.compendi">Compendi e strumenti</span> <span class="bg-mirtillo-600 text-white text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-full" data-i18n="nav.compendi.badge">novità</span></a></li>
       </ul>
       <!-- Contatto nativo diretto -->
       <div class="grid grid-cols-2 gap-3 mt-5">
@@ -1211,10 +1211,12 @@
     <!-- ==================== COMPENDI & GUIDE (pubblicazioni a pagamento) ==================== -->
     <section id="compendi" class="py-20 lg:py-28 bg-crema" aria-labelledby="compendi-title">
       <div class="max-w-6xl mx-auto px-5">
+       <div class="rounded-[2rem] bg-gradient-to-br from-mirtillo-50 via-crema to-mirtillo-50 border border-mirtillo-200 shadow-[0_24px_70px_-30px_rgba(76,80,127,0.4)] p-7 sm:p-10 lg:p-14">
         <div class="max-w-3xl mb-12 reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="comp.kicker">Compendi &amp; Guide</p>
-          <h2 id="compendi-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="comp.title">Approfondimenti clinici, da leggere per intero</h2>
-          <p class="text-inchiostro/75" data-i18n="comp.intro">Ogni settimana pubblico nuovi compendi e guide: testi lunghi, curati, per chi vuole andare a fondo. Qui trovi un estratto gratuito di ciascuno; il testo completo è disponibile su Gumroad.</p>
+          <span class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-white bg-mirtillo-600 px-3.5 py-1.5 rounded-full mb-5 shadow-sm"><i data-lucide="sparkles" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="comp.badge">Nuove uscite ogni settimana</span></span>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="comp.kicker">Compendi e strumenti</p>
+          <h2 id="compendi-title" class="font-serif text-3xl sm:text-4xl lg:text-5xl text-notte leading-[1.1] mb-4" data-i18n="comp.title">Approfondimenti clinici, da leggere per intero</h2>
+          <p class="text-lg text-inchiostro/75" data-i18n="comp.intro">Ogni settimana pubblico nuovi compendi e guide: testi lunghi, curati, per chi vuole andare a fondo. Qui trovi un estratto gratuito di ciascuno; il testo completo è disponibile su Gumroad.</p>
         </div>
 
         <div id="compendi-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1271,6 +1273,7 @@
         </div>
 
         <p class="text-xs text-inchiostro/55 mt-8 max-w-3xl reveal" data-i18n="comp.note">Gli estratti qui pubblicati sono una piccola anteprima: il testo integrale, con tutti i capitoli, è riservato a chi acquista la pubblicazione su Gumroad.</p>
+       </div>
       </div>
     </section>
 

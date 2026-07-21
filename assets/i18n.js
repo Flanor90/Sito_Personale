@@ -306,8 +306,10 @@
 
       /* --- Compendi & Guide (pubblicazioni a pagamento) --- */
       'nav.compendi': 'Compendia',
-      'm.compendi': 'Compendia & Guides',
-      'comp.kicker': 'Compendia & Guides',
+      'nav.compendi.badge': 'new',
+      'm.compendi': 'Compendia & tools',
+      'comp.badge': 'New releases every week',
+      'comp.kicker': 'Compendia & tools',
       'comp.title': 'In-depth clinical writing, meant to be read in full',
       'comp.intro': 'Every week I publish new compendia and guides: long, carefully written texts for those who want to go deep. Here you\'ll find a free excerpt of each; the full text is available on Gumroad.',
       'comp.c1.badge': 'For therapists',
@@ -692,8 +694,10 @@
 
       /* --- Compendios y Guías (publicaciones de pago) --- */
       'nav.compendi': 'Compendios',
-      'm.compendi': 'Compendios y Guías',
-      'comp.kicker': 'Compendios y Guías',
+      'nav.compendi.badge': 'nuevo',
+      'm.compendi': 'Compendios y herramientas',
+      'comp.badge': 'Novedades cada semana',
+      'comp.kicker': 'Compendios y herramientas',
       'comp.title': 'Textos clínicos en profundidad, para leer por completo',
       'comp.intro': 'Cada semana publico nuevos compendios y guías: textos largos y cuidados, para quien quiere ir a fondo. Aquí encuentras un extracto gratuito de cada uno; el texto completo está disponible en Gumroad.',
       'comp.c1.badge': 'Para terapeutas',
