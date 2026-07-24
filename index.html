@@ -748,6 +748,28 @@
               <i data-lucide="file-down" class="w-5 h-5" aria-hidden="true"></i> <span id="quiz-download-label" data-i18n="test.download">Scarica il report in PDF</span>
             </button>
           </div>
+          <div class="bg-crema rounded-2xl p-6 mb-6 max-w-xl mx-auto border border-tortora-dark/50">
+            <div class="flex items-start gap-3 mb-4">
+              <i data-lucide="mail-plus" class="w-6 h-6 shrink-0 text-mirtillo-600 mt-0.5" aria-hidden="true"></i>
+              <p class="text-sm text-notte font-medium" data-i18n="test.nl.q">Ti è stato utile? Ricevi ogni mese un nuovo strumento di auto-osservazione e le mie riflessioni. Le tue risposte al test restano solo tue: qui lasci soltanto l'email.</p>
+            </div>
+            <form data-newsletter data-nl-source="test" novalidate>
+              <div class="flex flex-col sm:flex-row gap-2.5">
+                <label for="test-nl-email" class="sr-only" data-i18n="test.nl.label">La tua email</label>
+                <input type="email" id="test-nl-email" name="email" required autocomplete="email"
+                       class="flex-1 rounded-full border border-tortora-dark bg-white px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors"
+                       placeholder="nome@esempio.it" data-i18n-ph="test.nl.ph">
+                <button type="submit" class="inline-flex items-center justify-center gap-2 bg-mirtillo-700 text-white font-semibold px-6 py-3 rounded-full hover:bg-mirtillo-600 transition-colors whitespace-nowrap">
+                  <i data-lucide="send" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="test.nl.cta">Iscrivimi</span>
+                </button>
+              </div>
+              <label class="flex items-start gap-2.5 mt-3 cursor-pointer">
+                <input type="checkbox" name="consent" required class="mt-0.5 h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                <span class="text-[11px] text-inchiostro/60" data-i18n="test.nl.consent">Acconsento a ricevere la newsletter e al trattamento dell'email (GDPR). Disiscrizione con un clic, quando vuoi.</span>
+              </label>
+              <p data-nl-feedback class="hidden mt-3 rounded-xl px-4 py-2.5 text-sm" role="status" aria-live="polite"></p>
+            </form>
+          </div>
           <div class="bg-mirtillo-50 rounded-2xl p-6 mb-6 text-center">
             <p class="font-medium text-notte mb-4" data-i18n="test.result.share.q">Vuoi dare parole a questo risultato? Prenota un colloquio e condividilo con me: sarà un ottimo punto di partenza.</p>
             <button type="button" id="quiz-to-form" class="inline-flex items-center gap-2 bg-mirtillo-700 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-600 transition-colors">
@@ -770,7 +792,7 @@
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
               <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="test.faq2.q">Dove finiscono le mie risposte?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="test.faq2.a">Da nessuna parte: i test funzionano interamente nel tuo browser. Le risposte non vengono salvate, tracciate né inviate — il risultato lo vedi solo tu, e sei tu a decidere se condividerlo con me nel modulo di contatto.</p>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="test.faq2.a">Da nessuna parte: i test funzionano interamente nel tuo browser. Le risposte non vengono salvate, tracciate né inviate — il risultato lo vedi solo tu, e sei tu a decidere se condividerlo con me nel modulo di contatto. Se al termine scegli di lasciare l'email per la newsletter, viene inviato solo quell'indirizzo (mai le tue risposte), e puoi disiscriverti quando vuoi.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
               <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="test.faq3.q">Quanto durano e quanto costano?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
@@ -1273,6 +1295,31 @@
         </div>
 
         <p class="text-xs text-inchiostro/55 mt-8 max-w-3xl reveal" data-i18n="comp.note">Gli estratti qui pubblicati sono una piccola anteprima: il testo integrale, con tutti i capitoli, è riservato a chi acquista la pubblicazione su Gumroad.</p>
+
+        <div class="mt-10 bg-white/70 rounded-2xl border border-mirtillo-200 p-6 sm:p-7 reveal">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+            <div class="sm:flex-1">
+              <p class="font-serif text-lg text-notte mb-1" data-i18n="comp.nl.title">Avvisami quando esce un nuovo compendio</p>
+              <p class="text-sm text-inchiostro/70" data-i18n="comp.nl.p">Lascia la tua email: ti scrivo a ogni nuova uscita, con un estratto in anteprima. Niente spam.</p>
+            </div>
+            <form data-newsletter data-nl-source="compendi" class="sm:w-[22rem] shrink-0" novalidate>
+              <div class="flex flex-col sm:flex-row gap-2.5">
+                <label for="comp-nl-email" class="sr-only" data-i18n="comp.nl.label">La tua email</label>
+                <input type="email" id="comp-nl-email" name="email" required autocomplete="email"
+                       class="flex-1 rounded-full border border-tortora-dark bg-white px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors"
+                       placeholder="nome@esempio.it" data-i18n-ph="comp.nl.ph">
+                <button type="submit" class="inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-5 py-3 rounded-full hover:bg-mirtillo-700 transition-colors whitespace-nowrap">
+                  <i data-lucide="bell" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="comp.nl.cta">Avvisami</span>
+                </button>
+              </div>
+              <label class="flex items-start gap-2.5 mt-3 cursor-pointer">
+                <input type="checkbox" name="consent" required class="mt-0.5 h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                <span class="text-[11px] text-inchiostro/60" data-i18n="comp.nl.consent">Acconsento al trattamento dell'email per ricevere gli avvisi (GDPR). Disiscrizione con un clic.</span>
+              </label>
+              <p data-nl-feedback class="hidden mt-3 rounded-xl px-4 py-2.5 text-sm" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
        </div>
       </div>
     </section>
@@ -1311,6 +1358,43 @@
               <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="calendar-check" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="pv.li3">Appuntamenti e promemoria in un colpo d'occhio</span></li>
               <li class="flex items-start gap-3 text-[0.97rem] text-white/90"><i data-lucide="shield-check" class="w-5 h-5 shrink-0 text-mirtillo-300" aria-hidden="true"></i> <span data-i18n="pv.li4">Pensata su misura per la professione psicologica</span></li>
             </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== NEWSLETTER ==================== -->
+    <section id="newsletter" class="py-20 lg:py-28 bg-mirtillo-50" aria-labelledby="newsletter-title">
+      <div class="max-w-4xl mx-auto px-5">
+        <div class="bg-white rounded-3xl shadow-lg p-8 sm:p-10 lg:p-12 reveal">
+          <div class="grid lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+            <div class="lg:col-span-3">
+              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="nl.kicker">La newsletter</p>
+              <h2 id="newsletter-title" class="font-serif text-3xl sm:text-4xl text-notte leading-tight mb-4" data-i18n="nl.title">Uno spunto al mese, per guardarti dentro con più chiarezza</h2>
+              <p class="text-inchiostro/75 mb-6 text-[1.02rem]" data-i18n="nl.p">Ogni mese ti scrivo una riflessione sulla vita interiore, un nuovo strumento di auto-osservazione e le uscite dei compendi. Testi curati, mai spam. Ti disiscrivi con un clic quando vuoi.</p>
+              <ul class="space-y-2.5 text-[0.95rem] text-inchiostro/80">
+                <li class="flex items-start gap-2.5"><i data-lucide="feather" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="nl.b1">Una riflessione clinica, scritta con cura</span></li>
+                <li class="flex items-start gap-2.5"><i data-lucide="compass" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="nl.b2">Nuovi test e strumenti prima che sugli altri canali</span></li>
+                <li class="flex items-start gap-2.5"><i data-lucide="book-open" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="nl.b3">Gli estratti e le uscite dei compendi</span></li>
+              </ul>
+            </div>
+            <div class="lg:col-span-2">
+              <form data-newsletter data-nl-source="newsletter" class="bg-crema/60 rounded-2xl p-6 sm:p-7" novalidate>
+                <label for="nl-email" class="block text-sm font-semibold text-notte mb-1.5"><span data-i18n="nl.f.email">La tua email</span> <span class="text-mirtillo-700" aria-hidden="true">*</span></label>
+                <input type="email" id="nl-email" name="email" required autocomplete="email"
+                       class="w-full rounded-xl border border-tortora-dark bg-white px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors"
+                       placeholder="nome@esempio.it" data-i18n-ph="nl.f.email.ph">
+                <label class="flex items-start gap-2.5 mt-4 cursor-pointer">
+                  <input type="checkbox" name="consent" required class="mt-0.5 h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-xs text-inchiostro/70" data-i18n="nl.f.consent">Acconsento a ricevere la newsletter e al trattamento della mia email secondo il <a href="#privacy-newsletter" class="underline underline-offset-2 hover:text-notte">GDPR</a>. Nessuna condivisione con terzi.</span>
+                </label>
+                <button type="submit" class="w-full mt-5 inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-6 py-3.5 rounded-full hover:bg-mirtillo-700 transition-colors">
+                  <i data-lucide="send" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="nl.f.cta">Iscrivimi</span>
+                </button>
+                <p data-nl-feedback class="hidden mt-4 rounded-xl px-4 py-3 text-sm" role="status" aria-live="polite"></p>
+                <p class="text-[11px] text-inchiostro/50 mt-4" id="privacy-newsletter" data-i18n="nl.f.privacy">Riceverai una email di conferma (double opt-in): l'iscrizione si completa solo cliccando il link al suo interno. I dati sono trattati nel rispetto del GDPR.</p>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -1408,6 +1492,11 @@
                         class="w-full rounded-xl border border-tortora-dark bg-crema/50 px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors resize-y"
                         placeholder="Scrivimi liberamente: cosa ti porta qui, da quanto tempo, cosa vorresti cambiasse…" data-i18n-ph="con.f.msg.ph"></textarea>
             </div>
+
+            <label class="flex items-start gap-2.5 mb-5 cursor-pointer">
+              <input type="checkbox" id="cf-newsletter" name="newsletter" class="mt-0.5 h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+              <span class="text-sm text-inchiostro/75" data-i18n="con.f.newsletter">Iscrivimi anche alla newsletter: uno spunto al mese sulla vita interiore e le nuove uscite. Nessuno spam, disiscrizione con un clic.</span>
+            </label>
 
             <p id="form-feedback" class="hidden mb-5 rounded-xl px-4 py-3 text-sm" role="status" aria-live="polite"></p>
 
@@ -1545,6 +1634,7 @@
             <li><a href="#expat" class="hover:text-white transition-colors" data-i18n="foot.nav.expat">Italiani all'estero</a></li>
             <li><a href="#portfolio" class="hover:text-white transition-colors" data-i18n="foot.nav.portfolio">Portfolio</a></li>
             <li><a href="#psicovoice" class="hover:text-white transition-colors" data-i18n="foot.nav.psicovoice">PsicoVoice</a></li>
+            <li><a href="#newsletter" class="hover:text-white transition-colors" data-i18n="foot.nav.newsletter">Newsletter</a></li>
             <li><a href="#contatti" class="hover:text-white transition-colors" data-i18n="foot.nav.contatti">Contatti</a></li>
           </ul>
         </nav>
@@ -1561,6 +1651,30 @@
           <a href="https://wa.me/393455032318" target="_blank" rel="noopener" aria-label="Contatta Alberto Del Bove su WhatsApp" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-mirtillo-700 transition-colors">
             <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i>
           </a>
+        </div>
+      </div>
+      <div class="py-8 border-b border-white/10">
+        <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 max-w-2xl">
+          <div class="shrink-0">
+            <p class="text-white font-medium text-sm" data-i18n="foot.nl.title">Ricevi la newsletter</p>
+            <p class="text-xs text-white/50" data-i18n="foot.nl.p">Uno spunto al mese. Niente spam.</p>
+          </div>
+          <form data-newsletter data-nl-source="newsletter" class="flex-1 w-full" novalidate>
+            <div class="flex flex-col sm:flex-row gap-2.5">
+              <label for="foot-nl-email" class="sr-only" data-i18n="foot.nl.label">La tua email</label>
+              <input type="email" id="foot-nl-email" name="email" required autocomplete="email"
+                     class="flex-1 rounded-full border border-white/20 bg-white/10 text-white placeholder-white/40 px-4 py-2.5 text-sm focus:border-mirtillo-300 focus:ring-0 transition-colors"
+                     placeholder="nome@esempio.it" data-i18n-ph="foot.nl.ph">
+              <button type="submit" class="inline-flex items-center justify-center gap-2 bg-mirtillo-600 text-white font-semibold px-5 py-2.5 rounded-full hover:bg-mirtillo-500 transition-colors text-sm whitespace-nowrap">
+                <i data-lucide="send" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="foot.nl.cta">Iscrivimi</span>
+              </button>
+            </div>
+            <label class="flex items-start gap-2 mt-2.5 cursor-pointer">
+              <input type="checkbox" name="consent" required class="mt-0.5 h-3.5 w-3.5 rounded border-white/30 bg-white/10 text-mirtillo-600 focus:ring-mirtillo-500">
+              <span class="text-[11px] text-white/45" data-i18n="foot.nl.consent">Acconsento al trattamento dell'email secondo il GDPR. Double opt-in: conferma via email.</span>
+            </label>
+            <p data-nl-feedback class="hidden mt-2.5 rounded-lg px-3 py-2 text-xs" role="status" aria-live="polite"></p>
+          </form>
         </div>
       </div>
       <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
@@ -1630,6 +1744,8 @@
   <script src="assets/report-pdf.js"></script>
   <!-- Internazionalizzazione IT / EN / ES (italiano di default, fallback all'italiano) -->
   <script src="assets/i18n.js"></script>
+  <!-- Raccolta email / newsletter (Brevo via form ospitato; nessun dato dei test) -->
+  <script src="assets/newsletter.js"></script>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
 
@@ -2172,10 +2288,23 @@
       return true;
     }
 
+    /* Se l'utente ha spuntato la newsletter, lo iscrive a Brevo. Va chiamata
+       PRIMA di aprire il mailto, per non interrompere l'invio all'iframe. */
+    function maybeSubscribeFromContact(email, nome) {
+      const optIn = document.getElementById('cf-newsletter');
+      if (optIn && optIn.checked && window.SiteNewsletter && window.QuizCore.isValidEmail(email)) {
+        window.SiteNewsletter.subscribe({
+          email: email, name: nome, source: 'newsletter',
+          lang: (window.SiteI18N && window.SiteI18N.lang) || 'it'
+        }).catch(function () {});
+      }
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!validate()) { return; }
       const data = collectMessage();
+      maybeSubscribeFromContact(data.email, data.nome);
       const subject = 'Richiesta primo colloquio — ' + data.nome;
       const mailto = 'mailto:' + EMAIL +
         '?subject=' + encodeURIComponent(subject) +
@@ -2660,6 +2789,7 @@
     document.getElementById('whatsapp-send').addEventListener('click', function () {
       if (!validate()) { return; }
       const data = collectMessage();
+      maybeSubscribeFromContact(data.email, data.nome);
       const url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(data.body);
       window.open(url, '_blank', 'noopener');
       showFeedback('Si sta aprendo WhatsApp con il tuo messaggio già pronto: ti risponderò il prima possibile.', false);
