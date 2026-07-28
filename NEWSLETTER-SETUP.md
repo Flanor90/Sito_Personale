@@ -1,13 +1,22 @@
-# Attivare la raccolta email (newsletter) — guida in 10 minuti
+# Raccolta email (newsletter) — com'è configurata
 
 Il sito raccoglie email in **4 punti** e le invia a **Brevo** (ex-Sendinblue),
-azienda UE adatta al GDPR. Tutto è già pronto e funzionante: manca **una sola
-cosa**, incollare l'URL del tuo modulo Brevo in `assets/newsletter.js`.
+azienda UE adatta al GDPR.
 
-> Finché non lo fai, il sito usa un **ripiego**: al posto dell'invio a Brevo apre
-> il programma di posta dell'utente con una mail pre-indirizzata a te — così non
-> perdi nessun contatto nel frattempo. Quando Brevo è attivo, il ripiego si
-> disattiva da solo.
+> **Stato: attivo dal 29/07/2026.** Modulo Brevo «Sito terapeuta - iscrizione
+> newsletter» (account *Psicovoice*), lista **Sito terapeuta – Newsletter**,
+> **double opt-in attivo**, campi `EMAIL` + `NOME` + `FONTE`. L'URL è già in
+> `CONFIG.endpoints.default` dentro `assets/newsletter.js`.
+
+Il vecchio ripiego `fallbackMailto` è **spento**: apriva il programma di posta
+del visitatore, che su mobile spesso non parte — i contatti si perdevano senza
+che nessuno se ne accorgesse. Riaccendilo solo se disattivi Brevo.
+
+**Brevo è solo la casella d'ingresso**, non lo strumento di invio: le newsletter
+si mandano da SoBuddy (brand `terapeuta`), importando i contatti confermati con
+`mailer importa`. Il double opt-in di Brevo resta la prova del consenso.
+
+Le sezioni che seguono servono se un giorno devi rifare o cambiare il modulo.
 
 ---
 
@@ -15,7 +24,7 @@ cosa**, incollare l'URL del tuo modulo Brevo in `assets/newsletter.js`.
 
 | Punto sul sito | Fonte salvata (`FONTE`) |
 |---|---|
-| Fine di ogni test psicologico | `test` |
+| Fine di ogni test psicologico | `test-junghiano`, `test-burnout`, `test-adhd`, `test-domanda` |
 | Sezione **Newsletter** (prima dei Contatti) | `newsletter` |
 | Footer (tutte le pagine) | `newsletter` |
 | Sezione **Compendi** ("Avvisami…") | `compendi` |
@@ -23,6 +32,13 @@ cosa**, incollare l'URL del tuo modulo Brevo in `assets/newsletter.js`.
 
 La **fonte** viaggia insieme all'email: in Brevo puoi filtrare/segmentare le
 campagne per fonte (es. inviare solo a chi è arrivato dai compendi).
+
+Dai test la fonte dice **quale** test è stato completato (`test-adhd`,
+`test-burnout`…): è ciò che ti permette di far partire una sequenza di email
+sul tema giusto invece di una newsletter generica. Se in `endpoints` metti un
+URL sotto la chiave `test`, vale per tutte e quattro le varianti — la fonte
+granulare ricade sulla sua famiglia, e poi su `default`. Metti un URL sotto
+`test-adhd` solo se vuoi una lista separata per quel singolo test.
 
 > Privacy: le **risposte dei test non lasciano mai il browser**. Viaggia solo
 > l'email che la persona sceglie di lasciare, con doppio consenso (checkbox +

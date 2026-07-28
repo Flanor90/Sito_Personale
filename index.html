@@ -743,16 +743,15 @@
           </div>
           <div id="quiz-result-body" class="text-inchiostro/85 space-y-4"></div>
           <p class="text-xs text-inchiostro/50 max-w-lg mx-auto text-center mt-6 mb-8" data-i18n="test.result.disclaimer">Questo strumento offre spunti di auto-osservazione: non è un test diagnostico e non sostituisce una valutazione professionale.</p>
-          <div class="flex flex-col sm:flex-row justify-center gap-3 mb-6">
-            <button type="button" id="quiz-download" class="inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-7 py-3.5 rounded-full hover:bg-mirtillo-700 transition-colors">
-              <i data-lucide="file-down" class="w-5 h-5" aria-hidden="true"></i> <span id="quiz-download-label" data-i18n="test.download">Scarica il report in PDF</span>
-            </button>
-          </div>
-          <div class="bg-crema rounded-2xl p-6 mb-6 max-w-xl mx-auto border border-tortora-dark/50">
-            <div class="flex items-start gap-3 mb-4">
+          <!-- Richiesta email: primo blocco dopo il risultato, nel momento in cui
+               la domanda è più viva. La promessa è la sequenza psicoeducativa,
+               non l'invio del profilo: le risposte non lasciano mai il browser. -->
+          <div class="bg-crema rounded-2xl p-6 sm:p-7 mb-6 max-w-xl mx-auto border border-mirtillo-200 shadow-sm">
+            <div class="flex items-start gap-3 mb-2">
               <i data-lucide="mail-plus" class="w-6 h-6 shrink-0 text-mirtillo-600 mt-0.5" aria-hidden="true"></i>
-              <p class="text-sm text-notte font-medium" data-i18n="test.nl.q">Ti è stato utile? Ricevi ogni mese un nuovo strumento di auto-osservazione e le mie riflessioni. Le tue risposte al test restano solo tue: qui lasci soltanto l'email.</p>
+              <p class="text-base text-notte font-semibold" data-i18n="test.nl.q">Ora la domanda vera è cosa farne. Lascia la tua email: ti scrivo cinque volte su questo tema.</p>
             </div>
+            <p class="text-sm text-inchiostro/70 mb-4 sm:pl-9" data-i18n="test.nl.p">Come si legge un risultato come il tuo e come <em>non</em> si legge, come funziona davvero un percorso, e un pezzo di clinica dalla stanza. Poi solo una email al mese, se vorrai restare. Le tue risposte al test restano nel tuo browser: qui lasci soltanto l'indirizzo.</p>
             <form data-newsletter data-nl-source="test" novalidate>
               <div class="flex flex-col sm:flex-row gap-2.5">
                 <label for="test-nl-email" class="sr-only" data-i18n="test.nl.label">La tua email</label>
@@ -769,6 +768,11 @@
               </label>
               <p data-nl-feedback class="hidden mt-3 rounded-xl px-4 py-2.5 text-sm" role="status" aria-live="polite"></p>
             </form>
+          </div>
+          <div class="flex flex-col sm:flex-row justify-center gap-3 mb-6">
+            <button type="button" id="quiz-download" class="inline-flex items-center justify-center gap-2 border border-tortora-dark bg-white text-notte font-semibold px-7 py-3 rounded-full hover:border-mirtillo-600 hover:text-mirtillo-700 transition-colors">
+              <i data-lucide="file-down" class="w-5 h-5" aria-hidden="true"></i> <span id="quiz-download-label" data-i18n="test.download">Scarica il report in PDF</span>
+            </button>
           </div>
           <div class="bg-mirtillo-50 rounded-2xl p-6 mb-6 text-center">
             <p class="font-medium text-notte mb-4" data-i18n="test.result.share.q">Vuoi dare parole a questo risultato? Prenota un colloquio e condividilo con me: sarà un ottimo punto di partenza.</p>
@@ -792,7 +796,7 @@
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
               <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="test.faq2.q">Dove finiscono le mie risposte?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
-              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="test.faq2.a">Da nessuna parte: i test funzionano interamente nel tuo browser. Le risposte non vengono salvate, tracciate né inviate — il risultato lo vedi solo tu, e sei tu a decidere se condividerlo con me nel modulo di contatto. Se al termine scegli di lasciare l'email per la newsletter, viene inviato solo quell'indirizzo (mai le tue risposte), e puoi disiscriverti quando vuoi.</p>
+              <p class="mt-3 text-sm text-inchiostro/75" data-i18n="test.faq2.a">Da nessuna parte: i test funzionano interamente nel tuo browser. Le risposte non vengono salvate, tracciate né inviate — il risultato lo vedi solo tu, e sei tu a decidere se condividerlo con me nel modulo di contatto. Se al termine scegli di lasciare l'email, vengono inviati solo quell'indirizzo e il nome del test che hai appena fatto — mai le tue risposte, mai il tuo risultato — così le email che ricevi parlano del tema giusto. Puoi disiscriverti quando vuoi.</p>
             </details>
             <details class="group bg-white rounded-2xl shadow-sm px-6 py-4">
               <summary class="flex items-center justify-between gap-4 cursor-pointer font-semibold text-notte list-none"><span data-i18n="test.faq3.q">Quanto durano e quanto costano?</span> <i data-lucide="chevron-down" class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true"></i></summary>
@@ -2033,6 +2037,11 @@
       document.getElementById('quiz-result-title').textContent = r.title;
       document.getElementById('quiz-result-code').textContent = r.code;
       document.getElementById('quiz-result-body').innerHTML = r.html;
+      // La fonte porta con sé quale test è stato completato (es. "test-adhd"):
+      // serve a Brevo per far partire la sequenza giusta per quel tema. Viaggia
+      // solo l'id del test, mai le risposte.
+      const nlForm = quizResult.querySelector('form[data-newsletter]');
+      if (nlForm) { nlForm.setAttribute('data-nl-source', 'test-' + quiz.id); }
       quizProgressFill.style.width = '100%';
       quizShow(quizResult);
       renderIcons();

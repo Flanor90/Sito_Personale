@@ -38,8 +38,10 @@
     // Basta UN endpoint in `default`: la fonte viene salvata nell'attributo FONTE
     // e puoi segmentare le campagne da lì. Se preferisci liste separate, crea più
     // moduli Brevo e incolla un URL per ciascuna fonte (test/newsletter/compendi…).
+    // Modulo "Sito terapeuta - iscrizione newsletter" (Brevo, account Psicovoice):
+    // double opt-in attivo, lista "Sito terapeuta – Newsletter", campi EMAIL/NOME/FONTE.
     endpoints: {
-      default:    '',
+      default:    'https://e83a58bc.sibforms.com/serve/MUIFAAeBN6JyNfxfOlAcWXBLyK_9T4KFOppmy7AzJlyYzoUaSLmzVKjzaU9cy8ZLUZfx961f2thY1TWxH2DUjxD0lwJ3bM03oMdMAVmDf-dJ82FbT--H_N1820c4xa6IWmhkBo_36l7NoUNVJeB7N6ZbrDtPu48onQUQh-DVsD5XwMgyD7Sz-357xURAy9tNVM_4TD8Cw7o-JvICeA==',
       newsletter: '',
       test:       '',
       compendi:   '',
@@ -57,9 +59,10 @@
     },
 
     // Ripiego se nessun endpoint è ancora configurato: apre il client di posta
-    // dell'utente con una mail pre-indirizzata a te, così NON perdi il contatto
-    // nel periodo prima di attivare Brevo. Metti a false quando Brevo è attivo.
-    fallbackMailto: true,
+    // dell'utente con una mail pre-indirizzata a te. Spento dal 29/07/2026, da
+    // quando Brevo è attivo: dipendeva dal client di posta del visitatore e su
+    // mobile spesso non partiva, quindi i contatti si perdevano in silenzio.
+    fallbackMailto: false,
     fallbackEmail:  'alberto.delbove.psicoterapeuta@gmail.com'
   };
 
@@ -70,11 +73,17 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim());
   }
 
-  // Ricava l'endpoint per una data fonte, con fallback su `default`.
+  // Ricava l'endpoint per una data fonte. Le fonti composte ("test-adhd")
+  // ricadono prima sulla loro famiglia ("test") e poi su `default`, così basta
+  // configurare un endpoint per famiglia anche se la fonte è granulare.
   function resolveEndpoint(source, config) {
     var cfg = config || CONFIG;
     var eps = cfg.endpoints || {};
-    return (source && eps[source]) ? eps[source] : (eps.default || '');
+    var key = String(source || '').trim();
+    if (key && eps[key]) { return eps[key]; }
+    var dash = key.indexOf('-');
+    if (dash > 0 && eps[key.slice(0, dash)]) { return eps[key.slice(0, dash)]; }
+    return eps.default || '';
   }
 
   // Compone la mappa dei campi da inviare al modulo Brevo. Pura: riceve un

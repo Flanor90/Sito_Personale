@@ -40,6 +40,18 @@ test('resolveEndpoint restituisce stringa vuota se non c\'è nessun endpoint', (
   assert.equal(Newsletter.resolveEndpoint('test', { endpoints: {} }), '');
 });
 
+test('resolveEndpoint: una fonte granulare ricade sulla sua famiglia, poi su default', () => {
+  const conFamiglia = { endpoints: { default: 'D', test: 'T' } };
+  assert.equal(Newsletter.resolveEndpoint('test-adhd', conFamiglia), 'T');
+
+  const soloDefault = { endpoints: { default: 'D' } };
+  assert.equal(Newsletter.resolveEndpoint('test-adhd', soloDefault), 'D');
+
+  // L'endpoint esatto, se c'è, ha comunque la precedenza sulla famiglia.
+  const conEsatto = { endpoints: { default: 'D', test: 'T', 'test-adhd': 'A' } };
+  assert.equal(Newsletter.resolveEndpoint('test-adhd', conEsatto), 'A');
+});
+
 /* ---------------- buildPayload ---------------- */
 
 test('buildPayload include email, fonte e campi tecnici; trimma i valori', () => {
