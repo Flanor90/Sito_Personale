@@ -275,6 +275,9 @@
       'ris.a7.cat': 'About me',
       'ris.a7.t': 'Why I do this job (and why in two worlds)',
       'ris.a7.d': 'Psychotherapist and People Manager: two words that seem distant and that, in my story, have always spoken to each other. A personal account of how I got here.',
+      'ris.a8.cat': 'Psychology & technology',
+      'ris.a8.t': 'Can an artificial intelligence be your therapist?',
+      'ris.a8.d': 'The Italian Psychologists\' Association has gone to court against a platform offering sessions run by AI-generated therapists. This isn\'t professional-guild news: it concerns anyone who has opened an app at two in the morning.',
 
       /* --- Portfolio --- */
       'pf.kicker': 'Portfolio · MSc Strategic HRM',
@@ -711,6 +714,9 @@
       'ris.a7.cat': 'Sobre mí',
       'ris.a7.t': 'Por qué hago este oficio (y por qué en dos mundos)',
       'ris.a7.d': 'Psicoterapeuta y People Manager: dos palabras que parecen lejanas y que, en mi historia, siempre se han hablado. Un relato personal de cómo llegué hasta aquí.',
+      'ris.a8.cat': 'Psicología y tecnología',
+      'ris.a8.t': '¿Puede una inteligencia artificial hacerte de terapeuta?',
+      'ris.a8.d': 'El Colegio de Psicólogos italiano ha llevado a los tribunales a una plataforma que ofrece sesiones conducidas por terapeutas generados con IA. No es una noticia gremial: concierne a cualquiera que haya abierto una app a las dos de la madrugada.',
 
       /* --- Portfolio --- */
       'pf.kicker': 'Portfolio · MSc Strategic HRM',
