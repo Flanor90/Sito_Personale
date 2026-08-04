@@ -69,8 +69,8 @@ function ritaglia(html, inizio, fine, nome) {
  * file (da "assets/…" a "/assets/…", altrimenti diventerebbero
  * "/test/assets/…" e non caricherebbero).
  */
-function adatta(blocco) {
-  return blocco
+function adatta(blocco, lingua) {
+  const b = blocco
     // Il link "salta al contenuto" deve restare interno alla pagina.
     .replace(/href="#main"/g, 'href="§MAIN§"')
     .replace(/href="#/g, 'href="/#')
@@ -78,6 +78,16 @@ function adatta(blocco) {
     .replace(/(src|href)="assets\//g, '$1="/assets/')
     .replace(/(src|href)="(?!\/|https?:|#|mailto:|tel:)([a-z0-9._-]+\.(?:png|jpe?g|webp|svg|ico))"/gi,
              '$1="/$2"');
+
+  if (!lingua || lingua === 'it') { return b; }
+
+  // Da una pagina non italiana, i link del menu devono riportare alla home
+  // NELLA STESSA LINGUA. Senza questo, chi naviga da /en/ finisce sulla home
+  // in italiano: l'inglese non era mai stato salvato come sua scelta, ed è
+  // giusto così — non gliel'abbiamo chiesto.
+  return b
+    .replace(/href="\/#/g, `href="/?lang=${lingua}#`)
+    .replace(/href="\/"/g, `href="/?lang=${lingua}"`);
 }
 
 /* ------------------------------------------------------------
@@ -118,9 +128,32 @@ function leggiPagina(file) {
 
 function componi({ meta, contenuto }, parti) {
   const url = `${SITO}/${meta.slug}/`;
+  const lingua = meta.lingua || 'it';
   const immagine = meta.immagine
     ? `${SITO}/${meta.immagine.replace(/^\//, '')}`
     : `${SITO}/assets/alberto-del-bove-psicoterapeuta.webp`;
+
+  /* ------------------------------------------------------------
+     hreflang: dire a Google che due pagine sono la stessa cosa in
+     lingue diverse.
+     ------------------------------------------------------------
+     Senza queste righe, la pagina inglese e quella italiana sembrano
+     due contenuti scollegati, e Google può mostrare quella sbagliata a
+     seconda del paese. Con queste, sa che sono varianti e sceglie in
+     base alla lingua di chi cerca.
+
+     Ogni pagina deve elencare ANCHE se stessa: è un requisito, non una
+     ridondanza — una pagina che non si autodichiara viene ignorata.
+     x-default indica dove mandare chi non rientra in nessuna lingua
+     dichiarata; qui è l'italiano, che è la versione principale.
+  ------------------------------------------------------------ */
+  const alternati = meta.alternati
+    ? Object.entries(meta.alternati)
+      .map(([codice, percorso]) =>
+        `  <link rel="alternate" hreflang="${codice}" href="${SITO}${percorso}">`)
+      .join('\n') + `\n  <link rel="alternate" hreflang="x-default" href="${
+        SITO}${meta.alternati.it ?? '/'}">`
+    : '';
 
   // Dati strutturati: le briciole di pane aiutano Google a capire che la
   // pagina è un ramo del sito, non un doppione della home.
@@ -136,7 +169,7 @@ function componi({ meta, contenuto }, parti) {
   const schemi = [briciole].concat(meta.schema ? [meta.schema] : []);
 
   return `<!DOCTYPE html>
-<html lang="it" class="scroll-smooth">
+<html lang="${lingua}" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -150,6 +183,7 @@ function componi({ meta, contenuto }, parti) {
   <meta name="author" content="Alberto Del Bove">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="${url}">
+${alternati}
 
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
@@ -158,7 +192,7 @@ function componi({ meta, contenuto }, parti) {
   <meta name="format-detection" content="telephone=no">
 
   <meta property="og:type" content="article">
-  <meta property="og:locale" content="it_IT">
+  <meta property="og:locale" content="${lingua === 'en' ? 'en_GB' : lingua === 'es' ? 'es_ES' : 'it_IT'}">
   <meta property="og:title" content="${meta.ogTitolo || meta.titolo}">
   <meta property="og:description" content="${meta.descrizione}">
   <meta property="og:url" content="${url}">
@@ -181,13 +215,13 @@ ${JSON.stringify(schemi.length === 1 ? schemi[0] : schemi, null, 2)}
 </head>
 <body class="bg-crema text-inchiostro font-sans antialiased">
 
-${parti.header}
+${adatta(parti.header, lingua)}
 
 <main id="main" class="pt-24">
 ${contenuto}
 </main>
 
-${parti.footer}
+${adatta(parti.footer, lingua)}
 
 <script src="/assets/i18n.js"></script>
 <script src="/assets/analytics.js"></script>
@@ -209,12 +243,12 @@ function main() {
   // questo taglio a partire dal tag vero e proprio, che è inequivocabile,
   // e uso i marcatori solo per delimitare la fine.
   const parti = {
-    header: adatta(ritaglia(index,
+    header: ritaglia(index,
       '<header id="site-header"', '<!-- FINE INTESTAZIONE CONDIVISA -->', 'intestazione')
-      .replace(/^/, '<header id="site-header"')),
-    footer: adatta(ritaglia(index,
+      .replace(/^/, '<header id="site-header"'),
+    footer: ritaglia(index,
       '<footer class="bg-notte-deep', '<!-- FINE PIÈ DI PAGINA CONDIVISO -->', 'piè di pagina')
-      .replace(/^/, '<footer class="bg-notte-deep'))
+      .replace(/^/, '<footer class="bg-notte-deep')
   };
 
   const file = fs.readdirSync(SORGENTE).filter((f) => f.endsWith('.html')).sort();

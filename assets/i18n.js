@@ -926,7 +926,17 @@
     el.setAttribute(attr, (dict && dict[key] != null) ? dict[key] : el[store]);
   }
 
-  function apply(lang) {
+  /**
+   * Applica una lingua alla pagina.
+   *
+   * `ricorda` di default è true, perché il caso normale è il visitatore
+   * che clicca IT/EN/ES e si aspetta di ritrovare la sua scelta domani.
+   * Va messo a false quando la lingua non è una scelta dell'utente ma una
+   * proprietà della pagina (come su /en/): altrimenti chi apre una pagina
+   * inglese si ritroverebbe tutto il sito in inglese per sempre, senza
+   * aver chiesto niente.
+   */
+  function apply(lang, ricorda) {
     if (LANGS.indexOf(lang) === -1) { lang = 'it'; }
     state.lang = lang;
 
@@ -937,12 +947,25 @@
     // <html lang="…"> per accessibilità e SEO on-page
     document.documentElement.setAttribute('lang', lang);
 
+    /* Blocchi riservati a una lingua sola.
+       Serve per contenuti che esistono solo in una lingua e sarebbero
+       fuorvianti nelle altre: lo shop Etsy, per esempio, vende soltanto
+       materiali in inglese, e mostrarlo a un visitatore italiano
+       significherebbe mandarlo a comprare qualcosa che non può leggere.
+       L'attributo accetta più lingue separate da spazio. */
+    document.querySelectorAll('[data-solo-lingua]').forEach(function (el) {
+      var ammesse = el.getAttribute('data-solo-lingua').split(/\s+/);
+      el.hidden = ammesse.indexOf(lang) === -1;
+    });
+
     // Stato visivo dei bottoni lingua
     document.querySelectorAll('.lang-btn').forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
     });
 
-    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+    if (ricorda !== false) {
+      try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+    }
 
     // Ridisegna le icone (gli innerHTML sostituiti non contengono icone,
     // ma alcune label sì): sicuro chiamarlo comunque.
@@ -954,14 +977,60 @@
     if (typeof state.onChange === 'function') { state.onChange(lang); }
   }
 
+  /**
+   * Quale lingua mostrare, in ordine di precedenza.
+   *
+   * 1. Quella dichiarata dalla pagina stessa (<html lang="en">).
+   *    Le pagine scritte direttamente in una lingua — come /en/ — devono
+   *    imporla: sarebbe assurdo che una pagina inglese si presentasse con
+   *    l'intestazione in italiano solo perché il visitatore aveva scelto
+   *    l'italiano la settimana scorsa.
+   *
+   * 2. Quella nell'indirizzo (?lang=en). Serve a poter CONDIVIDERE una
+   *    versione: prima la lingua viveva solo in localStorage, quindi non
+   *    esisteva nessun link che aprisse il sito in inglese.
+   *
+   * 3. Quella salvata dalla volta precedente.
+   *
+   * 4. Italiano.
+   */
+  function linguaIniziale() {
+    var dichiarata = (document.documentElement.getAttribute('lang') || '').slice(0, 2);
+    if (LANGS.indexOf(dichiarata) !== -1 && dichiarata !== 'it') {
+      // Non la salvo: vale per questa pagina, non per la scelta dell'utente.
+      return { lang: dichiarata, ricorda: false };
+    }
+
+    try {
+      var q = new URLSearchParams(location.search).get('lang');
+      if (q && LANGS.indexOf(q) !== -1) { return { lang: q, ricorda: true }; }
+    } catch (e) { /* browser vecchio: si prosegue */ }
+
+    var salvata = 'it';
+    try { salvata = localStorage.getItem(STORAGE_KEY) || 'it'; } catch (e) {}
+    return { lang: salvata, ricorda: false };
+  }
+
   function init() {
-    var saved = 'it';
-    try { saved = localStorage.getItem(STORAGE_KEY) || 'it'; } catch (e) {}
+    var scelta = linguaIniziale();
+
     // Bottoni lingua (desktop + mobile)
     document.querySelectorAll('.lang-btn').forEach(function (b) {
-      b.addEventListener('click', function () { apply(b.getAttribute('data-lang')); });
+      b.addEventListener('click', function () {
+        var l = b.getAttribute('data-lang');
+        apply(l, true);
+        // La lingua finisce anche nell'indirizzo, così quello che il
+        // visitatore vede è anche quello che può copiare e mandare.
+        try {
+          var url = new URL(location.href);
+          if (l === 'it') { url.searchParams.delete('lang'); }
+          else { url.searchParams.set('lang', l); }
+          history.replaceState(null, '', url);
+        } catch (e) { /* niente */ }
+      });
     });
-    apply(saved);
+
+    apply(scelta.lang, scelta.ricorda);
   }
 
   // API pubblica per i contenuti dinamici

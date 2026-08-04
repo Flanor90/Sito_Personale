@@ -11,6 +11,14 @@
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://www.albertodelbove-psicologo.it/">
 
+  <!-- Varianti linguistiche. La home è italiana; /en/ è la pagina scritta
+       direttamente in inglese. Ogni pagina deve dichiarare anche se stessa,
+       altrimenti Google ignora l'intero gruppo. x-default punta all'italiano,
+       che è la versione principale. -->
+  <link rel="alternate" hreflang="it" href="https://www.albertodelbove-psicologo.it/">
+  <link rel="alternate" hreflang="en" href="https://www.albertodelbove-psicologo.it/en/">
+  <link rel="alternate" hreflang="x-default" href="https://www.albertodelbove-psicologo.it/">
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
@@ -85,7 +93,9 @@
     "sameAs": [
       "https://www.linkedin.com/in/alberto-del-bove-006b2a124",
       "https://www.instagram.com/alberto_del_bove_psicologo/",
-      "https://www.facebook.com/alberto.delbovepsicoterapeuta/"
+      "https://www.facebook.com/alberto.delbovepsicoterapeuta/",
+      "https://www.etsy.com/shop/TheConsultingRoom",
+      "https://psicovoice.gumroad.com"
     ],
     "knowsAbout": ["Psicoterapia psicoanalitica", "Analisi della Domanda", "Ansia e attacchi di panico", "Burnout e stress lavorativo", "Psicologia della migrazione"],
     "makesOffer": [
@@ -150,7 +160,9 @@
     "sameAs": [
       "https://www.linkedin.com/in/alberto-del-bove-006b2a124",
       "https://www.instagram.com/alberto_del_bove_psicologo/",
-      "https://www.facebook.com/alberto.delbovepsicoterapeuta/"
+      "https://www.facebook.com/alberto.delbovepsicoterapeuta/",
+      "https://www.etsy.com/shop/TheConsultingRoom",
+      "https://psicovoice.gumroad.com"
     ],
     "worksFor": { "@id": "https://www.albertodelbove-psicologo.it/#psicoterapeuta" }
   }
@@ -1393,6 +1405,30 @@
               </div>
             </div>
           </article>
+        </div>
+
+        <!-- Shop Etsy: visibile solo a chi legge il sito in inglese.
+             Vende esclusivamente materiali in inglese; mostrarlo a un
+             visitatore italiano vorrebbe dire mandarlo a comprare qualcosa
+             che non può leggere. Il meccanismo è in assets/i18n.js. -->
+        <div data-solo-lingua="en" hidden class="mt-8 rounded-3xl border border-mirtillo-200 bg-white p-7 reveal">
+          <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white bg-mirtillo-600 px-3 py-1.5 rounded-full mb-4">
+            <i data-lucide="shopping-bag" class="w-3.5 h-3.5" aria-hidden="true"></i> The Consulting Room
+          </span>
+          <h3 class="font-serif text-xl sm:text-2xl text-notte mb-2">English editions are on Etsy</h3>
+          <p class="text-inchiostro/75 text-[0.95rem] leading-relaxed mb-5">
+            Clinical compendia written in English, as instant PDF and EPUB downloads.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="https://www.etsy.com/shop/TheConsultingRoom" target="_blank" rel="noopener"
+               data-evento="cta_click" data-evento-etichetta="home-etsy"
+               class="inline-flex items-center gap-2 bg-notte text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-mirtillo-700 transition-colors">
+              Open the shop <i data-lucide="external-link" class="w-3.5 h-3.5" aria-hidden="true"></i>
+            </a>
+            <a href="/en/" class="inline-flex items-center gap-2 border border-tortora-dark px-5 py-2.5 rounded-full text-sm font-semibold text-notte hover:bg-crema-dark transition-colors">
+              English page
+            </a>
+          </div>
         </div>
 
         <p class="mt-8 reveal">

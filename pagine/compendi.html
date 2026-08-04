@@ -7,7 +7,8 @@
   "ogTitolo": "Compendi su ADHD e trauma relazionale — per clinici e per pazienti",
   "immagine": "assets/cover-adhd-trauma-clinici.jpg",
   "priorita": "0.9",
-  "frequenza": "weekly"
+  "frequenza": "weekly",
+  "alternati": { "it": "/compendi/", "en": "/en/" }
 }
 -->
 
@@ -288,6 +289,56 @@
       Gli estratti pubblicati sul sito sono una piccola anteprima: il testo
       integrale è nel volume completo. L’acquisto avviene su Gumroad, che gestisce
       pagamento e consegna del file.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     Edizioni inglesi
+     ------------------------------------------------------------
+     Il riquadro Etsy ha data-solo-lingua="en": compare soltanto quando
+     il visitatore ha scelto l'inglese. Lo shop vende esclusivamente
+     materiali in inglese, e proporlo a un lettore italiano vorrebbe
+     dire mandarlo a comprare qualcosa che non può leggere.
+
+     Il link alla pagina /en/ invece resta sempre visibile: è un link di
+     lingua, non un'insegna commerciale, ed è anche il modo in cui Google
+     scopre che quella pagina esiste.
+     ============================================================ -->
+<section class="py-14 bg-crema" aria-labelledby="titolo-inglese">
+  <div class="max-w-5xl mx-auto px-5">
+
+    <div data-solo-lingua="en" hidden
+         class="rounded-[2rem] border border-mirtillo-200 bg-white p-7 sm:p-9 mb-8">
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white bg-mirtillo-600 px-3 py-1.5 rounded-full mb-4">
+        <i data-lucide="shopping-bag" class="w-3.5 h-3.5" aria-hidden="true"></i> The Consulting Room
+      </span>
+      <h2 class="font-serif text-2xl sm:text-3xl leading-tight text-notte mb-3">
+        English editions are on Etsy
+      </h2>
+      <p class="text-inchiostro/75 leading-relaxed mb-6">
+        Clinical compendia written in English — adult ADHD read psychodynamically,
+        ADHD and relational trauma, and AI in the consulting room. Instant PDF and
+        EPUB downloads. Italian editions stay on Gumroad.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="https://www.etsy.com/shop/TheConsultingRoom" target="_blank" rel="noopener"
+           data-evento="cta_click" data-evento-etichetta="compendi-etsy"
+           class="inline-flex items-center gap-2 bg-notte text-white px-5 py-3 rounded-full font-semibold hover:bg-mirtillo-700 transition-colors">
+          Open the shop <i data-lucide="external-link" class="w-4 h-4" aria-hidden="true"></i>
+        </a>
+        <a href="/en/"
+           class="inline-flex items-center gap-2 border border-tortora-dark px-5 py-3 rounded-full font-semibold text-notte hover:bg-crema-dark transition-colors">
+          See the English page
+        </a>
+      </div>
+    </div>
+
+    <p class="text-sm">
+      <a href="/en/" hreflang="en" class="inline-flex items-center gap-1.5 font-semibold text-mirtillo-700 hover:text-notte transition-colors">
+        <i data-lucide="languages" class="w-4 h-4" aria-hidden="true"></i>
+        English editions — compendia written in English for clinicians
+      </a>
     </p>
   </div>
 </section>
