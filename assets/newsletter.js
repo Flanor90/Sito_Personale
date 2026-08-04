@@ -245,7 +245,10 @@
 
       if (endpoint) {
         postToBrevo(endpoint, buildPayload(data, CONFIG));
-        resolve({ ok: true, mode: 'brevo' });
+        // `archivio` è la promessa del nostro server: chi ha bisogno di
+        // sapere com'è andata (la consegna di una guida, per esempio) la
+        // aspetta; tutti gli altri proseguono senza attendere.
+        resolve({ ok: true, mode: 'brevo', archivio: arrivato });
         return;
       }
 
@@ -258,8 +261,11 @@
       // Senza Brevo, l'esito dipende dall'archivio proprio: qui sì che
       // devo aspettare la risposta, perché è l'unica strada rimasta.
       arrivato.then(function (esito) {
-        if (esito && esito.ok) { resolve({ ok: true, mode: 'archivio' }); }
-        else { reject({ ok: false, reason: 'unconfigured' }); }
+        if (esito && esito.ok) {
+          resolve({ ok: true, mode: 'archivio', archivio: Promise.resolve(esito) });
+        } else {
+          reject({ ok: false, reason: 'unconfigured' });
+        }
       });
     });
   }
@@ -279,12 +285,43 @@
     }
   }
 
-  // Fa partire il download di un file allegato all'iscrizione.
-  //
-  // Il file arriva subito, non dopo la conferma dell'email: il doppio
-  // opt-in serve a proteggere la casella di posta, non a tenere in ostaggio
-  // una guida gratuita. Chi conferma riceve le uscite successive; chi non
-  // conferma ha comunque avuto quello per cui era venuto.
+  /**
+   * Consegna un materiale gratuito (la guida in PDF).
+   *
+   * La consegna avviene per EMAIL, non con un download immediato: è quello
+   * che rende sensato chiedere l'indirizzo. Un indirizzo inventato non
+   * riceve niente, quindi chi vuole la guida ne lascia uno vero.
+   *
+   * Ma se l'email non parte — perché l'SMTP non è ancora configurato, o
+   * perché il server di posta ha rifiutato — la persona ha comunque
+   * lasciato il suo indirizzo e si aspetta qualcosa in cambio. In quel
+   * caso il file parte subito dal browser: nessuno resta a mani vuote per
+   * un problema che non lo riguarda.
+   */
+  function consegnaMateriale(form, percorso, res) {
+    var attesa = res && res.archivio ? res.archivio : Promise.resolve(null);
+
+    attesa.then(function (esito) {
+      if (esito && esito.stato === 'materiale_inviato') {
+        setFeedback(form, t('nl.ok.materiale',
+          'Fatto: ti ho appena inviato la guida per email. Se non la vedi entro qualche minuto, controlla la posta indesiderata.'), false);
+        if (hasDOM && window.SiteAnalytics) {
+          window.SiteAnalytics.evento('guida_inviata', {
+            fonte: form.getAttribute('data-nl-source') || 'newsletter'
+          });
+        }
+        return;
+      }
+
+      // Ripiego: il server non è riuscito a spedirla.
+      avviaDownload(form, percorso);
+      setFeedback(form, t('nl.ok.download',
+        'Ecco la guida: il download è appena partito.'), false);
+    });
+  }
+
+  // Fa partire il download di un file direttamente dal browser.
+  // Usato solo come ripiego, quando la consegna per email non riesce.
   function avviaDownload(form, percorso) {
     var a = document.createElement('a');
     a.href = percorso;
@@ -352,10 +389,9 @@
             fonte: form.getAttribute('data-nl-source') || 'newsletter'
           });
         }
-        var scarica = form.getAttribute('data-nl-download');
-        if (scarica) {
-          avviaDownload(form, scarica);
-          setFeedback(form, t('nl.ok.download', 'Ecco la guida: il download è appena partito. Ti ho anche inviato una email di conferma — confermando riceverai le prossime uscite.'), false);
+        var materiale = form.getAttribute('data-nl-materiale');
+        if (materiale) {
+          consegnaMateriale(form, materiale, res);
         } else if (res.mode === 'mailto') {
           setFeedback(form, t('nl.ok.mailto', 'Si sta aprendo il tuo programma di posta con la richiesta già pronta: inviala per completare.'), false);
         } else {

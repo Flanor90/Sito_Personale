@@ -13,7 +13,7 @@
 // ============================================================
 
 import { entroIlLimite, type ImpostazioniSito, type ImpostazioniSmtp, type ImpostazioniTrello, leggiImpostazioni, servizio } from './lib/db.ts';
-import { connessione, emailConferma, emailNotificaRichiesta, smtpConfigurato } from './lib/mail.ts';
+import { connessione, emailConferma, emailMateriale, emailNotificaRichiesta, type Materiale, smtpConfigurato } from './lib/mail.ts';
 import { creaScheda, descrizioneRichiesta } from './lib/trello.ts';
 import {
   cors,
@@ -236,35 +236,50 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
     }
   }
 
-  /* ---------- Email di conferma (double opt-in) ---------- */
+  /* ---------- Email: materiale gratuito e/o conferma ---------- */
+
+  // Questa fonte consegna un materiale (es. la guida in PDF)?
+  const materiali = await leggiImpostazioni<Record<string, Materiale>>(sb, 'materiali');
+  const materiale = materiali[source] ?? null;
 
   let stato = 'salvato';
 
-  if (daConfermare && smtpConfigurato(smtp)) {
-    const token = nuovoToken();
-    const scadenza = new Date(Date.now() + 7 * 864e5).toISOString();
-    await sb.from('tokens').insert({
-      token, contact_id: contatto!.id, purpose: 'confirm', expires_at: scadenza,
-    });
+  if (daConfermare || materiale) {
+    // Il token serve in entrambi i casi: come link di conferma nell'email
+    // di iscrizione, o come poscritto in quella che consegna la guida.
+    let linkConferma: string | undefined;
 
-    // Il link punta alla funzione, non al sito: così la conferma funziona
-    // anche se un domani il sito cambia indirizzo o struttura.
-    const linkConferma = `${Deno.env.get('SUPABASE_URL')}/functions/v1/api/confirm?t=${token}`;
-
-    try {
-      const conn = await connessione(smtp);
-      const m = emailConferma({ lang, linkConferma, sito });
-      await conn.invia({ a: email, oggetto: m.oggetto, html: m.html, testo: m.testo });
-      await conn.chiudi();
-      stato = 'da_confermare';
-    } catch (e) {
-      console.error('[collect] conferma:', e);
-      stato = 'salvato_senza_conferma';
+    if (daConfermare) {
+      const token = nuovoToken();
+      const scadenza = new Date(Date.now() + 7 * 864e5).toISOString();
+      await sb.from('tokens').insert({
+        token, contact_id: contatto!.id, purpose: 'confirm', expires_at: scadenza,
+      });
+      // Il link punta alla funzione, non al sito: così la conferma funziona
+      // anche se un domani il sito cambia indirizzo o struttura.
+      linkConferma = `${Deno.env.get('SUPABASE_URL')}/functions/v1/api/confirm?t=${token}`;
     }
-  } else if (daConfermare) {
-    // SMTP non ancora configurato: il contatto resta in attesa e il
-    // pannello lo segnala, così nessuna iscrizione va persa in silenzio.
-    stato = 'salvato_senza_conferma';
+
+    if (smtpConfigurato(smtp)) {
+      try {
+        const conn = await connessione(smtp);
+        const m = materiale
+          ? emailMateriale({ materiale, linkConferma, sito })
+          : emailConferma({ lang, linkConferma: linkConferma!, sito });
+        await conn.invia({ a: email, oggetto: m.oggetto, html: m.html, testo: m.testo });
+        await conn.chiudi();
+        stato = materiale ? 'materiale_inviato' : 'da_confermare';
+      } catch (e) {
+        console.error('[collect] invio:', e);
+        stato = materiale ? 'materiale_non_inviato' : 'salvato_senza_conferma';
+      }
+    } else {
+      // SMTP non ancora configurato. Il contatto è salvo e il pannello lo
+      // segnala; per il materiale rispondo esplicitamente che non è partito,
+      // così la pagina può offrire il download diretto invece di lasciare
+      // la persona a mani vuote con una promessa non mantenuta.
+      stato = materiale ? 'materiale_non_inviato' : 'salvato_senza_conferma';
+    }
   } else if (contatto!.status === 'confirmed') {
     stato = 'gia_confermato';
   }

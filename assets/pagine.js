@@ -124,8 +124,88 @@
       blocchi.forEach(function (el) { el.classList.add('is-visible'); });
     }
 
+    /* ---------- Filtro dei materiali per pubblico ---------- */
+    filtroPubblico();
+
     /* ---------- Click tracciati sulle chiamate all'azione ---------- */
     // analytics.js lo fa già da sé; qui non serve altro.
+  }
+
+  /**
+   * Mostra solo i materiali destinati a un certo pubblico.
+   *
+   * Un terapeuta e una persona che ha appena ricevuto una diagnosi cercano
+   * due cose diverse, e mostrare a entrambi lo stesso elenco di sette voci
+   * significa far fare a tutti un lavoro di selezione che possiamo fare noi.
+   *
+   * Le schede marcate "tutti" (come la guida gratuita) restano visibili con
+   * qualunque filtro: sono scritte per entrambi.
+   *
+   * Se JavaScript non parte, i pulsanti non fanno nulla e si vede l'elenco
+   * completo: il filtro è un miglioramento, non una condizione per vedere
+   * il catalogo.
+   */
+  function filtroPubblico() {
+    var pulsanti = document.querySelectorAll('[data-filtro-pubblico]');
+    var griglia = document.querySelector('[data-griglia-materiali]');
+    if (!pulsanti.length || !griglia) { return; }
+
+    var schede = griglia.querySelectorAll('[data-pubblico]');
+    var conteggio = document.querySelector('[data-conteggio-materiali]');
+
+    var ATTIVO = ['bg-notte', 'text-white', 'border-notte'];
+    var RIPOSO = ['bg-white', 'text-notte', 'hover:bg-crema-dark'];
+
+    function applica(scelto) {
+      var visibili = 0;
+
+      schede.forEach(function (scheda) {
+        var pubblico = scheda.getAttribute('data-pubblico');
+        var mostra = scelto === 'tutti' || pubblico === scelto || pubblico === 'tutti';
+        scheda.classList.toggle('hidden', !mostra);
+        if (mostra) { visibili++; }
+      });
+
+      pulsanti.forEach(function (b) {
+        var attivo = b.getAttribute('data-filtro-pubblico') === scelto;
+        b.setAttribute('aria-pressed', String(attivo));
+        ATTIVO.forEach(function (c) { b.classList.toggle(c, attivo); });
+        RIPOSO.forEach(function (c) { b.classList.toggle(c, !attivo); });
+      });
+
+      if (conteggio) {
+        conteggio.textContent = visibili === 1
+          ? '1 materiale'
+          : visibili + ' materiali';
+      }
+
+      // L'indirizzo tiene memoria della scelta: così un link a
+      // /compendi/?pubblico=terapeuti si può condividere già filtrato.
+      try {
+        var url = new URL(location.href);
+        if (scelto === 'tutti') { url.searchParams.delete('pubblico'); }
+        else { url.searchParams.set('pubblico', scelto); }
+        history.replaceState(null, '', url);
+      } catch (e) { /* browser vecchi: pazienza, il filtro funziona lo stesso */ }
+
+      if (window.SiteAnalytics) {
+        window.SiteAnalytics.evento('filtro_pubblico', { scelto: scelto });
+      }
+    }
+
+    pulsanti.forEach(function (b) {
+      b.addEventListener('click', function () {
+        applica(b.getAttribute('data-filtro-pubblico'));
+      });
+    });
+
+    // Rispetto il filtro eventualmente già presente nell'indirizzo.
+    var iniziale = 'tutti';
+    try {
+      var q = new URL(location.href).searchParams.get('pubblico');
+      if (q === 'terapeuti' || q === 'pazienti') { iniziale = q; }
+    } catch (e) { /* niente */ }
+    applica(iniziale);
   }
 
   if (document.readyState === 'loading') {

@@ -221,6 +221,78 @@ export function emailConferma(opts: {
 }
 
 /* ============================================================
+   Consegna di un materiale gratuito (la guida in PDF)
+   ------------------------------------------------------------
+   La guida arriva per email, non con un download immediato. È una scelta
+   deliberata: un indirizzo inventato non riceve niente, quindi chi lascia
+   l'email lascia un indirizzo vero. Il prezzo da pagare è che la consegna
+   dipende dall'SMTP — senza, la persona resterebbe a mani vuote, e per
+   questo il sito mantiene una via di scorta.
+
+   L'iscrizione alla newsletter resta una cosa separata: la guida è ciò che
+   la persona ha chiesto e le spetta comunque; le uscite successive le
+   riceve solo se conferma. Per questo il link di conferma è nel poscritto
+   e non è una condizione per scaricare.
+   ============================================================ */
+
+export type Materiale = {
+  titolo: string;
+  descrizione?: string;
+  url: string;
+};
+
+export function emailMateriale(opts: {
+  materiale: Materiale;
+  linkConferma?: string;
+  sito: ImpostazioniSito;
+}): { oggetto: string; html: string; testo: string } {
+  const { materiale, linkConferma, sito } = opts;
+
+  const poscritto = linkConferma
+    ? `<div style="margin:28px 0 0;padding:18px 20px;background:${CREMA};border-radius:12px;">
+         <p style="margin:0 0 6px;font-weight:bold;color:${NOTTE};">Un'ultima cosa</p>
+         <p style="margin:0 0 12px;font-size:14px;">
+           Se vuoi ricevere anche le prossime uscite, conferma l'iscrizione con un click.
+           Se non lo fai, nessun problema: la guida è tua comunque e non ti scriverò più.
+         </p>
+         <a href="${esc(linkConferma)}" style="color:${MIRTILLO};font-weight:bold;font-size:14px;">
+           Confermo l'iscrizione
+         </a>
+       </div>`
+    : '';
+
+  const html = cornice({
+    sito,
+    preheader: `La tua guida: ${materiale.titolo}`,
+    contenuto: `
+      <h1 style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:23px;
+                 line-height:1.3;color:${NOTTE};font-weight:normal;">Ecco la tua guida</h1>
+      <p style="margin:0 0 4px;"><strong>${esc(materiale.titolo)}</strong></p>
+      ${materiale.descrizione ? `<p style="margin:8px 0 0;">${esc(materiale.descrizione)}</p>` : ''}
+      ${bottone('Scarica la guida in PDF', materiale.url)}
+      <p style="margin:0;font-size:13px;color:#6b6b6b;">
+        Se il pulsante non funziona, copia questo indirizzo nel browser:<br>
+        <span style="word-break:break-all;">${esc(materiale.url)}</span>
+      </p>
+      ${poscritto}`,
+  });
+
+  const testo = [
+    'Ecco la tua guida',
+    '',
+    materiale.titolo,
+    materiale.descrizione ?? '',
+    '',
+    `Scaricala qui: ${materiale.url}`,
+    linkConferma
+      ? `\n\nSe vuoi ricevere anche le prossime uscite, conferma l'iscrizione: ${linkConferma}\nSe non lo fai, la guida resta tua comunque e non ti scriverò più.`
+      : '',
+  ].filter(Boolean).join('\n');
+
+  return { oggetto: `La tua guida: ${materiale.titolo}`, html, testo };
+}
+
+/* ============================================================
    Notifica ad Alberto: è arrivata una richiesta di colloquio
    ============================================================ */
 
