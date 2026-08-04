@@ -4,7 +4,11 @@
    Da rilanciare ogni volta che si aggiungono classi nuove in index.html
    o nei file JS di assets/ (le classi generate via JS vengono lette da lì). */
 module.exports = {
-  content: ['./index.html', './assets/*.js'],
+  // build-pagine.js va incluso: l'impalcatura delle pagine dedicate (e le
+  // classi che ci stanno dentro, come il distanziamento sotto l'intestazione
+  // fissa) vive lì, non nei file di contenuto. Dimenticarlo produce pagine
+  // che sembrano giuste nel codice e sbagliate a schermo.
+  content: ['./index.html', './pagine/*.html', './assets/*.js', './build-pagine.js'],
   theme: {
     extend: {
       colors: {

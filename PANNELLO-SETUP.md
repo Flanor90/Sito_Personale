@@ -238,6 +238,18 @@ privacy del tracciamento:
 npm test
 ```
 
+**Le pagine dedicate** (`/test/`, `/compendi/`, `/newsletter/`) sono generate:
+si scrive in `pagine/`, non nelle cartelle di destinazione, che vengono
+riscritte a ogni generazione. Intestazione e piè di pagina vengono ritagliati
+da `index.html`, quindi un cambio al menu si propaga da solo.
+
+```bash
+npm run build          # pagine + CSS, da lanciare prima di ogni push
+```
+
+Per creare una pagina nuova basta aggiungere un file in `pagine/`: lo `slug`
+nei metadati diventa l'indirizzo, e la sitemap si aggiorna da sé.
+
 **Se aggiungi classi CSS nuove** al sito (non al pannello, che ha il suo foglio
 di stile separato):
 

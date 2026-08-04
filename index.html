@@ -240,6 +240,11 @@
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-notte focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Salta al contenuto principale</a>
 
   <!-- ==================== HEADER / NAVBAR ==================== -->
+  <!-- INIZIO INTESTAZIONE CONDIVISA — non spostare questo commento.
+       Le pagine dedicate (/test/, /compendi/, /newsletter/) vengono
+       assemblate da build-pagine.js ritagliando esattamente ciò che sta
+       fra questo marcatore e quello di chiusura: così l'intestazione
+       esiste in un posto solo e non va aggiornata in cinque copie. -->
   <header id="site-header" class="fixed inset-x-0 top-0 z-50 transition-all duration-300 bg-crema/80 backdrop-blur-md" role="banner">
     <nav class="max-w-6xl mx-auto flex items-center justify-between px-5 py-3" aria-label="Navigazione principale">
       <a href="#hero" class="flex items-center gap-3 group" aria-label="Alberto Del Bove — torna all'inizio">
@@ -353,6 +358,7 @@
       <a href="#contatti" class="mobile-link block mt-3 text-center bg-notte text-white font-semibold px-4 py-3.5 rounded-full hover:bg-mirtillo-700 transition-colors" data-i18n="m.cta">Prenota un primo colloquio</a>
     </div>
   </header>
+  <!-- FINE INTESTAZIONE CONDIVISA -->
 
   <main id="main">
 
@@ -652,6 +658,15 @@
             Quattro brevi strumenti di auto-osservazione, costruiti con criteri clinici: personalità, peso reale del lavoro, attenzione e impulsività, e ciò che stai davvero cercando. <strong>Gratuiti, anonimi, senza registrazione</strong> — le risposte non lasciano mai il tuo dispositivo.
           </p>
           <p id="test-lang-note" class="hidden text-sm text-inchiostro/60 italic mt-4"></p>
+          <!-- Link alla pagina dedicata: serve a chi vuole capire prima di
+               cominciare, e dà a Google una pagina vera su cui far atterrare
+               chi cerca "test ADHD" o "test burnout". -->
+          <p class="mt-5">
+            <a href="/test/" class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">
+              Cosa possono — e cosa non possono — dirti questi test
+              <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
+            </a>
+          </p>
         </div>
 
         <!-- Hub di scelta -->
@@ -1364,7 +1379,13 @@
           </article>
         </div>
 
-        <p class="text-xs text-inchiostro/55 mt-8 max-w-3xl reveal" data-i18n="comp.note">Gli estratti qui pubblicati sono una piccola anteprima: il testo integrale, con tutti i capitoli, è riservato a chi acquista la pubblicazione su Gumroad.</p>
+        <p class="mt-8 reveal">
+          <a href="/compendi/" class="inline-flex items-center gap-1.5 font-semibold text-mirtillo-700 hover:text-notte transition-colors">
+            Tutti i compendi, e da dove nascono
+            <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
+          </a>
+        </p>
+        <p class="text-xs text-inchiostro/55 mt-5 max-w-3xl reveal" data-i18n="comp.note">Gli estratti qui pubblicati sono una piccola anteprima: il testo integrale, con tutti i capitoli, è riservato a chi acquista la pubblicazione su Gumroad.</p>
 
         <div class="mt-10 bg-white/70 rounded-2xl border border-mirtillo-200 p-6 sm:p-7 reveal">
           <div class="flex flex-col sm:flex-row sm:items-center gap-5">
@@ -1441,7 +1462,13 @@
             <div class="lg:col-span-3">
               <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="nl.kicker">La newsletter</p>
               <h2 id="newsletter-title" class="font-serif text-3xl sm:text-4xl text-notte leading-tight mb-4" data-i18n="nl.title">Uno spunto al mese, per guardarti dentro con più chiarezza</h2>
-              <p class="text-inchiostro/75 mb-6 text-[1.02rem]" data-i18n="nl.p">Ogni mese ti scrivo una riflessione sulla vita interiore, un nuovo strumento di auto-osservazione e le uscite dei compendi. Testi curati, mai spam. Ti disiscrivi con un clic quando vuoi.</p>
+              <p class="text-inchiostro/75 mb-4 text-[1.02rem]" data-i18n="nl.p">Ogni mese ti scrivo una riflessione sulla vita interiore, un nuovo strumento di auto-osservazione e le uscite dei compendi. Testi curati, mai spam. Ti disiscrivi con un clic quando vuoi.</p>
+              <p class="mb-6">
+                <a href="/newsletter/" class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">
+                  Di cosa scrivo, e il patto che ti propongo
+                  <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
+                </a>
+              </p>
               <ul class="space-y-2.5 text-[0.95rem] text-inchiostro/80">
                 <li class="flex items-start gap-2.5"><i data-lucide="feather" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="nl.b1">Una riflessione clinica, scritta con cura</span></li>
                 <li class="flex items-start gap-2.5"><i data-lucide="compass" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="nl.b2">Nuovi test e strumenti prima che sugli altri canali</span></li>
@@ -1689,6 +1716,7 @@
   </main>
 
   <!-- ==================== FOOTER ==================== -->
+  <!-- INIZIO PIÈ DI PAGINA CONDIVISO — vedi la nota sull'intestazione. -->
   <footer class="bg-notte-deep text-white/70 py-12" role="contentinfo">
     <div class="max-w-6xl mx-auto px-5">
       <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 pb-8 border-b border-white/10">
@@ -1753,6 +1781,7 @@
       </div>
     </div>
   </footer>
+  <!-- FINE PIÈ DI PAGINA CONDIVISO -->
 
   <!-- ==================== MODALE ARTICOLI ==================== -->
   <div id="article-modal" class="fixed inset-0 z-[80] hidden overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="article-modal-title">
