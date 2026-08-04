@@ -97,6 +97,7 @@ test('kindDaFonte raggruppa le fonti granulari nella loro famiglia', () => {
   assert.equal(Newsletter.kindDaFonte('test-burnout'), 'test');
   assert.equal(Newsletter.kindDaFonte('test'), 'test');
   assert.equal(Newsletter.kindDaFonte('compendi'), 'compendi');
+  assert.equal(Newsletter.kindDaFonte('compendi-guida-ia'), 'compendi');
   assert.equal(Newsletter.kindDaFonte('contatto'), 'contatto');
   assert.equal(Newsletter.kindDaFonte('newsletter'), 'newsletter');
 });

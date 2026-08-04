@@ -119,7 +119,7 @@
   function kindDaFonte(source) {
     var key = String(source || 'newsletter').trim();
     if (key === 'contatto') { return 'contatto'; }
-    if (key === 'compendi') { return 'compendi'; }
+    if (key.indexOf('compendi') === 0) { return 'compendi'; }
     if (key.indexOf('test') === 0) { return 'test'; }
     return 'newsletter';
   }
@@ -279,6 +279,33 @@
     }
   }
 
+  // Fa partire il download di un file allegato all'iscrizione.
+  //
+  // Il file arriva subito, non dopo la conferma dell'email: il doppio
+  // opt-in serve a proteggere la casella di posta, non a tenere in ostaggio
+  // una guida gratuita. Chi conferma riceve le uscite successive; chi non
+  // conferma ha comunque avuto quello per cui era venuto.
+  function avviaDownload(form, percorso) {
+    var a = document.createElement('a');
+    a.href = percorso;
+    a.setAttribute('download', '');
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { if (a.parentNode) { a.parentNode.removeChild(a); } }, 1000);
+
+    // Su alcuni browser il download automatico viene bloccato: il link
+    // di scorta resta visibile, così la persona non resta a mani vuote.
+    var scorta = form.querySelector('[data-nl-download-link]');
+    if (scorta) { scorta.classList.remove('hidden'); }
+
+    if (hasDOM && window.SiteAnalytics) {
+      window.SiteAnalytics.evento('guida_scaricata', {
+        fonte: form.getAttribute('data-nl-source') || 'newsletter'
+      });
+    }
+  }
+
   // Cabla un singolo <form data-newsletter data-nl-source="…">.
   function attachForm(form) {
     if (!form || form.__nlBound) { return; }
@@ -325,7 +352,11 @@
             fonte: form.getAttribute('data-nl-source') || 'newsletter'
           });
         }
-        if (res.mode === 'mailto') {
+        var scarica = form.getAttribute('data-nl-download');
+        if (scarica) {
+          avviaDownload(form, scarica);
+          setFeedback(form, t('nl.ok.download', 'Ecco la guida: il download è appena partito. Ti ho anche inviato una email di conferma — confermando riceverai le prossime uscite.'), false);
+        } else if (res.mode === 'mailto') {
           setFeedback(form, t('nl.ok.mailto', 'Si sta aprendo il tuo programma di posta con la richiesta già pronta: inviala per completare.'), false);
         } else {
           setFeedback(form, t('nl.ok', 'Ci siamo quasi! Ti ho inviato una email di conferma: clicca il link al suo interno per completare l’iscrizione.'), false);
