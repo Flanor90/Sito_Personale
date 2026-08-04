@@ -166,7 +166,14 @@ function componi({ meta, contenuto }, parti) {
     ]
   };
 
-  const schemi = [briciole].concat(meta.schema ? [meta.schema] : []);
+  // `schema` accetta un oggetto o un elenco: una pagina sanitaria di solito
+  // ne vuole due (MedicalWebPage per il contenuto, FAQPage per le domande),
+  // e prima l'elenco finiva annidato dentro un altro elenco — JSON-LD
+  // formalmente valido che Google però scarta senza dire niente.
+  const extra = meta.schema
+    ? (Array.isArray(meta.schema) ? meta.schema : [meta.schema])
+    : [];
+  const schemi = [briciole].concat(extra);
 
   return `<!DOCTYPE html>
 <html lang="${lingua}" class="scroll-smooth">
@@ -211,7 +218,7 @@ ${JSON.stringify(schemi.length === 1 ? schemi[0] : schemi, null, 2)}
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/tailwind.css">
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <script src="https://unpkg.com/lucide@1.28.0/dist/umd/lucide.js" defer></script>
 </head>
 <body class="bg-crema text-inchiostro font-sans antialiased">
 
@@ -275,11 +282,33 @@ function main() {
  * quella nuova, che è il modo più silenzioso di non farsi trovare).
  */
 function scriviSitemap(pagine) {
-  const oggi = new Date().toISOString().slice(0, 10);
+  /**
+   * Data di ultima modifica presa dal FILE, non dal momento della build.
+   *
+   * Prima qui c'era la data di oggi su tutte le voci: bastava ricompilare
+   * per dichiarare a Google che sei pagine erano cambiate tutte insieme.
+   * Ripetuto qualche volta, quel segnale smette di valere — e vale anche
+   * quando è vero. Meglio dire la verità: quando è stato toccato il
+   * sorgente di quella pagina.
+   */
+  const modificato = (percorso) => {
+    try {
+      return fs.statSync(percorso).mtime.toISOString().slice(0, 10);
+    } catch (e) {
+      return new Date().toISOString().slice(0, 10);
+    }
+  };
+
   const voci = [
-    { loc: `${SITO}/`, priorita: '1.0', freq: 'monthly' }
+    {
+      loc: `${SITO}/`,
+      lastmod: modificato(path.join(RADICE, 'index.html')),
+      priorita: '1.0',
+      freq: 'monthly'
+    }
   ].concat(pagine.map((p) => ({
     loc: `${SITO}/${p.slug}/`,
+    lastmod: modificato(path.join(SORGENTE, `${p.slug}.html`)),
     priorita: p.priorita || '0.8',
     freq: p.frequenza || 'monthly'
   })));
@@ -291,7 +320,7 @@ function scriviSitemap(pagine) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${voci.map((v) => `  <url>
     <loc>${v.loc}</loc>
-    <lastmod>${oggi}</lastmod>
+    <lastmod>${v.lastmod}</lastmod>
     <changefreq>${v.freq}</changefreq>
     <priority>${v.priorita}</priority>
   </url>`).join('\n')}

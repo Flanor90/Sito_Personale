@@ -171,15 +171,18 @@
   </script>
 
   <!-- Schema.org: breadcrumb -->
+  <!-- Un breadcrumb elenca il percorso di PAGINE che porta a questa.
+       Prima qui c'erano le ancore della home (#approccio, #test, #contatti):
+       non sono pagine, e Google davanti a item che non risolvono può
+       scartare l'intero markup. La home è la radice e non ha percorso a
+       monte, quindi il breadcrumb ha una voce sola. Quello vero vive
+       sulle pagine dedicate, dove build-pagine.js lo genera. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.albertodelbove-psicologo.it/" },
-      { "@type": "ListItem", "position": 2, "name": "Approccio", "item": "https://www.albertodelbove-psicologo.it/#approccio" },
-      { "@type": "ListItem", "position": 3, "name": "Test gratuiti", "item": "https://www.albertodelbove-psicologo.it/#test" },
-      { "@type": "ListItem", "position": 4, "name": "Contatti", "item": "https://www.albertodelbove-psicologo.it/#contatti" }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.albertodelbove-psicologo.it/" }
     ]
   }
   </script>
@@ -194,7 +197,10 @@
   <link rel="stylesheet" href="assets/tailwind.css">
 
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <!-- Versione fissata, non "@latest": una dipendenza esterna non versionata
+       sul percorso critico significa che una pubblicazione di terzi può
+       cambiare o rompere le icone del sito senza che nessuno tocchi niente. -->
+  <script src="https://unpkg.com/lucide@1.28.0/dist/umd/lucide.js" defer></script>
 
   <style>
     html { scroll-padding-top: 5.5rem; }
@@ -579,6 +585,15 @@
           </article>
         </div>
       </div>
+
+        <!-- Link alla pagina dedicata. Senza questi collegamenti le pagine
+             nuove nascono orfane: Google le trova tardi e le pesa poco. -->
+        <p class="mt-8 reveal">
+          <a href="/psicoterapia-online/" class="inline-flex items-center gap-1.5 font-semibold text-mirtillo-700 hover:text-notte transition-colors">
+            Come funziona davvero una seduta online
+            <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
+          </a>
+        </p>
     </section>
 
     <!-- ==================== COME FUNZIONA IL PRIMO COLLOQUIO ==================== -->
@@ -660,6 +675,15 @@
             width="900" height="700" loading="lazy">
         </div>
       </div>
+
+        <!-- Link alla pagina dedicata. Senza questi collegamenti le pagine
+             nuove nascono orfane: Google le trova tardi e le pesa poco. -->
+        <p class="mt-8 reveal">
+          <a href="/psicologo-per-italiani-all-estero/" class="inline-flex items-center gap-1.5 font-semibold text-mirtillo-700 hover:text-notte transition-colors">
+            Fusi orari, fatturazione e lingua madre: la pagina completa
+            <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
+          </a>
+        </p>
     </section>
 
     <!-- ==================== TEST INTERATTIVI ==================== -->
@@ -1164,6 +1188,15 @@
           </article>
         </div>
       </div>
+
+        <!-- Link alla pagina dedicata. Senza questi collegamenti le pagine
+             nuove nascono orfane: Google le trova tardi e le pesa poco. -->
+        <p class="mt-8 reveal">
+          <a href="/supervisione-clinica/" class="inline-flex items-center gap-1.5 font-semibold text-mirtillo-700 hover:text-notte transition-colors">
+            Come funziona la supervisione, individuale e di équipe
+            <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
+          </a>
+        </p>
     </section>
 
     <!-- ==================== RISORSE & ARTICOLI ==================== -->
@@ -1552,6 +1585,38 @@
     </section>
 
     <!-- ==================== CONTATTI ==================== -->
+    <!-- Ponte verso le pagine dedicate ai singoli temi. Sta qui, appena
+         prima dei contatti, perché è il punto in cui una persona ha capito
+         di cosa mi occupo e sta decidendo se la sua situazione mi riguarda. -->
+    <section class="py-14 bg-crema" aria-labelledby="temi-title">
+      <div class="max-w-4xl mx-auto px-5">
+        <h2 id="temi-title" class="font-serif text-2xl sm:text-3xl text-notte mb-2 reveal">Su cosa lavoro più spesso</h2>
+        <p class="text-inchiostro/70 mb-7 reveal">Ogni tema ha la sua pagina, scritta per esteso.</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <a href="/ansia-e-attacchi-di-panico/" class="group flex items-center gap-3 rounded-2xl border border-tortora bg-white px-5 py-4 hover:border-mirtillo-600 transition-colors reveal">
+            <i data-lucide="wind" class="w-5 h-5 text-mirtillo-700 flex-none" aria-hidden="true"></i>
+            <span class="font-semibold text-notte">Ansia e attacchi di panico</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-mirtillo-700 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></i>
+          </a>
+          <a href="/burnout-e-stress-da-lavoro/" class="group flex items-center gap-3 rounded-2xl border border-tortora bg-white px-5 py-4 hover:border-mirtillo-600 transition-colors reveal">
+            <i data-lucide="battery-low" class="w-5 h-5 text-mirtillo-700 flex-none" aria-hidden="true"></i>
+            <span class="font-semibold text-notte">Burnout e stress da lavoro</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-mirtillo-700 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></i>
+          </a>
+          <a href="/terapia-di-coppia/" class="group flex items-center gap-3 rounded-2xl border border-tortora bg-white px-5 py-4 hover:border-mirtillo-600 transition-colors reveal">
+            <i data-lucide="heart-handshake" class="w-5 h-5 text-mirtillo-700 flex-none" aria-hidden="true"></i>
+            <span class="font-semibold text-notte">Terapia di coppia</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-mirtillo-700 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></i>
+          </a>
+          <a href="/psicologo-a-itri/" class="group flex items-center gap-3 rounded-2xl border border-tortora bg-white px-5 py-4 hover:border-mirtillo-600 transition-colors reveal">
+            <i data-lucide="map-pin" class="w-5 h-5 text-mirtillo-700 flex-none" aria-hidden="true"></i>
+            <span class="font-semibold text-notte">Lo studio a Itri (LT)</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-mirtillo-700 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <section id="contatti" class="py-20 lg:py-28 bg-crema" aria-labelledby="contatti-title">
       <div class="max-w-6xl mx-auto px-5">
         <div class="max-w-3xl mb-12 reveal">
@@ -1788,6 +1853,8 @@
             <li><a href="#psicovoice" class="hover:text-white transition-colors" data-i18n="foot.nav.psicovoice">PsicoVoice</a></li>
             <li><a href="#newsletter" class="hover:text-white transition-colors" data-i18n="foot.nav.newsletter">Newsletter</a></li>
             <li><a href="#contatti" class="hover:text-white transition-colors" data-i18n="foot.nav.contatti">Contatti</a></li>
+            <li><a href="/privacy/" class="hover:text-white transition-colors">Privacy</a></li>
+            <li><a href="/note-legali/" class="hover:text-white transition-colors">Note legali</a></li>
           </ul>
         </nav>
         <div class="flex gap-3">
