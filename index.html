@@ -11,13 +11,15 @@
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://www.albertodelbove-psicologo.it/">
 
-  <!-- Varianti linguistiche. La home è italiana; /en/ è la pagina scritta
-       direttamente in inglese. Ogni pagina deve dichiarare anche se stessa,
-       altrimenti Google ignora l'intero gruppo. x-default punta all'italiano,
-       che è la versione principale. -->
-  <link rel="alternate" hreflang="it" href="https://www.albertodelbove-psicologo.it/">
-  <link rel="alternate" hreflang="en" href="https://www.albertodelbove-psicologo.it/en/">
-  <link rel="alternate" hreflang="x-default" href="https://www.albertodelbove-psicologo.it/">
+  <!-- Niente hreflang qui, ed è voluto.
+       hreflang funziona solo a coppie corrisposte: se questa pagina
+       dichiarasse /en/ come propria versione inglese, /en/ dovrebbe
+       dichiarare questa come propria versione italiana — e non lo fa,
+       perché il suo corrispettivo è /compendi/ (stessi contenuti, altra
+       lingua), non la home. Una coppia non corrisposta viene semplicemente
+       ignorata da Google, quindi non aggiungerebbe niente.
+       La coppia vera vive fra /compendi/ e /en/. Quando esisterà una home
+       inglese completa, l'hreflang andrà messo qui e lì insieme. -->
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
