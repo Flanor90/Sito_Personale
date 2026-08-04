@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Un'intelligenza artificiale può farti da terapeuta?</title>
+
+<!-- Sorgente del PDF scaricabile. Non è una pagina del sito: viene
+     stampata da build-pdf.js con Chrome headless e finisce in
+     assets/guida-ia-e-psicoterapia.pdf. Le misure sono in millimetri
+     perché il bersaglio è la carta, non lo schermo. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* I fondi colorati vanno stampati: senza questa riga Chrome li scarta. */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+
+  @page { size: A4; margin: 24mm 21mm 20mm; }
+  /* La copertina è a pieno formato. In stampa non basta un margine
+     negativo: Chrome ritaglia tutto ciò che esce dall'area di pagina.
+     L'unico modo è togliere il margine al primo foglio soltanto. */
+  @page :first { margin: 0; }
+
+  :root {
+    --notte: #1B2A3A;
+    --notte-deep: #141F2C;
+    --mirtillo: #7C81B3;
+    --mirtillo-300: #A9ACD4;
+    --mirtillo-700: #4C507F;
+    --mirtillo-50: #F0F1F8;
+    --crema: #F7F5F1;
+    --tortora: #E4DFD8;
+    --tortora-dark: #CFC8BD;
+    --inchiostro: #2B2B2B;
+  }
+
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 10.6pt;
+    line-height: 1.68;
+    color: var(--inchiostro);
+    background: #fff;
+  }
+
+  /* Nota: niente piè di pagina ripetuto. In stampa un elemento fisso si
+     ripete sì su ogni foglio, ma Chrome lo àncora al primo — e con la
+     copertina senza margini finiva stampato sopra il testo della pagina
+     due. La firma sta in copertina e nel colophon, dove non rischia di
+     coprire nulla. */
+
+  /* ---------- Copertina ---------- */
+  .copertina {
+    position: relative; z-index: 5;
+    margin: 0;
+    width: 210mm; height: 297mm;
+    background: var(--notte);
+    background-image: radial-gradient(circle at 78% 12%, #24374C 0%, rgba(36,55,76,0) 46%),
+                      radial-gradient(circle at 8% 92%, #24374C 0%, rgba(36,55,76,0) 40%);
+    color: var(--crema);
+    padding: 26mm 21mm 20mm;
+    display: flex; flex-direction: column;
+    page-break-after: always;
+  }
+  .marchio { display: flex; align-items: center; gap: 4.5mm; }
+  .marchio svg { width: 13mm; height: 13mm; display: block; }
+  .marchio .nome { font-family: 'Fraunces', Georgia, serif; font-size: 12.5pt; color: #fff; line-height: 1.15; }
+  .marchio .ruolo { font-size: 7.2pt; letter-spacing: .19em; text-transform: uppercase; color: var(--mirtillo-300); margin-top: 1.2mm; }
+
+  .cop-corpo { margin-top: auto; }
+  .etichetta {
+    display: inline-block;
+    font-size: 7.6pt; font-weight: 700; letter-spacing: .17em; text-transform: uppercase;
+    color: var(--notte); background: var(--mirtillo-300);
+    padding: 2mm 4.5mm; border-radius: 99px; margin-bottom: 9mm;
+  }
+  .copertina h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400; font-size: 33pt; line-height: 1.13;
+    margin: 0 0 7mm; color: #fff; letter-spacing: -.01em;
+  }
+  .copertina .sottotitolo {
+    font-size: 12pt; line-height: 1.55; color: rgba(247,245,241,.82);
+    margin: 0; max-width: 128mm;
+  }
+  .filo { width: 26mm; height: .9mm; background: var(--mirtillo); border-radius: 99px; margin: 11mm 0 8mm; }
+  .cop-meta { font-size: 8.6pt; color: rgba(247,245,241,.62); line-height: 1.75; }
+  .cop-meta b { color: var(--mirtillo-300); font-weight: 600; }
+
+  /* ---------- Testo ---------- */
+  .apertura {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 14pt; line-height: 1.5; color: var(--notte);
+    margin: 0 0 8mm;
+  }
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500; font-size: 16.5pt; line-height: 1.25;
+    color: var(--notte); margin: 11mm 0 4mm;
+    page-break-after: avoid; break-after: avoid;
+  }
+  h2 + p { margin-top: 0; }
+  p { margin: 0 0 3.6mm; text-align: justify; hyphens: auto; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Le tre indicazioni pratiche: la frase d'apertura in evidenza. */
+  .passo { border-left: 1.4pt solid var(--mirtillo-300); padding-left: 5mm; margin: 0 0 4.5mm; }
+  .passo b { color: var(--mirtillo-700); font-weight: 600; }
+
+  .estratto {
+    background: var(--mirtillo-50);
+    border-radius: 3mm;
+    padding: 6mm 7mm;
+    margin: 7mm 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 12.5pt; line-height: 1.45; color: var(--notte);
+    page-break-inside: avoid;
+  }
+
+  /* ---------- Chiusura ---------- */
+  .chiusura { page-break-before: always; }
+  .biglietto {
+    background: var(--crema);
+    border: .5pt solid var(--tortora-dark);
+    border-radius: 4mm;
+    padding: 8mm 9mm;
+    margin-top: 8mm;
+    page-break-inside: avoid;
+  }
+  .biglietto h3 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 500;
+    font-size: 14pt; color: var(--notte); margin: 0 0 3mm;
+  }
+  .biglietto p { text-align: left; margin-bottom: 3mm; }
+  .bottone {
+    display: inline-block; margin-top: 2mm;
+    background: var(--mirtillo-700); color: #fff;
+    font-size: 9.6pt; font-weight: 600; text-decoration: none;
+    padding: 3.2mm 7mm; border-radius: 99px;
+  }
+  .recapiti { font-size: 9pt; line-height: 1.85; color: #55534F; margin-top: 6mm; }
+  .recapiti a { color: var(--mirtillo-700); text-decoration: none; }
+  .nota {
+    font-size: 8.2pt; line-height: 1.6; color: #8A857D;
+    border-top: .4pt solid var(--tortora); padding-top: 4mm; margin-top: 8mm;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================ COPERTINA ============================ -->
+<section class="copertina">
+  <div class="marchio">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Monogramma Alberto Del Bove">
+      <rect width="100" height="100" rx="18" fill="#F7F5F1"/>
+      <path d="M22 78 L44 22 L52 22 L52 78 L44 78 L44 62 L34 62 L28 78 Z M44 32 L37 54 L44 54 Z" fill="#1B2A3A"/>
+      <path d="M56 22 L74 22 Q86 22 86 35 Q86 44 79 47 Q88 50 88 62 Q88 78 74 78 L56 78 Z M64 30 L64 43 L72 43 Q78 43 78 36.5 Q78 30 72 30 Z M64 51 L64 70 L73 70 Q80 70 80 60.5 Q80 51 73 51 Z" fill="#7C81B3"/>
+    </svg>
+    <div>
+      <div class="nome">Alberto Del Bove</div>
+      <div class="ruolo">Psicologo Psicoterapeuta</div>
+    </div>
+  </div>
+
+  <div class="cop-corpo">
+    <span class="etichetta">Guida gratuita</span>
+    <h1>Un'intelligenza artificiale può farti da terapeuta?</h1>
+    <p class="sottotitolo">
+      Cosa è successo davvero quando l'Ordine degli Psicologi è andato in
+      tribunale — e cosa cambia, per te, fra un ascolto che ti asseconda e
+      uno che ti risponde.
+    </p>
+    <div class="filo"></div>
+    <div class="cop-meta">
+      Psicoterapia psicoanalitica · Analisi della Domanda<br>
+      <b>Lettura di circa otto minuti</b> · Edizione italiana · 2026
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TESTO ============================ -->
+<p class="apertura">
+  L'8 luglio scorso il Consiglio Nazionale dell'Ordine degli Psicologi è
+  andato in tribunale contro un'azienda che offre sedute di terapia
+  condotte da terapeuti generati con l'intelligenza artificiale.
+</p>
+
+<p>
+  Sembra una notizia di categoria, roba per addetti ai lavori. Non lo è:
+  riguarda te, se ti è capitato di aprire un'app alle due di notte perché
+  non riuscivi a dormire e non volevi svegliare nessuno.
+</p>
+
+<p>
+  Vorrei spiegarti cosa è successo davvero, e soprattutto cosa c'è in
+  gioco. Perché la risposta non è «la tecnologia fa male». È molto più
+  interessante di così.
+</p>
+
+<h2>Cosa è successo</h2>
+
+<p>
+  La piattaforma si chiama Therapeak, ha sede in Olanda, e si presenta
+  agli utenti come un servizio di supporto psicologico e terapeutico. I
+  «terapeuti» sono generati da un sistema di intelligenza artificiale.
+  Raccolgono informazioni sul tuo stato emotivo, sulle tue relazioni,
+  sulla tua salute mentale. Conducono quelle che il servizio chiama sedute
+  automatizzate. Nessun professionista abilitato dall'altra parte.
+</p>
+
+<p>
+  L'Ordine ha depositato al Tribunale di Roma un ricorso d'urgenza
+  chiedendo di bloccare il servizio in Italia con effetto immediato. Le
+  ragioni sono più d'una: la legge 56 del 1989 riserva l'attività
+  psicologica a chi è iscritto all'Albo; la nuova legge italiana
+  sull'intelligenza artificiale e il regolamento europeo pongono limiti
+  precisi; c'è poi la questione dei dati sanitari, la più delicata di
+  tutte. Prima del ricorso erano già partite le segnalazioni all'Agenzia
+  per la Cybersicurezza, al Garante Privacy e una denuncia alla Polizia
+  Postale per esercizio abusivo della professione.
+</p>
+
+<p>
+  Questo è il primo caso in Italia in cui un ordine professionale porta
+  davanti a un giudice la domanda: un algoritmo può fare terapia?
+</p>
+
+<h2>Il punto non è la tecnologia</h2>
+
+<p>
+  Qui vale la pena fermarsi, perché la discussione si sta già
+  polarizzando e non aiuta nessuno.
+</p>
+
+<p>
+  Non è vero che ogni strumento digitale in ambito psicologico sia un
+  problema. Le app che ti aiutano a tenere un diario dell'umore, quelle
+  che ti guidano in un esercizio di respirazione, i promemoria che ti
+  ricordano di prendere una terapia, i teleconsulti con un professionista
+  reale che vive a quattrocento chilometri da te: funzionano, allargano
+  l'accesso, e per molte persone sono l'unica porta d'ingresso
+  praticabile.
+</p>
+
+<p>
+  E non è nemmeno vero il contrario — che se un sistema risponde bene, con
+  parole appropriate e tono gentile, allora quello che sta facendo sia
+  terapia. Un modello linguistico produce risposte plausibili. È
+  bravissimo a farlo. Ma la plausibilità non è cura.
+</p>
+
+<p>
+  Il punto, quindi, non è la tecnologia. È cosa accade dentro una
+  relazione terapeutica, e se quella cosa sia replicabile da un sistema
+  che genera testo.
+</p>
+
+<h2>Cosa succede davvero in una seduta</h2>
+
+<p>Prova a pensare a cosa cerchi, quando cerchi aiuto.</p>
+
+<p>
+  Non stai cercando la risposta giusta. Se fosse quello, la troveresti in
+  un libro o in un video, e spesso ci hai già provato. Stai cercando
+  qualcuno che regga quello che gli porti. Qualcuno che si lasci toccare
+  da ciò che dici e che, proprio perché ne è toccato, a volte non ti dia
+  ragione.
+</p>
+
+<p>
+  È questo il passaggio che mi interessa di più, quando si parla di
+  psicoterapia e intelligenza artificiale. Un sistema addestrato a essere
+  utile e a non dispiacerti tenderà, per costruzione, ad assecondarti. Ti
+  rimanderà indietro una versione ordinata e comprensiva di quello che gli
+  hai appena detto. E tu ti sentirai capito.
+</p>
+
+<div class="estratto">
+  Una parte importante del lavoro clinico consiste esattamente
+  nell'incontrare qualcosa che non ti asseconda. Un limite. Una domanda
+  che non avevi previsto e che ti infastidisce.
+</div>
+
+<p>
+  Il momento in cui il tuo terapeuta nota che stai raccontando la stessa
+  storia per la quarta volta con parole diverse, e te lo dice. Quel
+  momento non è confortevole. È il momento in cui qualcosa si muove.
+</p>
+
+<p>
+  C'è poi la questione del rischio, e qui devo essere netto: quando una
+  persona sta molto male, serve qualcuno che se ne accorga e che risponda
+  con la responsabilità professionale e legale di chi ha una formazione
+  alle spalle. Un sistema automatico non ha quella responsabilità. Non la
+  può avere.
+</p>
+
+<h2>E i tuoi dati?</h2>
+
+<p>Questa parte viene spesso dopo, e invece dovrebbe venire prima.</p>
+
+<p>
+  Quello che racconti alle tre di notte, quando finalmente smetti di
+  controllare le parole, è probabilmente l'informazione più sensibile che
+  possiedi su di te. Più del tuo conto corrente. Più delle tue analisi del
+  sangue.
+</p>
+
+<p>
+  In una relazione clinica quel materiale è protetto dal segreto
+  professionale, da un codice deontologico e da un ordine che può
+  sanzionare chi lo viola. Su una piattaforma commerciale è un dato:
+  conservato da qualche parte, sotto una giurisdizione che magari non è la
+  tua, usato secondo condizioni che hai accettato scorrendo velocemente
+  fino al pulsante blu.
+</p>
+
+<p>Non è un dettaglio tecnico. È il cuore della faccenda.</p>
+
+<h2>Cosa puoi fare, in concreto</h2>
+
+<p>Tre cose, semplici.</p>
+
+<p class="passo">
+  <b>Verifica chi hai davanti.</b> L'Albo degli Psicologi è pubblico e
+  consultabile online: nome, cognome, numero di iscrizione, e se la
+  persona è anche psicoterapeuta. Ci metti trenta secondi. Se un servizio
+  non ti permette di sapere chi ti sta ascoltando, quella è già
+  l'informazione che ti serviva.
+</p>
+
+<p class="passo">
+  <b>Distingui psicologo e psicoterapeuta.</b> Sono due cose diverse e i
+  siti commerciali tendono a confonderle, perché la distinzione complica
+  la vendita. Lo psicoterapeuta ha fatto una formazione specifica di
+  almeno quattro anni dopo la laurea e l'abilitazione. Puoi chiedere, ed è
+  giusto chiedere.
+</p>
+
+<p class="passo">
+  <b>Usa gli strumenti digitali per quello che sono.</b> Un'app per
+  monitorare il sonno, l'umore, l'ansia può darti dati preziosi — da
+  portare in seduta, non al posto della seduta. È una differenza che
+  cambia tutto.
+</p>
+
+<h2>Una cosa che resta da dire</h2>
+
+<p>
+  Il fatto che milioni di persone parlino di sé a un sistema automatico
+  non è solo un problema di regole da far rispettare. È anche un segnale,
+  e va letto.
+</p>
+
+<p>
+  Dice che c'è una domanda di ascolto enorme e in larga parte senza
+  risposta. Dice che accedere a un professionista costa, richiede liste
+  d'attesa, e a volte richiede una vergogna che non tutti riescono ad
+  attraversare. Un'interfaccia che non ti giudica, disponibile alle tre di
+  notte e senza appuntamento, risponde a un bisogno vero.
+</p>
+
+<p>
+  Difendere la specificità del lavoro psicologico non significa difendere
+  una posizione di rendita. Significa dire che quel bisogno merita una
+  risposta all'altezza — non una sua imitazione ben scritta.
+</p>
+
+<p>
+  Se stai attraversando un periodo difficile e non sai da dove cominciare,
+  cominciare da una persona è già molto. Anche solo per capire se serve, e
+  cosa.
+</p>
+
+<!-- ============================ CHIUSURA ============================ -->
+<section class="chiusura">
+  <h2 style="margin-top:0">Chi ha scritto questa guida</h2>
+
+  <p>
+    Sono Alberto Del Bove, psicologo psicoterapeuta a orientamento
+    psicoanalitico, specializzato in Analisi della Domanda alla SPS di
+    Roma. Ricevo online, in tutta Italia e per italiani all'estero, e in
+    studio a Itri, in provincia di Latina.
+  </p>
+
+  <p>
+    Accanto alla pratica clinica ho lavorato per anni nella salute mentale
+    digitale — come Clinical Team Lead in Unobravo e nelle operations
+    cliniche europee di BetterHelp — e ho fondato PsicoVoice, un software
+    per psicologi. È da questa doppia posizione che guardo alla domanda di
+    questa guida: non da fuori, e non con diffidenza verso la tecnologia.
+  </p>
+
+  <div class="biglietto">
+    <h3>Se leggere non basta</h3>
+    <p>
+      Una guida spiega, non accompagna. Se quello che hai letto ti riguarda
+      da vicino, un primo colloquio serve a capire insieme di cosa si
+      tratta — senza impegno a proseguire.
+    </p>
+    <a class="bottone" href="https://www.albertodelbove-psicologo.it/#contatti">Richiedi un primo colloquio</a>
+
+    <div class="recapiti">
+      <a href="https://www.albertodelbove-psicologo.it/">www.albertodelbove-psicologo.it</a><br>
+      alberto.delbove.psicoterapeuta@gmail.com<br>
+      Studio a Itri (LT) · sedute online in tutta Italia e dall'estero
+    </div>
+  </div>
+
+  <p class="nota">
+    Questa guida ha finalità divulgative: non è una consulenza clinica, non
+    sostituisce un colloquio con un professionista e non fornisce
+    indicazioni diagnostiche o terapeutiche individuali. Se stai
+    attraversando un momento di crisi, rivolgiti al tuo medico, ai servizi
+    territoriali o al numero unico di emergenza 112.<br><br>
+    Testo di Alberto Del Bove. Puoi condividerla liberamente, per intero e
+    senza modifiche, citando la fonte.
+  </p>
+</section>
+
+</body>
+</html>
