@@ -2,3 +2,15 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.albertodelbove-psicologo.it/sitemap.xml
+
+# Nota sul pannello di amministrazione (/admin/):
+# NON lo blocco qui di proposito. Un "Disallow" avrebbe due difetti:
+# annuncerebbe il percorso a chiunque legga questo file, e — soprattutto —
+# impedirebbe ai motori di scaricare la pagina, quindi di leggere il suo
+# "noindex". Un indirizzo bloccato ma linkato da qualche parte finisce
+# comunque negli elenchi, solo senza descrizione.
+# La pagina porta <meta name="robots" content="noindex, nofollow">: i
+# motori la scaricano, leggono l'istruzione e non la indicizzano. È la via
+# corretta per tenere una pagina fuori dai risultati.
+# A proteggerla, comunque, non è l'invisibilità ma il login: senza le
+# credenziali non mostra una riga di dati.

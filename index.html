@@ -1814,7 +1814,10 @@
   <script src="assets/report-pdf.js"></script>
   <!-- Internazionalizzazione IT / EN / ES (italiano di default, fallback all'italiano) -->
   <script src="assets/i18n.js"></script>
-  <!-- Raccolta email / newsletter (Brevo via form ospitato; nessun dato dei test) -->
+  <!-- Statistiche del sito: nessun cookie, nessun IP, nessuna risposta dei test.
+       Caricato prima di newsletter.js perché quest'ultimo vi registra le conversioni. -->
+  <script src="assets/analytics.js"></script>
+  <!-- Raccolta email / newsletter (Brevo + archivio proprio; nessun dato dei test) -->
   <script src="assets/newsletter.js"></script>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -2314,8 +2317,19 @@
 
     /* ============================================================
        FORM CONTATTI — triage clinico
-       Nessun backend: compone il messaggio e apre mailto / WhatsApp.
+       ------------------------------------------------------------
+       Fino al 04/08/2026 questo modulo apriva soltanto il programma di
+       posta del visitatore. Su mobile spesso non si apre affatto, e la
+       richiesta si perdeva senza che nessuno lo sapesse: la persona
+       credeva di aver scritto, io non ricevevo niente.
+
+       Ora la richiesta viene prima SALVATA sul server (e mi arriva un
+       avviso per email, più una scheda su Trello se l'ho collegato).
+       Il mailto resta come ripiego, per il caso in cui il server non
+       risponda: meglio un programma di posta che si apre, che una
+       richiesta persa.
        ============================================================ */
+    const ENDPOINT_CONTATTI = 'https://ynmxgdcikqlgcupfszza.supabase.co/functions/v1/api/collect';
     const form = document.getElementById('contact-form');
     const feedback = document.getElementById('form-feedback');
     const EMAIL = 'alberto.delbove.psicoterapeuta@gmail.com';
@@ -2375,17 +2389,70 @@
       }
     }
 
+    /* Ripiego storico: apre il programma di posta col messaggio già pronto. */
+    function apriMailto(data) {
+      const subject = 'Richiesta primo colloquio — ' + data.nome;
+      window.location.href = 'mailto:' + EMAIL +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(data.body);
+      showFeedback('Si sta aprendo il tuo programma di posta con il messaggio già pronto. Se non succede nulla, scrivimi direttamente a ' + EMAIL + ' oppure usa WhatsApp.', false);
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!validate()) { return; }
+
       const data = collectMessage();
+      const submitEl = form.querySelector('button[type="submit"]');
+      const testoOriginale = submitEl ? submitEl.innerHTML : null;
+
+      if (submitEl) {
+        submitEl.disabled = true;
+        submitEl.classList.add('opacity-70', 'cursor-wait');
+      }
+
       maybeSubscribeFromContact(data.email, data.nome);
-      const subject = 'Richiesta primo colloquio — ' + data.nome;
-      const mailto = 'mailto:' + EMAIL +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(data.body);
-      window.location.href = mailto;
-      showFeedback('Perfetto: si sta aprendo il tuo programma di posta con il messaggio già pronto. Se non succede nulla, scrivimi direttamente a ' + EMAIL + ' oppure usa WhatsApp.', false);
+
+      fetch(ENDPOINT_CONTATTI, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email:   data.email,
+          name:    data.nome,
+          phone:   document.getElementById('cf-telefono').value.trim(),
+          kind:    'contatto',
+          source:  'contatto',
+          lang:    (window.SiteI18N && window.SiteI18N.lang) || 'it',
+          // Il consenso alla newsletter è una spunta a parte: chiedere un
+          // colloquio non vuol dire iscriversi a niente.
+          consent: !!(document.getElementById('cf-newsletter') || {}).checked,
+          setting: document.getElementById('cf-setting').value,
+          topics:  Array.from(document.querySelectorAll('input[name="temi"]:checked'))
+                     .map(function (c) { return c.value; }),
+          message: document.getElementById('cf-messaggio').value.trim(),
+          page:    location.pathname + location.hash,
+          referrer: document.referrer,
+          hp: ''
+        })
+      })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
+        .then(function (esito) {
+          if (!esito || !esito.ok) { throw new Error('rifiutata'); }
+          showFeedback('Ho ricevuto la tua richiesta. Ti rispondo io personalmente, di solito entro due giorni lavorativi. Se nel frattempo preferisci scrivermi direttamente, trovi email e WhatsApp qui accanto.', false);
+          form.reset();
+          if (window.SiteAnalytics) { window.SiteAnalytics.evento('contatto_inviato'); }
+        })
+        .catch(function () {
+          // Server irraggiungibile: non lascio la persona a mani vuote.
+          apriMailto(data);
+        })
+        .then(function () {
+          if (submitEl) {
+            submitEl.disabled = false;
+            submitEl.classList.remove('opacity-70', 'cursor-wait');
+            if (testoOriginale != null) { submitEl.innerHTML = testoOriginale; }
+          }
+        });
     });
 
     /* ============================================================

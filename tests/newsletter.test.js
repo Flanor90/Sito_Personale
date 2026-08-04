@@ -81,3 +81,56 @@ test('buildPayload usa locale it di default', () => {
   const p = Newsletter.buildPayload({ email: 'a@b.it' }, { fields: { email: 'EMAIL' } });
   assert.equal(p.locale, 'it');
 });
+
+/* ============================================================
+   Archivio proprio (aggiunto il 04/08/2026)
+   ------------------------------------------------------------
+   Da questa data ogni email va sia a Brevo sia al database del
+   pannello. Qui verifico che il secondo invio sia costruito bene:
+   se la "famiglia" della fonte sbaglia, una richiesta di colloquio
+   finirebbe archiviata come semplice iscrizione e non genererebbe
+   né la scheda Trello né l'avviso per email.
+   ============================================================ */
+
+test('kindDaFonte raggruppa le fonti granulari nella loro famiglia', () => {
+  assert.equal(Newsletter.kindDaFonte('test-adhd'), 'test');
+  assert.equal(Newsletter.kindDaFonte('test-burnout'), 'test');
+  assert.equal(Newsletter.kindDaFonte('test'), 'test');
+  assert.equal(Newsletter.kindDaFonte('compendi'), 'compendi');
+  assert.equal(Newsletter.kindDaFonte('contatto'), 'contatto');
+  assert.equal(Newsletter.kindDaFonte('newsletter'), 'newsletter');
+});
+
+test('kindDaFonte ripiega su newsletter per fonti sconosciute o assenti', () => {
+  assert.equal(Newsletter.kindDaFonte('qualcosa-di-nuovo'), 'newsletter');
+  assert.equal(Newsletter.kindDaFonte(''), 'newsletter');
+  assert.equal(Newsletter.kindDaFonte(undefined), 'newsletter');
+});
+
+test('buildBackendPayload conserva la fonte granulare accanto alla famiglia', () => {
+  const p = Newsletter.buildBackendPayload({ email: ' Mario@Esempio.IT ', source: 'test-adhd' });
+  assert.equal(p.source, 'test-adhd', 'la fonte precisa serve per segmentare');
+  assert.equal(p.kind, 'test', 'la famiglia serve al pannello');
+});
+
+test('buildBackendPayload trimma l\'email e tiene vuoto l\'honeypot', () => {
+  const p = Newsletter.buildBackendPayload({ email: '  a@b.it  ', name: '  Mario  ' });
+  assert.equal(p.email, 'a@b.it');
+  assert.equal(p.name, 'Mario');
+  assert.equal(p.hp, '', 'l\'honeypot deve partire vuoto: lo riempiono solo i bot');
+});
+
+test('buildBackendPayload considera dato il consenso salvo negazione esplicita', () => {
+  assert.equal(Newsletter.buildBackendPayload({ email: 'a@b.it' }).consent, true);
+  assert.equal(Newsletter.buildBackendPayload({ email: 'a@b.it', consent: false }).consent, false);
+});
+
+test('buildBackendPayload non fa uscire nulla oltre ai campi previsti', () => {
+  // Se un domani qualcuno passasse per sbaglio le risposte di un test,
+  // non devono comunque lasciare il browser.
+  const p = Newsletter.buildBackendPayload({
+    email: 'a@b.it', risposte: [1, 2, 3], punteggio: 27
+  });
+  assert.deepEqual(Object.keys(p).sort(),
+    ['consent', 'email', 'hp', 'kind', 'lang', 'name', 'page', 'referrer', 'source']);
+});

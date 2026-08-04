@@ -58,6 +58,13 @@
       source: 'FONTE'
     },
 
+    // Archivio proprio (Supabase, server in Irlanda). Dal 04/08/2026 ogni
+    // email va SIA a Brevo SIA qui: Brevo resta la rete di sicurezza con il
+    // suo double opt-in, mentre il pannello di amministrazione del sito
+    // diventa il posto dove vedere e usare i contatti. Se un giorno Brevo
+    // viene spento, basta svuotare `endpoints` e tutto continua a funzionare.
+    backend: 'https://ynmxgdcikqlgcupfszza.supabase.co/functions/v1/api/collect',
+
     // Ripiego se nessun endpoint è ancora configurato: apre il client di posta
     // dell'utente con una mail pre-indirizzata a te. Spento dal 29/07/2026, da
     // quando Brevo è attivo: dipendeva dal client di posta del visitatore e su
@@ -104,6 +111,36 @@
     payload.locale = data.lang || 'it';          // lingua dell'iscrizione
     payload.html_type = 'simple';
     return payload;
+  }
+
+  // Raggruppa la fonte granulare nella sua famiglia, che è ciò che il
+  // pannello usa per distinguere un'iscrizione da una richiesta di
+  // colloquio: 'test-adhd' → 'test', 'newsletter' → 'newsletter'.
+  function kindDaFonte(source) {
+    var key = String(source || 'newsletter').trim();
+    if (key === 'contatto') { return 'contatto'; }
+    if (key === 'compendi') { return 'compendi'; }
+    if (key.indexOf('test') === 0) { return 'test'; }
+    return 'newsletter';
+  }
+
+  // Corpo della richiesta verso l'archivio proprio. Pura: nessun segreto,
+  // nessuna chiave — il permesso di scrivere ce l'ha solo il server.
+  function buildBackendPayload(data) {
+    data = data || {};
+    return {
+      email:   String(data.email || '').trim(),
+      name:    String(data.name || '').trim(),
+      kind:    kindDaFonte(data.source),
+      source:  String(data.source || 'newsletter').trim(),
+      lang:    data.lang || 'it',
+      // Il consenso è esplicito: senza, l'indirizzo viene conservato ma
+      // non riceverà mai una newsletter (lo impone anche il database).
+      consent: data.consent !== false,
+      page:    data.page || '',
+      referrer: data.referrer || '',
+      hp:      ''
+    };
   }
 
   /* ---------- Parte browser (cablaggio del DOM) ---------- */
@@ -177,7 +214,24 @@
       '&body=' + encodeURIComponent(body);
   }
 
+  // Manda l'email anche all'archivio proprio. Non blocca e non fa mai
+  // fallire l'iscrizione: se il server non risponde, resta comunque Brevo.
+  // Restituisce una Promise che non viene mai rifiutata.
+  function postToBackend(data) {
+    if (!CONFIG.backend) { return Promise.resolve(null); }
+    return fetch(CONFIG.backend, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buildBackendPayload(data))
+    }).then(function (r) { return r.json(); }).catch(function () { return null; });
+  }
+
   // Iscrive un contatto. Restituisce una Promise: { ok, mode }.
+  //
+  // L'indirizzo viaggia verso due destinazioni indipendenti: l'archivio
+  // proprio (dove lo vedo nel pannello) e il modulo Brevo (che manda la
+  // sua email di conferma). Se una delle due tace, l'altra tiene: è il
+  // motivo per cui il doppio invio esiste.
   function subscribe(data) {
     data = data || {};
     return new Promise(function (resolve, reject) {
@@ -185,18 +239,28 @@
         reject({ ok: false, reason: 'email' });
         return;
       }
+
+      var arrivato = postToBackend(data);
       var endpoint = resolveEndpoint(data.source, CONFIG);
+
       if (endpoint) {
         postToBrevo(endpoint, buildPayload(data, CONFIG));
         resolve({ ok: true, mode: 'brevo' });
         return;
       }
+
       if (CONFIG.fallbackMailto) {
         fallbackMailto(data);
         resolve({ ok: true, mode: 'mailto' });
         return;
       }
-      reject({ ok: false, reason: 'unconfigured' });
+
+      // Senza Brevo, l'esito dipende dall'archivio proprio: qui sì che
+      // devo aspettare la risposta, perché è l'unica strada rimasta.
+      arrivato.then(function (esito) {
+        if (esito && esito.ok) { resolve({ ok: true, mode: 'archivio' }); }
+        else { reject({ ok: false, reason: 'unconfigured' }); }
+      });
     });
   }
 
@@ -249,8 +313,18 @@
         email:  email,
         name:   nameEl ? nameEl.value : '',
         source: form.getAttribute('data-nl-source') || 'newsletter',
-        lang:   currentLang()
+        lang:   currentLang(),
+        consent: true,
+        page:   hasDOM ? (location.pathname + location.hash) : '',
+        referrer: hasDOM ? document.referrer : ''
       }).then(function (res) {
+        // Segno la conversione: è il numero che dice quale punto del sito
+        // porta davvero contatti (le risposte dei test non c'entrano).
+        if (hasDOM && window.SiteAnalytics) {
+          window.SiteAnalytics.evento('email_lasciata', {
+            fonte: form.getAttribute('data-nl-source') || 'newsletter'
+          });
+        }
         if (res.mode === 'mailto') {
           setFeedback(form, t('nl.ok.mailto', 'Si sta aprendo il tuo programma di posta con la richiesta già pronta: inviala per completare.'), false);
         } else {
@@ -292,6 +366,8 @@
     isValidEmail: isValidEmail,
     resolveEndpoint: resolveEndpoint,
     buildPayload: buildPayload,
+    kindDaFonte: kindDaFonte,
+    buildBackendPayload: buildBackendPayload,
     subscribe: subscribe,
     attachForm: attachForm
   };

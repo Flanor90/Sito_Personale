@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Questo pannello non deve comparire in nessun motore di ricerca.
+       robots.txt lo esclude, ma un file può essere raggiunto anche da un
+       link: qui lo dico esplicitamente, ed è la regola che vale di più. -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+
+  <title>Pannello · Alberto Del Bove</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ============================================================
+     ACCESSO
+     Finché non c'è una sessione valida, questa è l'unica cosa che
+     esiste: il resto del pannello non viene nemmeno costruito.
+     ============================================================ -->
+<div id="accesso" class="accesso">
+  <form class="accesso-box" id="form-accesso" novalidate>
+    <div class="accesso-logo">A<b>B</b></div>
+    <h1>Pannello</h1>
+    <p class="sub">Contatti, newsletter e statistiche del sito.</p>
+
+    <div id="esito-accesso"></div>
+
+    <div class="campo">
+      <label for="utente">Nome utente o email</label>
+      <input type="text" id="utente" autocomplete="username" autocapitalize="off"
+             spellcheck="false" required>
+    </div>
+
+    <div class="campo">
+      <label for="password">Password</label>
+      <input type="password" id="password" autocomplete="current-password" required>
+    </div>
+
+    <div class="riga-check">
+      <input type="checkbox" id="ricordami" checked>
+      <label for="ricordami">Resta collegato su questo dispositivo</label>
+    </div>
+
+    <button type="submit" class="bottone largo" id="btn-accedi" style="margin-top:20px">Entra</button>
+  </form>
+</div>
+
+<!-- ============================================================
+     PANNELLO
+     ============================================================ -->
+<div id="app" class="app nascosto">
+  <nav class="barra">
+    <div class="barra-titolo">Alberto Del Bove</div>
+    <div class="barra-sotto">Pannello</div>
+
+    <button class="voce attiva" data-sezione="cruscotto">Cruscotto</button>
+    <button class="voce" data-sezione="contatti">Contatti<span class="pastiglia nascosto" data-conteggio="contatti"></span></button>
+    <button class="voce" data-sezione="richieste">Richieste<span class="pastiglia nascosto" data-conteggio="richieste"></span></button>
+    <button class="voce" data-sezione="newsletter">Newsletter</button>
+    <button class="voce" data-sezione="statistiche">Statistiche</button>
+    <button class="voce" data-sezione="impostazioni">Impostazioni</button>
+
+    <div class="barra-piede">
+      <div id="chi-sono" class="mono" style="word-break:break-all;margin-bottom:9px"></div>
+      <button class="bottone secondario piccolo" id="btn-esci">Esci</button>
+    </div>
+  </nav>
+
+  <main class="contenuto" id="contenuto"></main>
+</div>
+
+<div id="cassetto"></div>
+
+<script src="markdown.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
