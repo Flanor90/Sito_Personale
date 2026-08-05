@@ -42,10 +42,10 @@
   </p>
 
   <div class="flex flex-wrap gap-3">
-    <a href="/guida-ia/" data-evento="cta_click" data-evento-etichetta="compendi-guida-gratuita-hero"
+    <a href="#guide" data-evento="cta_click" data-evento-etichetta="compendi-guide-gratuite-hero"
        class="inline-flex items-center gap-2 bg-mirtillo-700 text-white px-6 py-3.5 rounded-full font-semibold hover:bg-mirtillo-600 transition-colors">
       <i data-lucide="gift" class="w-4 h-4" aria-hidden="true"></i>
-      Scarica la guida gratuita
+      Le due guide gratuite
     </a>
     <a href="#volumi"
        class="inline-flex items-center gap-2 border border-tortora-dark px-6 py-3.5 rounded-full font-semibold text-notte hover:bg-crema-dark transition-colors">
@@ -55,40 +55,57 @@
 </section>
 
 <!-- ============================================================
-     Richiamo alla guida gratuita
+     Le guide gratuite
      ------------------------------------------------------------
-     Il modulo di download vive su /guida-ia/, non qui: è la pagina
-     che si condivide sui social e non ha senso tenerne due copie da
-     allineare a mano. Qui c'è solo il richiamo.
+     I moduli vivono sulle rispettive pagine, non qui: sono quelle che
+     si condividono sui social, e tenerne due copie da allineare a mano
+     sarebbe una in più. Qui c'è solo il richiamo.
      ============================================================ -->
-<section class="py-14 bg-white" aria-labelledby="titolo-guida">
+<section id="guide" class="py-14 bg-white" aria-labelledby="titolo-guide">
   <div class="max-w-5xl mx-auto px-5">
-    <a href="/guida-ia/" data-evento="cta_click" data-evento-etichetta="compendi-guida-gratuita"
-       class="group block rounded-[2rem] border border-mirtillo-200 bg-gradient-to-br from-mirtillo-50 via-white to-crema shadow-[0_20px_60px_-40px_rgba(76,80,127,0.6)] overflow-hidden hover:shadow-[0_28px_70px_-34px_rgba(76,80,127,0.6)] transition-shadow">
-      <div class="grid sm:grid-cols-[minmax(0,0.5fr)_minmax(0,1fr)] items-center">
+    <h2 id="titolo-guide" class="font-serif text-3xl text-notte mb-2">Le guide gratuite</h2>
+    <p class="text-inchiostro/70 mb-8 max-w-2xl">
+      Due testi brevi, in cambio della tua email. Arrivano per posta e sono tuoi
+      anche se poi non confermi l'iscrizione.
+    </p>
+
+    <div class="grid sm:grid-cols-2 gap-6">
+      <a href="/guida-expat/" data-evento="cta_click" data-evento-etichetta="compendi-guida-expat"
+         class="group flex flex-col rounded-[2rem] border border-mirtillo-200 bg-gradient-to-br from-mirtillo-50 via-white to-crema overflow-hidden shadow-[0_20px_60px_-40px_rgba(76,80,127,0.6)] hover:shadow-[0_28px_70px_-34px_rgba(76,80,127,0.6)] transition-shadow">
         <div class="bg-notte p-7 flex items-center justify-center">
-          <img src="/assets/cover-guida-ia.png" width="1200" height="1200" loading="lazy"
-               alt="Copertina della guida gratuita «Un'intelligenza artificiale può farti da terapeuta?»"
-               class="w-full max-w-[220px] rounded-lg shadow-2xl ring-1 ring-white/10">
+          <img src="/assets/cover-guida-expat.png" width="1080" height="1350" loading="lazy" alt="Copertina della guida gratuita «Fare terapia nella lingua in cui sei cresciuto»"
+               class="w-full max-w-[190px] rounded-lg shadow-2xl ring-1 ring-white/10">
         </div>
-        <div class="p-7 sm:p-9">
-          <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white bg-mirtillo-600 px-3 py-1.5 rounded-full mb-4">
+        <div class="p-7 flex flex-col grow">
+          <span class="self-start inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white bg-mirtillo-600 px-3 py-1.5 rounded-full mb-4">
             <i data-lucide="gift" class="w-3.5 h-3.5" aria-hidden="true"></i> Guida gratuita
           </span>
-          <h2 id="titolo-guida" class="font-serif text-2xl sm:text-3xl leading-tight text-notte mb-3">
-            Un’intelligenza artificiale può farti da terapeuta?
-          </h2>
-          <p class="text-inchiostro/75 leading-relaxed mb-5">
-            Otto minuti di lettura sul ricorso dell’Ordine degli Psicologi contro
-            una piattaforma di sedute generate dall’IA — e su cosa distingue un
-            ascolto che ti asseconda da uno che ti risponde.
-          </p>
+          <h3 class="font-serif text-xl sm:text-2xl leading-tight text-notte mb-3">Fare terapia nella lingua in cui sei cresciuto</h3>
+          <p class="text-inchiostro/75 leading-relaxed mb-5 grow">Perché, se vivi all&#39;estero, cercare un terapeuta italiano non è nostalgia. Nove minuti sul perché in inglese certe cose non vengono, sul secondo anno, e su come capire chi hai davanti.</p>
           <span class="inline-flex items-center gap-2 text-sm font-semibold text-mirtillo-700 group-hover:text-notte transition-colors">
-            Scaricala gratis <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
+            Ricevila gratis <i data-lucide="mail" class="w-4 h-4" aria-hidden="true"></i>
           </span>
         </div>
-      </div>
-    </a>
+      </a>
+
+      <a href="/guida-ia/" data-evento="cta_click" data-evento-etichetta="compendi-guida-gratuita"
+         class="group flex flex-col rounded-[2rem] border border-mirtillo-200 bg-gradient-to-br from-mirtillo-50 via-white to-crema overflow-hidden shadow-[0_20px_60px_-40px_rgba(76,80,127,0.6)] hover:shadow-[0_28px_70px_-34px_rgba(76,80,127,0.6)] transition-shadow">
+        <div class="bg-notte p-7 flex items-center justify-center">
+          <img src="/assets/cover-guida-ia.png" width="1200" height="1200" loading="lazy" alt="Copertina della guida gratuita «Un&#39;intelligenza artificiale può farti da terapeuta?»"
+               class="w-full max-w-[190px] rounded-lg shadow-2xl ring-1 ring-white/10">
+        </div>
+        <div class="p-7 flex flex-col grow">
+          <span class="self-start inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white bg-mirtillo-600 px-3 py-1.5 rounded-full mb-4">
+            <i data-lucide="gift" class="w-3.5 h-3.5" aria-hidden="true"></i> Guida gratuita
+          </span>
+          <h3 class="font-serif text-xl sm:text-2xl leading-tight text-notte mb-3">Un&#39;intelligenza artificiale può farti da terapeuta?</h3>
+          <p class="text-inchiostro/75 leading-relaxed mb-5 grow">Otto minuti sul ricorso dell&#39;Ordine degli Psicologi contro una piattaforma di sedute generate dall&#39;IA — e su cosa distingue un ascolto che ti asseconda da uno che ti risponde.</p>
+          <span class="inline-flex items-center gap-2 text-sm font-semibold text-mirtillo-700 group-hover:text-notte transition-colors">
+            Ricevila gratis <i data-lucide="mail" class="w-4 h-4" aria-hidden="true"></i>
+          </span>
+        </div>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -130,7 +147,7 @@
   <div class="max-w-6xl mx-auto px-5">
     <h2 id="i-volumi" class="font-serif text-3xl text-notte mb-3">Tutti i materiali</h2>
     <p class="text-inchiostro/70 mb-8 max-w-2xl">
-      Sei volumi a pagamento e una guida gratuita. Alcuni sono scritti per i
+      Sei volumi a pagamento e due guide gratuite. Alcuni sono scritti per i
       colleghi, altri per chi quella diagnosi se la porta addosso: filtra per
       trovare subito i tuoi.
     </p>
@@ -260,6 +277,25 @@
              data-evento="cta_click" data-evento-etichetta="compendio-adhd-pazienti"
              class="inline-flex items-center justify-center gap-1.5 text-sm font-semibold bg-notte text-white px-4 py-2.5 rounded-full hover:bg-mirtillo-700 transition-colors">
             Acquista su Gumroad <i data-lucide="external-link" class="w-3.5 h-3.5" aria-hidden="true"></i>
+          </a>
+        </div>
+      </article>
+
+      <article data-pubblico="tutti" class="rounded-3xl border border-tortora bg-white overflow-hidden flex flex-col reveal">
+        <img src="/assets/cover-guida-expat.png" width="600" height="800" loading="lazy"
+             alt="Copertina della guida gratuita «Fare terapia nella lingua in cui sei cresciuto»"
+             class="w-full aspect-[3/4] object-cover">
+        <div class="p-6 flex flex-col grow">
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="text-[11px] font-semibold uppercase tracking-[0.12em] text-mirtillo-700 bg-mirtillo-100 px-2.5 py-1 rounded-full">Per tutti · IT</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.12em] text-white bg-mirtillo-600 px-2 py-1 rounded-full">Gratuita</span>
+          </div>
+          <h4 class="font-serif text-xl text-notte mb-3 leading-snug">Fare terapia nella lingua in cui sei cresciuto</h4>
+          <p class="text-sm text-inchiostro/70 mb-5 grow">Per chi vive all&#39;estero: perché in inglese certe cose non vengono, cosa succede il secondo anno, e come capire in trenta secondi chi hai davanti.</p>
+          <a href="/guida-expat/"
+             data-evento="cta_click" data-evento-etichetta="catalogo-guida-expat"
+             class="inline-flex items-center justify-center gap-1.5 text-sm font-semibold bg-notte text-white px-4 py-2.5 rounded-full hover:bg-mirtillo-700 transition-colors">
+            Ricevila gratis <i data-lucide="mail" class="w-3.5 h-3.5" aria-hidden="true"></i>
           </a>
         </div>
       </article>
