@@ -179,6 +179,10 @@ function paginaHtml(meta, contenuto) {
     color: var(--mirtillo-chiaro); margin-bottom: 16mm;
   }
   .copertina h1 {
+    /* Il "display" va dichiarato qui: più sotto c'è "h1 { display: none }"
+       per i titoli che il markdown ripete, e senza questa riga nasconde
+       anche il titolo di copertina — che è la prima cosa che si vede. */
+    display: block;
     font-family: Fraunces, Georgia, serif; font-weight: 400;
     font-size: 33pt; line-height: 1.14; margin: 0 0 8mm; color: #fff;
   }
@@ -194,7 +198,7 @@ function paginaHtml(meta, contenuto) {
   }
 
   /* ---------- Testo ---------- */
-  h1 { display: none; }  /* il titolo vive sulla copertina */
+  h1 { display: none; }  /* nel corpo no: il titolo vive sulla copertina */
   h2 {
     font-family: Fraunces, Georgia, serif; font-weight: 400; font-size: 17pt;
     line-height: 1.25; color: var(--notte); margin: 9mm 0 3.5mm;

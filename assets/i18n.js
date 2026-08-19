@@ -278,6 +278,9 @@
       'ris.a8.cat': 'Psychology & technology',
       'ris.a8.t': 'Can an artificial intelligence be your therapist?',
       'ris.a8.d': 'The Italian Psychologists\' Association has gone to court against a platform offering sessions run by AI-generated therapists. This isn\'t professional-guild news: it concerns anyone who has opened an app at two in the morning.',
+      'ris.a9.cat': 'Psychology & technology',
+      'ris.a9.t': 'Why it\'s easier to tell a machine',
+      'ris.a9.d': 'The sequel to the piece on the Psychologists\' Association case. If confiding in an AI is easier, it\'s because talking to a person costs something — and it\'s worth asking what, exactly.',
 
       /* --- Portfolio --- */
       'pf.kicker': 'Portfolio · MSc Strategic HRM',
@@ -717,6 +720,9 @@
       'ris.a8.cat': 'Psicología y tecnología',
       'ris.a8.t': '¿Puede una inteligencia artificial hacerte de terapeuta?',
       'ris.a8.d': 'El Colegio de Psicólogos italiano ha llevado a los tribunales a una plataforma que ofrece sesiones conducidas por terapeutas generados con IA. No es una noticia gremial: concierne a cualquiera que haya abierto una app a las dos de la madrugada.',
+      'ris.a9.cat': 'Psicología y tecnología',
+      'ris.a9.t': 'Por qué es más fácil contárselo a una máquina',
+      'ris.a9.d': 'La continuación del texto sobre el recurso del Colegio de Psicólogos. Si confiarse a una IA es más fácil, es porque hablar con una persona cuesta — y vale la pena preguntarse qué, exactamente.',
 
       /* --- Portfolio --- */
       'pf.kicker': 'Portfolio · MSc Strategic HRM',

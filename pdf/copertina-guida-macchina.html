@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Copertina — Perché è più facile parlarne a una macchina</title>
+
+<!-- Sorgente della copertina quadrata usata dalla card sul sito.
+     build-pdf.js la fotografa a 1200×1200 in assets/cover-guida-macchina.png.
+     Le altre copertine dei compendi sono quadrate: questa le segue,
+     altrimenti nella griglia si vedrebbe una card più alta delle altre. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact; }
+  html, body { width: 1200px; height: 1200px; overflow: hidden; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #1B2A3A;
+    background-image: radial-gradient(circle at 82% 10%, #24374C 0%, rgba(36,55,76,0) 48%),
+                      radial-gradient(circle at 6% 94%, #24374C 0%, rgba(36,55,76,0) 42%);
+    color: #F7F5F1;
+    padding: 96px 92px 88px;
+    display: flex; flex-direction: column;
+  }
+  .marchio { display: flex; align-items: center; gap: 26px; }
+  .marchio svg { width: 76px; height: 76px; display: block; }
+  .nome { font-family: 'Fraunces', Georgia, serif; font-size: 34px; color: #fff; line-height: 1.1; }
+  .ruolo { font-size: 15px; letter-spacing: .22em; text-transform: uppercase; color: #A9ACD4; margin-top: 8px; }
+
+  .corpo { margin-top: auto; }
+  .etichetta {
+    display: inline-block;
+    font-size: 20px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    color: #1B2A3A; background: #A9ACD4;
+    padding: 13px 30px; border-radius: 99px; margin-bottom: 46px;
+  }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400; font-size: 80px; line-height: 1.1;
+    color: #fff; letter-spacing: -.015em; margin-bottom: 40px;
+  }
+  .filo { width: 150px; height: 7px; background: #7C81B3; border-radius: 99px; margin-bottom: 40px; }
+  .meta { font-size: 26px; line-height: 1.6; color: rgba(247,245,241,.7); }
+  .meta b { color: #A9ACD4; font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="marchio">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="18" fill="#F7F5F1"/>
+      <path d="M22 78 L44 22 L52 22 L52 78 L44 78 L44 62 L34 62 L28 78 Z M44 32 L37 54 L44 54 Z" fill="#1B2A3A"/>
+      <path d="M56 22 L74 22 Q86 22 86 35 Q86 44 79 47 Q88 50 88 62 Q88 78 74 78 L56 78 Z M64 30 L64 43 L72 43 Q78 43 78 36.5 Q78 30 72 30 Z M64 51 L64 70 L73 70 Q80 70 80 60.5 Q80 51 73 51 Z" fill="#7C81B3"/>
+    </svg>
+    <div>
+      <div class="nome">Alberto Del Bove</div>
+      <div class="ruolo">Psicologo Psicoterapeuta</div>
+    </div>
+  </div>
+
+  <div class="corpo">
+    <span class="etichetta">Guida gratuita</span>
+    <h1>Perché è più facile parlarne a una macchina</h1>
+    <div class="filo"></div>
+    <div class="meta">
+      Il seguito del pezzo sul ricorso dell’Ordine<br>
+      <b>PDF · circa sette minuti di lettura</b>
+    </div>
+  </div>
+</body>
+</html>

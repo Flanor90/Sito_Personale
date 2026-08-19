@@ -53,6 +53,15 @@ const LAVORI = [
     sorgente: 'pdf/copertina-guida-ia.html',
     uscita: 'assets/cover-guida-ia.png',
     dimensione: 1200
+  },
+  // Della guida «Perché è più facile parlarne a una macchina» qui si
+  // stampa solo la copertina della card: il PDF nasce dal markdown in
+  // SMM_Hub e lo produce tools/genera-guida-pdf.js.
+  {
+    tipo: 'immagine',
+    sorgente: 'pdf/copertina-guida-macchina.html',
+    uscita: 'assets/cover-guida-macchina.png',
+    dimensione: 1200
   }
 ];
 
