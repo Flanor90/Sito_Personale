@@ -1037,6 +1037,132 @@
     });
 
     apply(scelta.lang, scelta.ricorda);
+    proponiInglese(scelta.lang);
+  }
+
+  /* ----------------------------------------------------------
+     PROPOSTA DELLA VERSIONE INGLESE
+     ------------------------------------------------------------
+     Il link in bio di Pinterest e le inserzioni Etsy portano qui
+     colleghi che non leggono l'italiano. Arrivano su una pagina
+     qualsiasi — non solo /en/ — e il selettore IT/EN/ES in alto è
+     due lettere piccole: si può non vederlo.
+
+     Da qui una proposta esplicita, UNA volta sola. Le condizioni
+     sono strette apposta, perché il pubblico principale del sito è
+     italiano e a lui questo banner non deve capitare mai:
+
+     - chi sta già leggendo in inglese non la vede (non ha senso);
+     - chi ha l'italiano fra le lingue del browser non la vede,
+       nemmeno se non è la prima: se il browser dichiara l'italiano,
+       l'italiano lo si capisce;
+     - chi ha già scelto una lingua a mano non la vede: ha deciso lui,
+       e riproporglielo sarebbe non dargli ascolto;
+     - chi l'ha già chiusa una volta non la rivede più.
+     ---------------------------------------------------------- */
+  var CHIAVE_PROPOSTA = 'siteLangPropostaEn';
+
+  /** L'italiano compare fra le lingue dichiarate dal browser? */
+  function conosceItaliano() {
+    var lingue = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || ''];
+    for (var i = 0; i < lingue.length; i++) {
+      if (String(lingue[i] || '').toLowerCase().indexOf('it') === 0) { return true; }
+    }
+    return false;
+  }
+
+  /** L'ha già chiusa, o ha già scelto una lingua a mano? */
+  function propostaDaSaltare() {
+    try {
+      if (localStorage.getItem(CHIAVE_PROPOSTA)) { return true; }
+      var scelta = localStorage.getItem(STORAGE_KEY);
+      if (scelta && scelta !== 'it') { return true; }
+    } catch (e) { /* niente localStorage: si prosegue e si propone */ }
+    return false;
+  }
+
+  function chiudiProposta(banner, ricorda) {
+    if (ricorda) {
+      try { localStorage.setItem(CHIAVE_PROPOSTA, '1'); } catch (e) {}
+    }
+    banner.style.opacity = '0';
+    banner.style.transform = 'translateY(-0.5rem)';
+    setTimeout(function () { banner.remove(); }, 200);
+  }
+
+  function proponiInglese(langAttiva) {
+    if (langAttiva === 'en') { return; }
+    if (conosceItaliano()) { return; }
+    if (propostaDaSaltare()) { return; }
+
+    var banner = document.createElement('div');
+    banner.id = 'proposta-lingua';
+    banner.setAttribute('role', 'region');
+    banner.setAttribute('aria-label', 'Site language');
+    banner.className = 'fixed inset-x-0 z-40 px-4 transition-all duration-200';
+    banner.style.opacity = '0';
+    banner.style.transform = 'translateY(-0.5rem)';
+
+    banner.innerHTML =
+      '<div class="max-w-2xl mx-auto bg-notte text-crema rounded-2xl shadow-xl ' +
+      'px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4">' +
+        '<p class="text-sm leading-relaxed grow">' +
+          'This site is also available in <strong>English</strong>.' +
+        '</p>' +
+        '<div class="flex items-center gap-2 flex-none">' +
+          '<button type="button" data-azione="passa" ' +
+            'class="text-sm font-semibold bg-mirtillo-600 text-white px-4 py-2 rounded-full ' +
+            'hover:bg-mirtillo-500 transition-colors">Read in English</button>' +
+          '<button type="button" data-azione="chiudi" aria-label="Dismiss" ' +
+            'class="text-sm font-semibold text-crema/70 px-3 py-2 rounded-full ' +
+            'hover:text-crema hover:bg-white/10 transition-colors">No thanks</button>' +
+        '</div>' +
+      '</div>';
+
+    /* Sotto l'intestazione, che è fissa in cima: la misuro invece di
+       fidarmi di un numero, così se domani l'header cambia altezza il
+       banner resta al suo posto. In fondo alla pagina non poteva stare:
+       lì ci sono già la barra contatti su mobile e il dock su desktop. */
+    function posiziona() {
+      var header = document.getElementById('site-header');
+      var alto = header ? header.getBoundingClientRect().height : 0;
+      banner.style.top = (alto + 12) + 'px';
+    }
+    posiziona();
+    window.addEventListener('resize', posiziona);
+    // L'intestazione si rimpicciolisce quando si scorre: se non
+    // ricalcolassi, resterebbe un buco fra le due.
+    window.addEventListener('scroll', posiziona, { passive: true });
+
+    banner.addEventListener('click', function (ev) {
+      var b = ev.target.closest ? ev.target.closest('button[data-azione]') : null;
+      if (!b) { return; }
+
+      if (b.getAttribute('data-azione') === 'passa') {
+        apply('en', true);
+        // La lingua finisce anche nell'indirizzo: quello che vede è
+        // anche quello che può copiare e mandare a un collega.
+        try {
+          var url = new URL(location.href);
+          url.searchParams.set('lang', 'en');
+          history.replaceState(null, '', url);
+        } catch (e) { /* niente */ }
+      }
+      chiudiProposta(banner, true);
+    });
+
+    document.body.appendChild(banner);
+    /* Un filo di ritardo: senza, il browser applica lo stato finale
+       insieme a quello iniziale e la transizione non si vede. Qui serve
+       setTimeout e non requestAnimationFrame: in una scheda aperta in
+       secondo piano rAF non viene mai chiamato, e il banner resterebbe
+       invisibile per sempre. */
+    setTimeout(function () {
+      banner.style.opacity = '1';
+      banner.style.transform = 'translateY(0)';
+    }, 30);
   }
 
   // API pubblica per i contenuti dinamici
