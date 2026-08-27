@@ -961,7 +961,13 @@
        L'attributo accetta più lingue separate da spazio. */
     document.querySelectorAll('[data-solo-lingua]').forEach(function (el) {
       var ammesse = el.getAttribute('data-solo-lingua').split(/\s+/);
-      el.hidden = ammesse.indexOf(lang) === -1;
+      var fuoriLingua = ammesse.indexOf(lang) === -1;
+      el.hidden = fuoriLingua;
+      /* Il solo attributo `hidden` non basta: vale come stile del browser
+         e qualunque classe dell'autore lo batte, quindi una scheda con
+         `class="flex"` resterebbe in pagina nonostante hidden. La classe
+         `hidden` di Tailwind invece è dichiarata dopo `flex` e vince. */
+      el.classList.toggle('hidden', fuoriLingua);
     });
 
     // Stato visivo dei bottoni lingua
