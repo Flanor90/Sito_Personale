@@ -232,6 +232,7 @@ ${adatta(parti.footer, lingua)}
 
 <script src="/assets/i18n.js"></script>
 <script src="/assets/analytics.js"></script>
+<script src="/assets/consenso.js"></script>
 <script src="/assets/newsletter.js"></script>
 <script src="/assets/pagine.js"></script>
 </body>

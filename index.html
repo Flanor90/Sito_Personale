@@ -1967,6 +1967,7 @@
             <li><a href="#contatti" class="hover:text-white transition-colors" data-i18n="foot.nav.contatti">Contatti</a></li>
             <li><a href="/privacy/" class="hover:text-white transition-colors">Privacy</a></li>
             <li><a href="/note-legali/" class="hover:text-white transition-colors">Note legali</a></li>
+            <li><button type="button" onclick="window.ConsensoCookie&amp;&amp;window.ConsensoCookie.apri()" class="hover:text-white transition-colors">Preferenze cookie</button></li>
           </ul>
         </nav>
         <div class="flex gap-3">
@@ -2079,6 +2080,9 @@
   <!-- Statistiche del sito: nessun cookie, nessun IP, nessuna risposta dei test.
        Caricato prima di newsletter.js perché quest'ultimo vi registra le conversioni. -->
   <script src="assets/analytics.js"></script>
+  <!-- Consenso ai cookie statistici: senza un sì, Google Analytics non viene
+       nemmeno scaricato. -->
+  <script src="assets/consenso.js"></script>
   <!-- Raccolta email / newsletter (Brevo + archivio proprio; nessun dato dei test) -->
   <script src="assets/newsletter.js"></script>
   <script>

@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Finché il banner del consenso è in pagina, la barra contatti di mobile
+   sparisce: vivono nello stesso angolo, e la scelta sui cookie non deve
+   restare coperta da altro. */
+.con-banner-consenso #contact-bar { display: none !important; }
