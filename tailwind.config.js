@@ -36,16 +36,18 @@ module.exports = {
         '2xl': '0.75rem',
         '3xl': '1rem'
       },
-      /* Niente più ombra grigia sotto ogni scheda: le superfici si
-         separano con un filo, l'ombra vera resta solo ai pannelli che
-         galleggiano (menu, finestre, avvisi). */
+      /* Profondità: ombre a più strati, tinte di notte e non grigie, come
+         la luce vera che cade su carta spessa. Ogni livello ha un filo di
+         contorno e una penombra lunga: le superfici sembrano posate, non
+         ritagliate. sm = appoggiato, md/lg = sollevato, xl/2xl = sospeso
+         (menu, finestre, ritratto). */
       boxShadow: {
-        sm: '0 0 0 1px rgb(27 42 58 / 0.07)',
-        DEFAULT: '0 0 0 1px rgb(27 42 58 / 0.08)',
-        md: '0 0 0 1px rgb(27 42 58 / 0.10)',
-        lg: '0 0 0 1px rgb(27 42 58 / 0.10)',
-        xl: '0 18px 40px -18px rgb(18 28 39 / 0.35), 0 0 0 1px rgb(27 42 58 / 0.08)',
-        '2xl': '0 24px 56px -20px rgb(18 28 39 / 0.40)'
+        sm: '0 0 0 1px rgb(27 42 58 / 0.06), 0 1px 2px rgb(18 28 39 / 0.05), 0 6px 14px -8px rgb(18 28 39 / 0.12)',
+        DEFAULT: '0 0 0 1px rgb(27 42 58 / 0.06), 0 2px 4px rgb(18 28 39 / 0.05), 0 10px 22px -12px rgb(18 28 39 / 0.16)',
+        md: '0 0 0 1px rgb(27 42 58 / 0.06), 0 2px 4px rgb(18 28 39 / 0.05), 0 14px 28px -14px rgb(18 28 39 / 0.22)',
+        lg: '0 0 0 1px rgb(27 42 58 / 0.06), 0 4px 8px rgb(18 28 39 / 0.05), 0 22px 44px -18px rgb(18 28 39 / 0.28)',
+        xl: '0 0 0 1px rgb(27 42 58 / 0.06), 0 6px 12px rgb(18 28 39 / 0.06), 0 32px 64px -24px rgb(18 28 39 / 0.38)',
+        '2xl': '0 0 0 1px rgb(27 42 58 / 0.08), 0 10px 20px rgb(18 28 39 / 0.08), 0 48px 96px -32px rgb(18 28 39 / 0.50)'
       }
     }
   }

@@ -137,3 +137,129 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
 .lang-btn:hover { color: #4C507F; }
 .lang-btn[aria-pressed="true"] { background: #60659B; color: #fff; }
 
+
+/* ============================================================
+   Profondità e finitura («premium»)
+   ------------------------------------------------------------
+   Tre idee, sempre le stesse ovunque:
+   1. le superfici chiare sono carta spessa posata sul fondo: hanno
+      un'ombra lunga e morbida e, al passaggio, si sollevano un poco;
+   2. le superfici notte hanno grana e una luce di lampada (lume) che
+      viene da un punto preciso, non un colore piatto;
+   3. i pulsanti pieni sono oggetti: luce in alto, ombra sotto, e
+      cedono di un pixel quando li premi.
+   ============================================================ */
+:root {
+  --ombra-posata: 0 0 0 1px rgb(27 42 58 / .06), 0 1px 2px rgb(18 28 39 / .05), 0 8px 18px -10px rgb(18 28 39 / .16);
+  --ombra-sollevata: 0 0 0 1px rgb(27 42 58 / .07), 0 6px 12px rgb(18 28 39 / .06), 0 30px 56px -22px rgb(18 28 39 / .34);
+  --grana: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+/* 1. Carta posata. Le schede bianche senza un'ombra propria ne
+   ricevono una; quelle che sono articoli (schede cliccabili) si
+   sollevano al passaggio. */
+.bg-white:is(.rounded-xl, .rounded-2xl, .rounded-3xl, [class*="rounded-[2"]):not([class*="shadow"]):not(input):not(textarea):not(select) {
+  box-shadow: var(--ombra-posata);
+}
+article:is(.rounded-2xl, .rounded-3xl, [class*="rounded-[2"]),
+a:is(.rounded-2xl, .rounded-3xl).bg-white {
+  transition: transform .45s cubic-bezier(.2, .7, .2, 1), box-shadow .45s cubic-bezier(.2, .7, .2, 1);
+}
+@media (hover: hover) {
+  article:is(.rounded-2xl, .rounded-3xl, [class*="rounded-[2"]):hover,
+  a:is(.rounded-2xl, .rounded-3xl).bg-white:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--ombra-sollevata);
+  }
+}
+/* Le immagini dentro le schede hanno un lieve rilievo interno. */
+article img.object-cover { transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+@media (hover: hover) {
+  article:hover img.object-cover { transform: scale(1.025); }
+}
+
+/* 2. Notte con grana e luce. */
+.bg-notte, .bg-notte-deep {
+  background-image: var(--grana);
+  background-size: 180px 180px;
+  background-blend-mode: soft-light;
+}
+#hero { isolation: isolate; }
+#hero::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(42rem 30rem at 82% 8%, rgb(233 184 114 / .16), transparent 62%),
+    radial-gradient(36rem 28rem at 6% 96%, rgb(124 129 179 / .20), transparent 65%);
+}
+
+/* 3. Pulsanti pieni come oggetti. */
+:is(a, button).rounded-full:is(.bg-notte, .bg-mirtillo-700, .bg-mirtillo-600, .bg-lume) {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / .14), rgb(255 255 255 / 0) 55%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .22),
+    0 1px 2px rgb(18 28 39 / .22),
+    0 10px 22px -10px rgb(18 28 39 / .55);
+  transition: background-color .25s ease, transform .2s ease, box-shadow .25s ease;
+}
+:is(a, button).rounded-full.bg-lume {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .45),
+    0 1px 2px rgb(18 28 39 / .35),
+    0 14px 34px -12px rgb(233 184 114 / .55);
+}
+@media (hover: hover) {
+  :is(a, button).rounded-full:is(.bg-notte, .bg-mirtillo-700, .bg-mirtillo-600, .bg-lume):hover { transform: translateY(-1px); }
+}
+:is(a, button).rounded-full:is(.bg-notte, .bg-mirtillo-700, .bg-mirtillo-600, .bg-lume):active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px rgb(18 28 39 / .35);
+}
+
+/* Intestazione in vetro smerigliato, con un filo sotto. */
+#site-header {
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid rgb(27 42 58 / .07);
+}
+
+/* Titoli di sezione più grandi: la tipografia è l'immagine. */
+@media (min-width: 1024px) {
+  main section h2.font-serif[class*="lg:text-4xl"] { font-size: 3.1rem; line-height: 1.06; }
+  main section h2.font-serif.text-3xl:not([class*="lg:"]) { font-size: 2.4rem; line-height: 1.1; }
+}
+
+/* Ritratto in tre dimensioni: si inclina appena seguendo il puntatore
+   (script in fondo a index.html) e ha una lastra color lume dietro,
+   più lontana, che si sposta di meno: è la parallasse a dare lo
+   spessore. Con il movimento ridotto resta fermo. */
+.ritratto-3d { perspective: 1100px; }
+.ritratto-3d .ritratto-scena {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1);
+}
+.ritratto-3d .ritratto-lastra {
+  position: absolute; inset: 0;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(233 184 114 / .55);
+  background: linear-gradient(160deg, rgb(233 184 114 / .16), rgb(124 129 179 / .10));
+  transform: translate3d(30px, 30px, -40px);
+}
+.ritratto-3d img { position: relative; transform: translateZ(20px); }
+@media (prefers-reduced-motion: reduce) {
+  .ritratto-3d .ritratto-scena { transform: none; transition: none; }
+  article, article img.object-cover, :is(a, button).rounded-full { transition: none !important; }
+}
+@media (max-width: 1023px) {
+  .ritratto-3d .ritratto-lastra { transform: translate3d(10px, 10px, -20px); }
+}
+
+/* Nelle pagine interne il titolo principale ha la stessa voce della
+   home: grande, leggero, stretto. */
+.pagina-lettura main h1.font-serif {
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.25rem);
+  line-height: 1.04;
+  font-weight: 350;
+}

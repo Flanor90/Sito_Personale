@@ -444,8 +444,19 @@
 </section>
 </main>
 
-<footer class="bg-notte-deeptext-white/70 py-12" role="contentinfo">
+<footer class="relative bg-notte-deeptext-white/70 pt-20 pb-12" role="contentinfo">
     <div class="max-w-6xl mx-auto px-5">
+      <!-- Chiusura: l'ultima cosa che si legge su ogni pagina è
+           l'invito del primo contatto, nelle parole del brand. -->
+      <div class="pb-14 mb-10 border-b border-white/10 grid lg:grid-cols-12 gap-8 items-end">
+        <p class="lg:col-span-8 font-serif font-light text-white text-[2.4rem] sm:text-5xl lg:text-[4rem] leading-[1.04]" data-i18n="foot.close.t">Raccontami quello che ti va, come ti viene.</p>
+        <div class="lg:col-span-4 lg:text-right">
+          <a href="/#contatti" data-evento="cta_click" data-evento-etichetta="footer-chiusura"
+             class="inline-flex items-center justify-center bg-lume text-notte text-base font-semibold px-7 py-4 rounded-full hover:bg-lume-soft transition-colors">
+            <span data-i18n="foot.close.cta">Scrivimi</span>
+          </a>
+        </div>
+      </div>
       <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 pb-8 border-b border-white/10">
         <div class="text-center md:text-left">
           <p class="font-serif text-xl text-white mb-1">Dott. Alberto Del Bove</p>

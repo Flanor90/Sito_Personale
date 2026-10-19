@@ -415,6 +415,8 @@
       'foot.nav.newsletter': 'Newsletter',
       'foot.nav.contatti': 'Contact',
       'foot.rights': 'All rights reserved',
+      'foot.close.t': 'Tell me whatever you like, however it comes.',
+      'foot.close.cta': 'Write to me',
       'foot.founder': 'Founder of',
       'foot.founder.tail': '— practice management and billing for psychologists',
 
@@ -857,6 +859,8 @@
       'foot.nav.newsletter': 'Newsletter',
       'foot.nav.contatti': 'Contacto',
       'foot.rights': 'Todos los derechos reservados',
+      'foot.close.t': 'Cuéntame lo que quieras, como te salga.',
+      'foot.close.cta': 'Escríbeme',
       'foot.founder': 'Fundador de',
       'foot.founder.tail': '— gestión y facturación para psicólogos',
 

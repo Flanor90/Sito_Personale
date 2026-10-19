@@ -1,12 +1,13 @@
 # Brand Book — Alberto Del Bove · Psicologo Psicoterapeuta
 
-**Versione 1.0 · Luglio 2026**
+**Versione 2.0 · Ottobre 2026** — ridisegno «la notte prima di scrivere» (v1.0, luglio 2026, superata per palette, tipografia e superfici)
 
 Questo documento definisce l'identità del brand personale di Alberto Del Bove: chi è, a chi parla, cosa promette, come scrive e come appare. È la fonte di verità per chiunque produca materiali a nome del brand — sito, social, report PDF, presentazioni, email — e va letto insieme ai file tecnici del repository:
 
 | Elemento | File di riferimento |
 |---|---|
-| Palette e font (token ufficiali) | `tailwind.config.js` |
+| Palette, font, raggi e ombre (token ufficiali) | `tailwind.config.js` |
+| Regole di stile condivise (etichette, profondità, grana, movimento) | `tailwind.input.css` |
 | Logo / monogramma | `assets/favicon.svg`, `assets/apple-touch-icon.png` |
 | Ritratto ufficiale | `assets/alberto-del-bove-psicoterapeuta.webp` |
 | Testi trilingue (IT/EN/ES) | `assets/i18n.js` |
@@ -225,7 +226,7 @@ Tutta la comunicazione è **pubblicità informativa sanitaria**: descrive titoli
 Il logo è il **monogramma "AB"** (file sorgente: `assets/favicon.svg`):
 
 - Tegola quadrata **blu notte** `#1B2A3A` con angoli arrotondati (raggio = 18% del lato).
-- Lettera **"A" in crema** `#F7F5F1` — la persona, la carta, l'ascolto.
+- Lettera **"A" in crema** `#F7F5F1` — la persona, la carta, l'ascolto. (Il logo conserva questo valore storico anche dopo che il fondo del sito è diventato calce `#F4F5F2`: la differenza non si vede, e il monogramma non va ritoccato.)
 - Lettera **"B" in mirtillo** `#7C81B3` — l'accento clinico-digitale del brand.
 
 Le due lettere condividono l'asta centrale: due identità (clinica e organizzativa) che si appoggiano alla stessa struttura.
@@ -237,7 +238,7 @@ Le due lettere condividono l'asta centrale: due identità (clinica e organizzati
 | Tegola notte + A crema + B mirtillo (primaria) | Favicon, avatar social, watermark PDF, firma |
 | Monogramma monocromo crema su fondo notte | Fondi scuri fotografici, dark mode |
 | Monogramma monocromo notte su fondo crema/bianco | Stampa in bianco e nero, documenti |
-| Lockup orizzontale: monogramma + "Alberto Del Bove · Psicologo Psicoterapeuta" (Fraunces per il nome, Inter per la qualifica) | Header di documenti, presentazioni |
+| Lockup orizzontale: monogramma + "Alberto Del Bove · Psicologo Psicoterapeuta" (Newsreader per il nome, Newsreader corsivo o Hanken Grotesk per la qualifica) | Header di documenti, presentazioni |
 
 ### 6.3 Regole d'uso
 
@@ -250,52 +251,57 @@ Le due lettere condividono l'asta centrale: due identità (clinica e organizzati
 
 ## 7. Palette colori
 
-I nomi sono i token ufficiali di `tailwind.config.js`: usare **sempre i token**, mai hex arbitrari.
+I nomi sono i token ufficiali di `tailwind.config.js`: usare **sempre i token**, mai hex arbitrari. Dal ridisegno di ottobre 2026 alcuni nomi sono **storici**: `crema` non è più un crema caldo ma il bianco calce dei muri del sud pontino; `tortora` è diventato una pietra fredda. I nomi restano perché ricorrono in centinaia di classi.
 
-### 7.1 Colori del brand
+### 7.1 Il concetto: la notte prima di scrivere
+
+Il fondo notte è l'ora in cui una persona decide di chiedere aiuto. Apre la home e chiude ogni pagina (piè di pagina), come due parentesi. In mezzo, superfici chiare e calme, come carta. Una sola luce calda, **lume**, la lampada accesa: rara, quindi preziosa.
+
+### 7.2 Colori del brand
 
 | Ruolo | Nome | Hex | Uso |
 |---|---|---|---|
-| Primario scuro | **Notte** | `#1B2A3A` | Titoli, testi forti, fondi delle sezioni "di peso" (teaser test, PsicoVoice), theme-color |
+| Primario scuro | **Notte** | `#1B2A3A` | Apertura della home, sezioni "di peso", titoli, testi forti, theme-color |
 | — Notte light | `notte-light` | `#24374C` | Gradienti su fondo notte |
-| — Notte deep | `notte-deep` | `#141F2C` | Ombreggiature/hover su fondo notte |
-| Accento | **Mirtillo** | `#7C81B3` | Colore identitario; nelle CTA si usano i toni scuri (600/700) |
-| — Mirtillo 700 | `mirtillo-700` | `#4C507F` | **CTA primarie**, link, testi accento su fondo chiaro |
-| — Mirtillo 600 | `mirtillo-600` | `#60659B` | Hover CTA, bottoni su fondo notte |
-| — Mirtillo 500 | `mirtillo-500` | `#6C71A6` | Hover secondari |
-| — Mirtillo 300 | `mirtillo-300` | `#A9ACD4` | Accenti e icone **su fondo notte** |
-| — Mirtillo 100 | `mirtillo-100` | `#E2E4F1` | Sfondi di badge e icone su fondo chiaro |
-| — Mirtillo 50 | `mirtillo-50` | `#F0F1F8` | Fondi di sezione alternati |
-| Fondo caldo | **Crema** | `#F7F5F1` | Fondo principale del sito e dei materiali |
-| — Crema dark | `crema-dark` | `#EFECE5` | Card e chip su fondo crema |
-| Neutro caldo | **Tortora** | `#E4DFD8` | Fondi di sezione soft, bordi, divisori |
-| — Tortora dark | `tortora-dark` | `#CFC8BD` | Bordi marcati |
-| Testo | **Inchiostro** | `#2B2B2B` | Corpo del testo (spesso a opacità 70–85%) |
+| — Notte deep | `notte-deep` | `#121C27` | Piè di pagina, banda dei test, ombre |
+| Accento | **Mirtillo** | `#7C81B3` | Colore identitario (logo); nelle CTA si usano i toni scuri |
+| — Mirtillo 700 | `mirtillo-700` | `#4C507F` | **CTA primarie su fondo chiaro**, link, etichette |
+| — Mirtillo 600 | `mirtillo-600` | `#5C6197` | Hover CTA, bottoni su fondo notte |
+| — Mirtillo 300 | `mirtillo-300` | `#A9ACD4` | Testi accento e payoff **su fondo notte** |
+| — Mirtillo 100 / 50 | `mirtillo-100` / `-50` | `#E1E3F0` / `#EEF0F6` | Tegole delle icone, fondi di sezione alternati |
+| Luce | **Lume** | `#E9B872` | **CTA primaria su fondo notte**, linea della direzione, selezione del testo, focus su notte. Mai come testo su fondo chiaro |
+| — Lume soft | `lume-soft` | `#F3D9AE` | Hover del pulsante lume, evidenziazione del testo selezionato |
+| Fondo | **Crema (calce)** | `#F4F5F2` | Fondo principale del sito e dei materiali |
+| — Crema dark | `crema-dark` | `#E9EBE6` | Chip, campi, fondi secondari |
+| Neutro | **Tortora (pietra)** | `#DDDFDA` | Bordi, divisori, fondi di sezione soft |
+| — Tortora dark | `tortora-dark` | `#C4C7C1` | Bordi marcati |
+| Testo | **Inchiostro** | `#22262D` | Corpo del testo (spesso a opacità 70–85%) |
 
-### 7.2 Proporzioni indicative
+### 7.3 Proporzioni indicative
 
-- **~60%** fondi chiari (crema, bianco, mirtillo-50, tortora)
-- **~30%** notte e inchiostro (testo, sezioni scure)
-- **~10%** mirtillo (accenti, CTA, icone) — il mirtillo è prezioso perché raro: non usarlo come fondo di grandi aree chiare.
+- **~55%** fondi chiari (calce, bianco, mirtillo-50, pietra)
+- **~35%** notte e inchiostro (apertura, piè di pagina, sezioni scure, testo)
+- **~8%** mirtillo (link, etichette, icone, CTA su chiaro)
+- **~2%** lume — una o due presenze per schermata, mai di più.
 
-### 7.3 Combinazioni approvate (contrasto WCAG 2.1 verificato)
+### 7.4 Combinazioni approvate (contrasto WCAG 2.1)
 
-| Testo su fondo | Rapporto | Esito |
-|---|---|---|
-| Notte su bianco / crema | 14,6 / 13,4 : 1 | AAA |
-| Inchiostro su bianco / crema | 14,2 / 13,0 : 1 | AAA |
-| Bianco su notte | 14,6 : 1 | AAA |
-| Mirtillo-700 su bianco / crema / mirtillo-50 | 7,6 / 7,0 / 6,8 : 1 | AAA |
-| Bianco su mirtillo-700 (CTA primaria) | 7,6 : 1 | AAA |
-| Bianco su mirtillo-600 | 5,5 : 1 | AA |
-| Mirtillo-300 su notte | 6,6 : 1 | AA (AAA large) |
-| Tortora su notte | 11,0 : 1 | AAA |
+| Testo su fondo | Esito |
+|---|---|
+| Notte / Inchiostro su bianco o calce | AAA |
+| Calce / bianco su notte | AAA |
+| Mirtillo-700 su bianco / calce / mirtillo-50 | AAA |
+| Bianco su mirtillo-700 (CTA primaria su chiaro) | AAA |
+| Notte su lume (CTA primaria su notte) | AAA (≈ 8 : 1) |
+| Lume su notte (dettagli, focus) | AAA large / AA |
+| Mirtillo-300 su notte | AA (AAA large) |
 
-### 7.4 Combinazioni vietate
+### 7.5 Combinazioni vietate
 
-- **Mirtillo `#7C81B3` (DEFAULT) come colore di testo normale su bianco o crema** (3,7:1 — sotto AA): ammesso solo per elementi decorativi o testo ≥ 24 px.
-- Mirtillo DEFAULT come testo su notte (3,9:1): usare mirtillo-300.
-- Testo tortora/crema su mirtillo chiaro; qualsiasi coppia sotto 4,5:1 per il body text.
+- **Lume come testo su fondo chiaro** (sotto 2 : 1): solo su notte.
+- **Mirtillo `#7C81B3` (DEFAULT) come testo normale su chiaro** (3,7 : 1): solo decorativo o ≥ 24 px.
+- Mirtillo-600 o DEFAULT come testo su notte: usare mirtillo-300.
+- Qualsiasi coppia sotto 4,5 : 1 per il testo corrente.
 
 ---
 
@@ -303,42 +309,57 @@ I nomi sono i token ufficiali di `tailwind.config.js`: usare **sempre i token**,
 
 | Ruolo | Font | Fallback | Uso |
 |---|---|---|---|
-| Display / titoli | **Fraunces** (serif) | Georgia, serif | H1–H3, numeri statistici, citazioni. Voce "umanistica" del brand |
-| Testo / UI | **Inter** (sans) | system-ui, sans-serif | Corpo, CTA, badge, form, caption |
+| Display, titoli e lettura lunga | **Newsreader** (serif con asse ottico) | Georgia, serif | H1–H3; etichette in corsivo; **corpo degli articoli e delle pagine di approfondimento** |
+| Interfaccia e testo breve | **Hanken Grotesk** (sans) | system-ui, sans-serif | Corpo della home, CTA, badge, form, menu, didascalie, payoff |
 
-### Gerarchia tipo (dal sito)
+Fraunces e Inter (v1.0) sono dismessi sul sito. **Eccezione da sanare:** i PDF generati da `build-pdf.js` incorporano ancora Fraunces e Inter; vanno migrati quando si mette mano ai PDF.
 
-- **H1:** Fraunces, 4xl–[3.4rem], leading 1.1, colore notte; la seconda riga può essere mirtillo-600 per l'enfasi.
-- **H2:** Fraunces, 3xl–4xl, notte.
-- **Kicker (sopra i titoli):** Inter, xs, **maiuscolo**, `tracking 0.15–0.2em`, semibold, mirtillo-700 (mirtillo-300 su fondo notte).
-- **Body:** Inter, base–lg, inchiostro a opacità 75–85%.
-- **Note/caption:** Inter, xs–sm, inchiostro a opacità 50–60%.
+### Gerarchia
 
-**Regole:** mai usare Fraunces per il body text; mai più di due pesi di Inter nella stessa vista; l'enfasi nel body si fa con `<strong>` (colore pieno), non cambiando font.
+- **H1 della home:** Newsreader light (300), da 2,6 rem a 5,1 rem, interlinea 1,0–1,04, calce su notte. È l'immagine principale della pagina.
+- **Payoff** (seconda frase della tagline): riga a sé, Hanken Grotesk 500, circa un terzo del titolo, mirtillo-300. **Non** è una seconda metà del titolo in un altro colore.
+- **H1 delle pagine interne:** Newsreader 350, da 2,5 rem a 4,25 rem.
+- **H2:** Newsreader 400–450, fino a 3,1 rem su desktop, tracking leggermente stretto.
+- **Etichetta sopra i titoli:** Newsreader **corsivo**, tondo minuscolo, ~1,06 rem, mirtillo-700 (mirtillo-300 su notte). **Mai più maiuscolo spaziato**: era il segno più riconoscibile delle pagine fatte con lo stampo. La regola in `tailwind.input.css` converte automaticamente le vecchie classi `uppercase tracking-[0.1x]`.
+- **Corpo (home):** Hanken Grotesk, base–lg, inchiostro al 75–85%.
+- **Corpo (articoli):** Newsreader 1,2–1,28 rem, interlinea 1,7. Si legge come un saggio, non come una scheda d'app.
+- **Note/caption:** Hanken Grotesk, xs–sm, opacità 50–60%.
+
+**Regole:** due famiglie e non di più; l'enfasi nel corpo si fa con `<strong>`, non cambiando colore a una parola nel titolo; righe sotto gli 80 caratteri.
 
 ---
 
 ## 9. Altri elementi visivi
 
 ### 9.1 Iconografia
-- Libreria unica: **Lucide** (stroke, angoli morbidi). Niente icone piene, niente emoji nei materiali ufficiali.
-- Icone in mirtillo-700 dentro "tegole" `mirtillo-100` arrotondate (rounded-xl/2xl) su fondo chiaro; mirtillo-300 su fondo notte.
-- Icone ricorrenti già associate a significati: `sprout` (inizio percorso), `compass` (domanda), `ear` (ascolto), `sparkles` (test), `heart-handshake` (coppia).
+- Libreria unica: **Lucide** (stroke). Niente icone piene, niente emoji.
+- Icone in mirtillo-700 dentro tegole mirtillo-100 su chiaro; mirtillo-300 su notte. Nell'apertura della home **nessuna icona**: parlano le parole.
+- Significati già associati: `sprout` (inizio percorso), `compass` (domanda), `ear` (ascolto), `sparkles` (test), `heart-handshake` (coppia).
 
 ### 9.2 Fotografia
-- **Ritratto ufficiale:** luce naturale, ambiente esterno, espressione sorridente e accessibile — mai foto "da studio medico" fredde.
-- **Immagini di supporto:** scene quotidiane calme (scrivanie, taccuini, mare, viaggio), luce morbida, toni caldi coerenti con crema/tortora. Fonte attuale: Unsplash.
-- **Vietato:** stock "dolore teatrale" (mani nei capelli, volti disperati), immagini cliniche/ospedaliere, ritocchi patinati.
+- **Ritratto ufficiale:** luce naturale, esterno, espressione accessibile. Nell'apertura è in formato 4:5, angoli 12 px, con la **lastra lume** dietro (§9.4).
+- **Immagini di supporto:** scene quotidiane calme, luce morbida. Fonte attuale: Unsplash.
+- **Vietato:** stock "dolore teatrale", immagini cliniche/ospedaliere, ritocchi patinati.
 
-### 9.3 Forme e superfici
-- **Raggi ampi ovunque:** card `rounded-2xl/3xl`, immagini `rounded-[2rem]`, CTA e chip **a pillola** (`rounded-full`).
-- **Ombre morbide** (`shadow-sm` → `shadow-xl` in hover), mai bordi duri.
-- Dettaglio firma: la **cornice ruotata di 2°** dietro il ritratto hero (velo mirtillo-200/50).
-- Citazioni: bordo sinistro spesso 4 px mirtillo.
+### 9.3 Forme
+- **Raggi asciutti:** `rounded-xl` 10 px, `2xl` 12 px, `3xl` 16 px. Pulsanti e chip restano **a pillola**.
+- Niente più cornice ruotata dietro il ritratto (v1.0): sostituita dalla lastra in profondità.
+- Citazioni: bordo sinistro mirtillo.
 
-### 9.4 Motion
-- Transizioni brevi e discrete: hover con `-translate-y` di 0,5–1 unità, reveal on scroll, contatori animati.
-- Nessuna animazione ansiogena o insistente: il movimento suggerisce cura, non urgenza.
+### 9.4 Profondità (il "3D" del brand)
+Tre principi, applicati dallo strato condiviso in `tailwind.input.css`:
+1. **Carta posata.** Le superfici chiare hanno ombre a più strati **tinte di notte**, mai grigie: un filo di contorno, un'ombra corta, una penombra lunga. Scala nei token: `shadow-sm` posato → `shadow-lg` sollevato → `shadow-2xl` sospeso. Le schede-articolo si sollevano di 4 px al passaggio, e l'immagine dentro si avvicina appena.
+2. **Notte con grana e luce.** Le superfici notte hanno una grana fine (rumore SVG in fusione soft-light) e, nell'apertura, una luce di lampada lume in alto a destra e un riflesso mirtillo in basso a sinistra. Mai notte piatta.
+3. **Pulsanti come oggetti.** I pulsanti pieni hanno luce in alto (filo interno chiaro e leggero gradiente), ombra sotto, si alzano di 1 px al passaggio e cedono di 1 px quando li premi.
+
+Il **ritratto 3D** dell'apertura: in prospettiva, si inclina di pochi gradi seguendo il puntatore (solo con mouse); dietro c'è una lastra color lume più lontana, che si sposta di meno. È la parallasse a dare spessore.
+
+L'intestazione è in **vetro smerigliato** (sfocatura e saturazione) con un filo sotto.
+
+### 9.5 Movimento
+- **Un solo gesto automatico:** la **linea della direzione**, color lume, che si disegna una volta dalla tagline fino a «Inizia il tuo percorso». È la promessa della frase resa visibile. È disegnata di default: se l'animazione non parte, la linea c'è comunque.
+- Tutto il resto risponde a un'azione (passaggio, pressione, inclinazione del ritratto). **Niente dissolvenze a ogni sezione**: le classi `.reveal` restano nel markup ma non animano più.
+- `prefers-reduced-motion`: linea già disegnata, ritratto fermo, nessuna transizione.
 
 ---
 
@@ -346,11 +367,12 @@ I nomi sono i token ufficiali di `tailwind.config.js`: usare **sempre i token**,
 
 | Touchpoint | Regole essenziali |
 |---|---|
-| **Sito** (albertodelbove-psicologo.it) | Fonte canonica dell'identità. Sezioni alternate crema/bianco/mirtillo-50/tortora; sezioni "di peso" su notte. |
-| **Report PDF dei test** | Palette e font del brand; sempre il disclaimer "strumento di auto-osservazione, non diagnostico" e l'invito al colloquio. |
-| **Social (LinkedIn, Instagram, Facebook)** | Avatar: monogramma AB o ritratto ufficiale. Bio = firma breve (§2.1). LinkedIn può accentuare il registro organizzativo (audience E), Instagram quello divulgativo (audience A–B). |
+| **Sito** (albertodelbove-psicologo.it) | Fonte canonica. Apertura notte con tagline grande, linea lume e ritratto 3D; sezioni alternate calce/bianco/mirtillo-50/pietra; piè di pagina notte che si apre con «Raccontami quello che ti va, come ti viene.» e un pulsante lume. |
+| **Pagine di approfondimento** | Corpo in Newsreader, H1 grande e leggero, firma con numero d'albo. Il colore notte compare solo nel piè di pagina. |
+| **PDF (guide e report)** | Palette del brand; i PDF di `build-pdf.js` hanno **font ancora v1.0** (vedi §8). Sempre il disclaimer "strumento di auto-osservazione, non diagnostico" e l'invito al colloquio. |
+| **Social** | Avatar: monogramma AB o ritratto. Per le grafiche: fondo notte con grana, titolo Newsreader light in calce, un solo dettaglio lume. |
 | **Email** | Firma: nome, qualifica, n. iscrizione Albo, sito, telefono. Tono §5, niente banner promozionali. |
-| **Presentazioni / documenti** | Lockup orizzontale in copertina, titoli Fraunces, corpo Inter, fondi crema. |
+| **Presentazioni / documenti** | Copertina su notte con lockup; interni su calce; titoli Newsreader, corpo Hanken Grotesk. |
 
 ---
 
@@ -359,12 +381,13 @@ I nomi sono i token ufficiali di `tailwind.config.js`: usare **sempre i token**,
 1. ☐ Il contenuto parla a **un** segmento preciso (§4)?
 2. ☐ Il tono rispetta i quattro assi (§5.1) e il lessico (§5.3)?
 3. ☐ Nessuna promessa di risultato, nessun linguaggio diagnostico sui test (§3.2, §5.5)?
-4. ☐ Colori solo dai token ufficiali, combinazioni con contrasto ≥ AA (§7.3–7.4)?
-5. ☐ Fraunces solo per titoli, Inter per il resto (§8)?
+4. ☐ Colori solo dai token ufficiali, combinazioni con contrasto ≥ AA (§7.4–7.5)? Lume al massimo una o due volte per schermata?
+5. ☐ Newsreader per titoli e lettura lunga, Hanken Grotesk per l'interfaccia; nessuna etichetta in maiuscolo spaziato (§8)?
 6. ☐ Logo usato nelle varianti ammesse, con area di rispetto (§6)?
 7. ☐ Testo disponibile (o pianificato) in IT/EN/ES (§5.4)?
 8. ☐ Credenziali citate correttamente (Albo Lazio n. 23754, SPS Roma 2022)?
+9. ☐ Le superfici hanno profondità coerente (§9.4) e nessun movimento automatico oltre alla linea della direzione (§9.5)?
 
 ---
 
-*Documento a cura del brand. Ogni modifica sostanziale a palette, logo o tono di voce va riflessa qui e nei file tecnici corrispondenti (`tailwind.config.js`, `assets/favicon.svg`), mantenendo questo file come fonte di verità.*
+*Documento a cura del brand. Ogni modifica sostanziale a palette, logo o tono di voce va riflessa qui e nei file tecnici corrispondenti (`tailwind.config.js`, `tailwind.input.css`, `assets/favicon.svg`), mantenendo questo file come fonte di verità.*

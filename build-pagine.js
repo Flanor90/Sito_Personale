@@ -255,8 +255,8 @@ function main() {
       '<header id="site-header"', '<!-- FINE INTESTAZIONE CONDIVISA -->', 'intestazione')
       .replace(/^/, '<header id="site-header"'),
     footer: ritaglia(index,
-      '<footer class="bg-notte-deep', '<!-- FINE PIÈ DI PAGINA CONDIVISO -->', 'piè di pagina')
-      .replace(/^/, '<footer class="bg-notte-deep')
+      '<footer class="relative bg-notte-deep', '<!-- FINE PIÈ DI PAGINA CONDIVISO -->', 'piè di pagina')
+      .replace(/^/, '<footer class="relative bg-notte-deep')
   };
 
   const file = fs.readdirSync(SORGENTE).filter((f) => f.endsWith('.html')).sort();
