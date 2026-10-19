@@ -6,3 +6,134 @@
    sparisce: vivono nello stesso angolo, e la scelta sui cookie non deve
    restare coperta da altro. */
 .con-banner-consenso #contact-bar { display: none !important; }
+
+/* ============================================================
+   Ridisegno ottobre 2026 — regole di stile condivise
+   ------------------------------------------------------------
+   Vale per la home e per tutte le pagine generate da build-pagine.js,
+   perché entrambe caricano questo foglio. Sta dopo le utility di
+   proposito: alcune regole correggono combinazioni di classi che
+   ricorrono a decine nel markup, e correggerle qui una volta è più
+   sicuro che riscrivere cento attributi a mano.
+   ============================================================ */
+
+/* Newsreader ha un asse ottico: ai titoli grandi stringe e affila il
+   disegno, al corpo lo apre. Lasciamo che lo scelga il browser. */
+.font-serif { font-optical-sizing: auto; letter-spacing: -0.012em; }
+h1.font-serif { letter-spacing: -0.022em; font-weight: 400; }
+
+::selection { background: #F3D9AE; color: #1B2A3A; }
+
+/* Le etichette sopra i titoli erano tutte in maiuscoletto spaziato:
+   uno dei segni più riconoscibili delle pagine fatte con lo stampo.
+   Restano dove portano un'informazione (la categoria, la sezione), ma
+   in tondo minuscolo e in corsivo serif, come una nota a margine. */
+.uppercase[class*="tracking-[0.1"],
+.uppercase[class*="tracking-[0.2"] {
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: Newsreader, Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.4;
+}
+/* Nelle pillole (fondo colorato) il corsivo grande stona: lì resta
+   piccolo, ma sempre senza maiuscolo. */
+.uppercase[class*="tracking-[0.1"][class*="rounded-full"],
+.uppercase[class*="tracking-[0.1"][class*="px-"] {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+.uppercase.tracking-wider { text-transform: none; letter-spacing: 0.01em; }
+
+/* Niente più dissolvenze a ogni sezione: il movimento del sito è uno
+   solo, la linea dell'apertura. Le classi .reveal restano nel markup
+   (e lo script che le osserva), ma non animano più niente. */
+.reveal, .reveal.is-visible { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+/* Focus da tastiera: ben visibile su chiaro e su notte. */
+a:focus-visible, button:focus-visible, input:focus-visible,
+textarea:focus-visible, select:focus-visible, summary:focus-visible {
+  outline: 2px solid #4C507F;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.bg-notte a:focus-visible, .bg-notte button:focus-visible,
+.bg-notte-deep a:focus-visible, .bg-notte-deep button:focus-visible {
+  outline-color: #E9B872;
+}
+
+/* ------------------------------------------------------------
+   Pagine di lettura (generate da build-pagine.js)
+   Il corpo dei testi lunghi passa al serif: sono saggi brevi, e
+   si leggono meglio come tali che come schede di un'app.
+   ------------------------------------------------------------ */
+.pagina-lettura main p.text-lg,
+.pagina-lettura main li.text-lg {
+  font-family: Newsreader, Georgia, serif;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  font-optical-sizing: auto;
+}
+@media (min-width: 640px) {
+  .pagina-lettura main p.text-lg,
+  .pagina-lettura main li.text-lg { font-size: 1.28rem; }
+}
+.pagina-lettura main h2.font-serif { font-weight: 450; }
+
+/* ------------------------------------------------------------
+   Apertura della home: la linea della «direzione»
+   Si disegna una volta sola, al caricamento, dalla tagline verso
+   l'invito a iniziare. Con il movimento ridotto è già disegnata.
+   ------------------------------------------------------------ */
+.linea-direzione path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: traccia-direzione 1.9s cubic-bezier(.65, 0, .35, 1) .5s backwards;
+}
+/* Lo stato di partenza sta nel fotogramma iniziale, non nella regola:
+   se l'animazione non parte (browser vecchi, schede in background),
+   la linea resta comunque disegnata. */
+@keyframes traccia-direzione { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .linea-direzione path { animation: none; }
+}
+
+/* Il payoff sta dentro l'h1 (anche nelle traduzioni di i18n.js, che
+   iniettano <br><span>): qui diventa una riga a sé, piccola e in
+   bastoni, invece di una seconda metà del titolo in un altro colore. */
+.hero-titolo br { display: none; }
+.hero-titolo span {
+  display: block;
+  margin-top: 0.7em;
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  font-size: 0.32em;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: #A9ACD4;
+}
+@media (max-width: 639px) { .hero-titolo span { font-size: 0.5em; } }
+
+/* Navigazione e selettore lingua: prima vivevano nello <style> della
+   home, e nelle pagine interne il menu restava senza stato attivo. */
+/* Navigazione: link, stato attivo (scrollspy), dropdown */
+.nav-link { position: relative; color: #22262D; cursor: pointer; transition: color .2s ease; }
+.nav-link:hover { color: #4C507F; }
+.nav-link.is-active { color: #4C507F; font-weight: 600; }
+.nav-link.is-active::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -7px;
+  height: 2px; background: #60659B; border-radius: 2px;
+}
+#services-toggle[aria-expanded="true"] i { transform: rotate(180deg); }
+#scroll-progress { transition: width .15s ease-out; }
+
+/* Selettore lingua IT / EN / ES */
+.lang-btn { color: #2B2B2B99; transition: background .2s ease, color .2s ease; }
+.lang-btn:hover { color: #4C507F; }
+.lang-btn[aria-pressed="true"] { background: #60659B; color: #fff; }
+

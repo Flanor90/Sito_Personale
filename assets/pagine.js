@@ -33,10 +33,10 @@
       var scorri = function () {
         if (window.scrollY > 40) {
           header.classList.add('shadow-md', 'bg-crema/95');
-          header.classList.remove('bg-crema/80');
+          header.classList.remove('bg-crema/95');
         } else {
           header.classList.remove('shadow-md', 'bg-crema/95');
-          header.classList.add('bg-crema/80');
+          header.classList.add('bg-crema/95');
         }
       };
       window.addEventListener('scroll', scorri, { passive: true });

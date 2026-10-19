@@ -191,7 +191,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS — compilato staticamente (npm run build:css), niente CDN render-blocking.
        La palette vive in tailwind.config.js: dopo ogni modifica alle classi, ricompilare. -->
@@ -207,44 +207,22 @@
     html { scroll-padding-top: 5.5rem; }
     body { -webkit-font-smoothing: antialiased; }
 
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
     .quiz-step { transition: opacity .35s ease, transform .35s ease; }
     .quiz-step.leaving { opacity: 0; transform: translateX(-16px); }
     .quiz-step.entering { opacity: 0; transform: translateX(16px); }
 
-    /* Navigazione: link, stato attivo (scrollspy), dropdown */
-    .nav-link { position: relative; color: #2B2B2B; cursor: pointer; transition: color .2s ease; }
-    .nav-link:hover { color: #4C507F; }
-    .nav-link.is-active { color: #4C507F; font-weight: 600; }
-    .nav-link.is-active::after {
-      content: ''; position: absolute; left: 0; right: 0; bottom: -7px;
-      height: 2px; background: #60659B; border-radius: 2px;
-    }
-    #services-toggle[aria-expanded="true"] i { transform: rotate(180deg); }
-    #scroll-progress { transition: width .15s ease-out; }
-
-    /* Selettore lingua IT / EN / ES */
-    .lang-btn { color: #2B2B2B99; transition: background .2s ease, color .2s ease; }
-    .lang-btn:hover { color: #4C507F; }
-    .lang-btn[aria-pressed="true"] { background: #60659B; color: #fff; }
-
     /* Stepper "Come funziona il primo colloquio" */
     .step-tab { color: #2B2B2B99; }
-    .step-tab .step-dot { background: #E4DFD8; color: #1B2A3A; }
+    .step-tab .step-dot { background: #DDDFDA; color: #1B2A3A; }
     .step-tab:hover .step-dot { background: #C7C9E4; }
     .step-tab[aria-selected="true"] { color: #1B2A3A; }
     .step-tab[aria-selected="true"] .step-dot { background: #60659B; color: #fff; transform: scale(1.08); }
 
     /* Temi del form: stato selezionato visibile */
     .symptom-option:has(input:checked) {
-      border-color: #60659B; background: #F0F1F8;
+      border-color: #5C6197; background: #EEF0F6;
       box-shadow: 0 0 0 1px #60659B;
-    }
-
-    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-      outline: 3px solid #60659B; outline-offset: 2px; border-radius: 4px;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -266,7 +244,7 @@
        assemblate da build-pagine.js ritagliando esattamente ciò che sta
        fra questo marcatore e quello di chiusura: così l'intestazione
        esiste in un posto solo e non va aggiornata in cinque copie. -->
-  <header id="site-header" class="fixed inset-x-0 top-0 z-50 transition-all duration-300 bg-crema/80 backdrop-blur-md" role="banner">
+  <header id="site-header" class="fixed inset-x-0 top-0 z-50 transition-all duration-300 bg-crema/95 backdrop-blur-md" role="banner">
     <nav class="max-w-6xl mx-auto flex items-center justify-between px-5 py-3" aria-label="Navigazione principale">
       <a href="#hero" class="flex items-center gap-3 group" aria-label="Alberto Del Bove — torna all'inizio">
         <!-- Logo monogramma AB -->
@@ -384,64 +362,73 @@
   <main id="main">
 
     <!-- ==================== HERO ==================== -->
-    <section id="hero" class="pt-28 lg:pt-36 pb-16 lg:pb-24 bg-gradient-to-b from-crema via-crema to-mirtillo-50" aria-labelledby="hero-title">
-      <div class="max-w-6xl mx-auto px-5 grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 bg-mirtillo-100 px-4 py-2 rounded-full mb-6">
-            <i data-lucide="video" class="w-4 h-4" aria-hidden="true"></i>
-            <span data-i18n="hero.badge">Terapia online in tutta Italia e per italiani all'estero · Studio a Itri (LT)</span>
-          </p>
-          <h1 id="hero-title" class="font-serif text-4xl sm:text-5xl lg:text-[3.4rem] leading-[1.1] text-notte mb-6" data-i18n="hero.title">
-            Ogni richiesta d'aiuto contiene già una direzione.<br>
-            <span class="text-mirtillo-600">Insieme possiamo decifrarla.</span>
-          </h1>
-          <p class="text-lg text-inchiostro/80 max-w-xl mb-3" data-i18n="hero.p1">
-            Sono <strong>Alberto Del Bove</strong>, <strong>psicologo online</strong> e psicoterapeuta psicoanalitico, specialista in <strong>Analisi della Domanda</strong>. Seguo percorsi online in tutta Italia e dall'estero, e in studio a Itri (LT).
-          </p>
-          <p class="text-base text-inchiostro/70 max-w-xl mb-8" data-i18n="hero.p2">
-            Alla pratica clinica affianco anni di esperienza nella salute mentale digitale come Clinical Team Lead e Clinical Operations Manager, e sono Founder di <strong>PsicoVoice</strong>. Conosco da vicino la fatica di chi vive momenti difficili, dentro e fuori dal lavoro.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a href="#contatti" class="inline-flex items-center justify-center gap-2 bg-mirtillo-700 text-white text-base font-semibold px-7 py-4 rounded-full shadow-lg shadow-mirtillo-200 hover:bg-mirtillo-600 hover:-translate-y-0.5 transition-all">
-              <i data-lucide="sprout" class="w-5 h-5" aria-hidden="true"></i>
-              <span data-i18n="hero.cta1">Inizia il tuo percorso</span>
-            </a>
-            <a href="#contatti" data-topic="Percorso di coppia" class="couple-cta inline-flex items-center justify-center gap-2 border-2 border-notte text-notte text-base font-semibold px-7 py-[0.9rem] rounded-full hover:bg-notte hover:text-white hover:-translate-y-0.5 transition-all">
-              <i data-lucide="heart-handshake" class="w-5 h-5" aria-hidden="true"></i>
-              <span data-i18n="hero.cta2">Percorso di coppia</span>
-            </a>
-          </div>
-          <a href="#test" class="group inline-flex items-center gap-2 mt-6 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">
-            <i data-lucide="sparkles" class="w-4 h-4" aria-hidden="true"></i>
-            <span data-i18n="hero.testlink">Non sai da dove iniziare? Fai un test gratuito di 2 minuti</span>
-            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true"></i>
-          </a>
-          <ul class="flex flex-wrap gap-x-6 gap-y-2 mt-8 text-sm text-inchiostro/60">
-            <li class="flex items-center gap-1.5"><i data-lucide="badge-check" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="hero.badge1">Ordine Psicologi Lazio n. 23754</span></li>
-            <li class="flex items-center gap-1.5"><i data-lucide="graduation-cap" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="hero.badge2">Specializzazione SPS Roma, 2022</span></li>
-            <li class="flex items-center gap-1.5"><i data-lucide="globe" class="w-4 h-4 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="hero.badge3">IT · EN · ES</span></li>
-          </ul>
-        </div>
+    <!-- Apertura su fondo notte: l'ora in cui si decide di scrivere.
+         La tagline è l'immagine principale; la linea color lume sotto
+         è la «direzione» che la frase promette, e porta all'invito a
+         iniziare. È l'unico movimento automatico del sito (CSS in
+         tailwind.input.css, .linea-direzione). -->
+    <section id="hero" class="relative bg-notte text-crema pt-28 lg:pt-36 pb-16 lg:pb-20 overflow-hidden" aria-labelledby="hero-title">
+      <div class="max-w-6xl mx-auto px-5">
+        <p class="text-[0.95rem] text-mirtillo-300 mb-8 lg:mb-10 max-w-xl" data-i18n="hero.badge">Terapia online in tutta Italia e per italiani all'estero · Studio a Itri (LT)</p>
 
-        <div class="relative">
-          <div class="absolute -inset-4 bg-mirtillo-200/50 rounded-[2rem] rotate-2" aria-hidden="true"></div>
-          <img
-            src="assets/alberto-del-bove-psicoterapeuta.webp"
-            alt="Ritratto del Dott. Alberto Del Bove, psicologo e psicoterapeuta psicoanalitico, sorridente in un ambiente naturale"
-            class="relative w-full h-[420px] lg:h-[520px] object-cover object-top rounded-[2rem] shadow-xl"
-            width="719" height="720" loading="eager">
-          <figure class="absolute -bottom-6 -left-2 sm:left-6 bg-white rounded-2xl shadow-xl px-5 py-4 flex items-center gap-3 max-w-[280px]">
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-mirtillo-100" aria-hidden="true">
-              <i data-lucide="message-circle-heart" class="w-5 h-5 text-mirtillo-700"></i>
-            </span>
-            <figcaption class="text-sm text-inchiostro/80 leading-snug" data-i18n="hero.figcaption">Primo colloquio conoscitivo: uno spazio per capire insieme di cosa hai bisogno.</figcaption>
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          <div class="lg:col-span-8">
+            <h1 id="hero-title" class="hero-titolo font-serif font-light text-crema text-[2.6rem] leading-[1.04] sm:text-6xl lg:text-[5.1rem] lg:leading-[1.0] mb-8" data-i18n="hero.title">
+              Ogni richiesta d'aiuto contiene già una direzione.<br>
+              <span class="text-mirtillo-600">Insieme possiamo decifrarla.</span>
+            </h1>
+            <div class="max-w-[38rem] space-y-4">
+              <p class="text-lg leading-relaxed text-crema/85" data-i18n="hero.p1">
+                Sono <strong>Alberto Del Bove</strong>, <strong>psicologo online</strong> e psicoterapeuta psicoanalitico, specialista in <strong>Analisi della Domanda</strong>. Seguo percorsi online in tutta Italia e dall'estero, e in studio a Itri (LT).
+              </p>
+              <p class="text-base leading-relaxed text-crema/65" data-i18n="hero.p2">
+                Alla pratica clinica affianco anni di esperienza nella salute mentale digitale come Clinical Team Lead e Clinical Operations Manager, e sono Founder di <strong>PsicoVoice</strong>. Conosco da vicino la fatica di chi vive momenti difficili, dentro e fuori dal lavoro.
+              </p>
+            </div>
+          </div>
+
+          <!-- Su telefono il ritratto si fa piccolo e sta accanto alla
+               didascalia: a tutta larghezza spingeva l'invito a iniziare
+               due schermate più in basso. -->
+          <figure class="lg:col-span-4 lg:pt-3 flex items-end gap-4 lg:block">
+            <img
+              src="assets/alberto-del-bove-psicoterapeuta.webp"
+              alt="Ritratto del Dott. Alberto Del Bove, psicologo e psicoterapeuta psicoanalitico, sorridente in un ambiente naturale"
+              class="w-28 sm:w-40 lg:w-full flex-none aspect-[4/5] object-cover object-top rounded-xl"
+              width="719" height="720" loading="eager">
+            <figcaption class="lg:mt-4 text-sm leading-snug text-crema/60 max-w-sm" data-i18n="hero.figcaption">Primo colloquio conoscitivo: uno spazio per capire insieme di cosa hai bisogno.</figcaption>
           </figure>
         </div>
+
+        <!-- La direzione: dalla frase all'invito. -->
+        <div class="mt-12 lg:mt-14 flex items-center gap-5">
+          <svg class="linea-direzione flex-1 min-w-[3rem] h-6 text-lume" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path d="M0 18 C 160 18, 220 6, 420 6 L 984 12" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
+          </svg>
+          <a href="#contatti" class="flex-none inline-flex items-center justify-center gap-2 bg-lume text-notte text-base font-semibold px-7 py-4 rounded-full hover:bg-lume-soft transition-colors">
+            <span data-i18n="hero.cta1">Inizia il tuo percorso</span>
+          </a>
+        </div>
+
+        <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-x-8 gap-y-4">
+          <a href="#test" class="inline-flex items-center gap-2 text-[0.95rem] text-crema/80 underline decoration-crema/30 underline-offset-4 hover:text-crema hover:decoration-lume transition-colors">
+            <span data-i18n="hero.testlink">Non sai da dove iniziare? Fai un test gratuito di 2 minuti</span>
+          </a>
+          <a href="#contatti" data-topic="Percorso di coppia" class="couple-cta inline-flex items-center justify-center gap-2 border border-crema/35 text-crema text-base font-semibold px-6 py-3 rounded-full hover:border-crema hover:bg-crema/5 transition-colors">
+            <span data-i18n="hero.cta2">Percorso di coppia</span>
+          </a>
+        </div>
+
+        <ul class="mt-14 pt-6 border-t border-crema/10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-crema/55">
+          <li data-i18n="hero.badge1">Ordine Psicologi Lazio n. 23754</li>
+          <li data-i18n="hero.badge2">Specializzazione SPS Roma, 2022</li>
+          <li data-i18n="hero.badge3">IT · EN · ES</li>
+        </ul>
       </div>
     </section>
 
     <!-- ==================== TEASER TEST (risalto feature) ==================== -->
-    <section id="test-teaser" class="bg-notte text-white" aria-label="Test psicologici gratuiti">
+    <section id="test-teaser" class="bg-notte-deep text-white" aria-label="Test psicologici gratuiti">
       <div class="max-w-6xl mx-auto px-5 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div class="flex items-start gap-4">
           <span class="hidden sm:flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10" aria-hidden="true"><i data-lucide="sparkles" class="w-6 h-6 text-mirtillo-300"></i></span>
@@ -530,17 +517,17 @@
         </div>
 
         <div class="grid md:grid-cols-3 gap-6 mb-12">
-          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl p-7 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="ear" class="w-6 h-6 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-3" data-i18n="app.c1.t">Ascolto della domanda</h3>
             <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="app.c1.d">Il primo lavoro non è dare risposte, ma capire insieme cosa stai davvero chiedendo: a te stesso, agli altri, ai tuoi contesti di vita. Spesso è qui che il cambiamento comincia.</p>
           </article>
-          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl p-7 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="users" class="w-6 h-6 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-3" data-i18n="app.c2.t">La persona nei suoi contesti</h3>
             <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="app.c2.d">Famiglia, coppia, lavoro: i sintomi parlano la lingua delle relazioni in cui viviamo. Lavoriamo sul rapporto tra te e i tuoi sistemi di appartenenza, non su un'etichetta diagnostica.</p>
           </article>
-          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl p-7 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="compass" class="w-6 h-6 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-3" data-i18n="app.c3.t">Dalla comprensione allo sviluppo</h3>
             <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="app.c3.d">L'obiettivo non è solo stare meglio, ma acquisire strumenti per leggere le situazioni, gestire le relazioni e costruire percorsi di crescita che restino tuoi anche dopo la terapia.</p>
@@ -585,7 +572,6 @@
             </a>
           </article>
         </div>
-      </div>
 
         <!-- Link alla pagina dedicata. Senza questi collegamenti le pagine
              nuove nascono orfane: Google le trova tardi e le pesa poco. -->
@@ -595,6 +581,7 @@
             <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
           </a>
         </p>
+      </div>
     </section>
 
     <!-- ==================== COME FUNZIONA IL PRIMO COLLOQUIO ==================== -->
@@ -675,7 +662,6 @@
             class="w-full h-[380px] lg:h-[460px] object-cover rounded-3xl shadow-xl"
             width="900" height="700" loading="lazy">
         </div>
-      </div>
 
         <!-- Link alla pagina dedicata. Senza questi collegamenti le pagine
              nuove nascono orfane: Google le trova tardi e le pesa poco. -->
@@ -685,6 +671,7 @@
             <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
           </a>
         </p>
+      </div>
     </section>
 
     <!-- ==================== TEST INTERATTIVI ==================== -->
@@ -710,7 +697,7 @@
 
         <!-- Hub di scelta -->
         <div id="test-hub" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm transition-all reveal">
             <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-mirtillo-100 text-mirtillo-700 px-2.5 py-1 rounded-full" data-i18n="test.card1.badge">Il più amato</span>
             <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="scan-face" class="w-7 h-7 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-2" data-i18n="test.card1.t">Che tipo psicologico sei?</h3>
@@ -724,7 +711,7 @@
             </button>
           </article>
 
-          <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm transition-all reveal">
             <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full" data-i18n="test.card2.badge">Per chi lavora troppo</span>
             <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="flame" class="w-7 h-7 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-2" data-i18n="test.card2.t">Quanto ti sta costando il lavoro?</h3>
@@ -738,7 +725,7 @@
             </button>
           </article>
 
-          <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm transition-all reveal">
             <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-notte text-white px-2.5 py-1 rounded-full" data-i18n="test.card3.badge">Il più profondo</span>
             <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="compass" class="w-7 h-7 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-2" data-i18n="test.card3.t">Cosa stai chiedendo, davvero?</h3>
@@ -752,7 +739,7 @@
             </button>
           </article>
 
-          <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="relative flex flex-col bg-white rounded-3xl p-7 shadow-sm transition-all reveal">
             <span class="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider bg-mirtillo-600 text-white px-2.5 py-1 rounded-full" data-i18n="test.card4.badge">Novità</span>
             <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="zap" class="w-7 h-7 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-2" data-i18n="test.card4.t">Attenzione e impulsività: quanto pesano?</h3>
@@ -1065,7 +1052,7 @@
         </div>
 
         <div class="grid md:grid-cols-3 gap-6">
-          <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="layers" class="w-6 h-6 text-mirtillo-700"></i></span>
             <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="pf.c1.kicker">Strategic Planning &amp; Ethics</p>
             <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="pf.c1.t">Un'unica missione, due forze lavoro</h3>
@@ -1083,7 +1070,7 @@
             <button type="button" data-article="cs-strategia" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="pf.readcs">Leggi il case study</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
           </article>
 
-          <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="bar-chart-3" class="w-6 h-6 text-mirtillo-700"></i></span>
             <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="pf.c2.kicker">People Analytics</p>
             <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="pf.c2.t">I dati che un'azienda guarda — e quelli che non raccoglie</h3>
@@ -1101,7 +1088,7 @@
             <button type="button" data-article="cs-analytics" class="article-open inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors"><span data-i18n="pf.readcs">Leggi il case study</span> <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></button>
           </article>
 
-          <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="flex flex-col bg-white rounded-3xl p-8 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="scale" class="w-6 h-6 text-mirtillo-700"></i></span>
             <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="pf.c3.kicker">Employment Relations &amp; Law</p>
             <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="pf.c3.t">Il terapeuta e l'algoritmo</h3>
@@ -1145,17 +1132,17 @@
         <!-- Il modello -->
         <p class="text-sm font-semibold text-notte mb-5 reveal" data-i18n="sup.model.label">Come le conduco: l'Analisi della Domanda applicata alla supervisione</p>
         <div class="grid md:grid-cols-3 gap-6 mb-14">
-          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl p-7 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="ear" class="w-6 h-6 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-3" data-i18n="sup.c1.t">Il caso e la sua domanda</h3>
             <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="sup.c1.d">Partiamo dal materiale clinico che porti — sedute, sogni, momenti di stallo — per mettere a fuoco cosa il paziente sta davvero chiedendo, a sé e a te, oltre il sintomo dichiarato.</p>
           </article>
-          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl p-7 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="refresh-cw" class="w-6 h-6 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-3" data-i18n="sup.c2.t">La relazione e il controtransfert</h3>
             <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="sup.c2.d">Ciò che senti in seduta — noia, fastidio, protezione, urgenza — non è un disturbo da correggere ma uno strumento di conoscenza. Impariamo a leggerlo come informazione sul caso.</p>
           </article>
-          <article class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl p-7 shadow-sm transition-all reveal">
             <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-mirtillo-100 mb-5" aria-hidden="true"><i data-lucide="building-2" class="w-6 h-6 text-mirtillo-700"></i></span>
             <h3 class="font-serif text-xl text-notte mb-3" data-i18n="sup.c3.t">Il contesto e l'istituzione</h3>
             <p class="text-inchiostro/75 text-[0.95rem]" data-i18n="sup.c3.d">Nessun caso vive nel vuoto: servizio, piattaforma, budget, mandato. Avendo guidato team clinici in aziende della salute mentale digitale, porto uno sguardo anche sulle dinamiche organizzative in cui lavori.</p>
@@ -1188,7 +1175,6 @@
             </a>
           </article>
         </div>
-      </div>
 
         <!-- Link alla pagina dedicata. Senza questi collegamenti le pagine
              nuove nascono orfane: Google le trova tardi e le pesa poco. -->
@@ -1198,6 +1184,7 @@
             <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
           </a>
         </p>
+      </div>
     </section>
 
     <!-- ==================== RISORSE & ARTICOLI ==================== -->
@@ -1212,7 +1199,7 @@
         <div class="grid md:grid-cols-3 gap-6">
           <!-- Articoli di attualità italiana: data-solo-lingua="it" perché
                riguardano leggi e proposte italiane e non sono tradotti. -->
-          <article data-solo-lingua="it" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article data-solo-lingua="it" class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Un ragazzo con lo zaino di spalle in un corridoio fra scaffali di libri, immagine di copertina dell'articolo sulla proposta di psicologo a scuola obbligatorio"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1224,7 +1211,7 @@
             </div>
           </article>
 
-          <article data-solo-lingua="it" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article data-solo-lingua="it" class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Aula scolastica vuota con i banchi e la lavagna, immagine di copertina dell'articolo sul bando per lo psicologo a scuola nel Lazio"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1236,7 +1223,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Schermo di uno smartphone con le icone delle app, immagine di copertina dell'articolo su psicoterapia e intelligenza artificiale"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1248,7 +1235,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="assets/cover-guida-macchina.png"
                  alt="Copertina della guida «Perché è più facile parlarne a una macchina», immagine dell'articolo su cosa chiediamo a un'intelligenza artificiale"
                  class="w-full h-44 object-cover bg-notte" width="1200" height="1200" loading="lazy">
@@ -1260,7 +1247,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Scrivania di lavoro con documenti e computer, immagine di copertina dell'articolo sul burnout e lo stress lavoro-correlato"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1272,7 +1259,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Persona che guarda il mare in un momento di quiete, immagine di copertina dell'articolo sull'ansia e gli attacchi di panico"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1284,7 +1271,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Persona che scrive su un diario in un ambiente tranquillo, immagine di copertina dell'articolo sull'analisi della propria domanda di aiuto"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1296,7 +1283,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Aereo in volo al tramonto, immagine di copertina dell'articolo sulla condizione psicologica di chi vive all'estero"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1308,7 +1295,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Clessidra con la sabbia che scorre, immagine di copertina dell'articolo sull'ADHD adulto e la distrazione come protezione"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1320,7 +1307,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Mano che scrive una lettera con la penna, immagine di copertina dell'articolo sulla psicoterapia nella lingua madre per italiani all'estero"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1332,7 +1319,7 @@
             </div>
           </article>
 
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal">
+          <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&h=500&q=70"
                  alt="Penna stilografica su un quaderno di appunti, immagine di copertina dell'articolo personale in cui Alberto Del Bove racconta il suo percorso"
                  class="w-full h-44 object-cover" width="800" height="500" loading="lazy">
@@ -1360,7 +1347,7 @@
 
         <div id="compendi-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <!-- GRATUITA · Perché è più facile parlarne a una macchina (IT) -->
-          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border-2 border-mirtillo-300">
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border-2 border-mirtillo-300">
             <img src="assets/cover-guida-macchina.png" alt="Copertina della guida gratuita «Perché è più facile parlarne a una macchina»" class="w-full aspect-square object-cover bg-notte" width="1200" height="1200" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -1377,7 +1364,7 @@
           </article>
 
           <!-- GRATUITA · IA e psicoterapia — si scarica lasciando l'email (IT) -->
-          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border-2 border-mirtillo-300">
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border-2 border-mirtillo-300">
             <img src="assets/cover-guida-ia.png" alt="Copertina della guida gratuita «Un'intelligenza artificiale può farti da terapeuta?»" class="w-full aspect-square object-cover bg-notte" width="1200" height="1200" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -1393,7 +1380,7 @@
           </article>
 
           <!-- GRATUITA · Terapia nella lingua madre — si riceve per email (IT) -->
-          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border-2 border-mirtillo-300">
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border-2 border-mirtillo-300">
             <img src="assets/cover-guida-expat.png" alt="Copertina della guida gratuita «Fare terapia nella lingua in cui sei cresciuto»" class="w-full aspect-square object-cover bg-notte" width="1080" height="1350" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -1409,7 +1396,7 @@
           </article>
 
           <!-- NUOVO · ADHD e trauma relazionale — compendio per clinici (IT) -->
-          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border border-tortora-dark/40">
             <img src="assets/cover-adhd-trauma-clinici.jpg" alt="Copertina del compendio «ADHD e trauma relazionale: una lettura psicodinamica», per psicoterapeuti" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -1427,7 +1414,7 @@
           </article>
 
           <!-- NUOVO · Più della diagnosi — guida divulgativa (IT) -->
-          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border border-tortora-dark/40">
             <img src="assets/cover-piu-della-diagnosi.jpg" alt="Copertina della guida «Più della diagnosi: ADHD, la tua storia e chi sei», secondo volume della serie Capire la propria mente" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -1445,7 +1432,7 @@
           </article>
 
           <!-- NUOVO · ADHD and Relational Trauma — compendium for clinicians (EN) · visibile su sito EN ed ES -->
-          <article data-langs="en es" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+          <article data-langs="en es" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border border-tortora-dark/40">
             <img src="assets/cover-adhd-trauma-en.jpg" alt="Cover of the compendium «ADHD and Relational Trauma: a psychodynamic reading», for clinicians" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -1463,7 +1450,7 @@
           </article>
 
           <!-- Compendio per terapeuti (IT) -->
-          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border border-tortora-dark/40">
             <img src="assets/cover-adhd-clinici.png" alt="Copertina del compendio «ADHD in età adulta: uno sguardo psicodinamico», per psicoterapeuti" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -1480,7 +1467,7 @@
           </article>
 
           <!-- Guida per pazienti (IT) -->
-          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+          <article data-langs="it" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border border-tortora-dark/40">
             <img src="assets/cover-adhd-pazienti.png" alt="Copertina della guida «ADHD da adulto: capire la tua mente», una guida gentile per pazienti" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -1497,7 +1484,7 @@
           </article>
 
           <!-- Compendium for clinicians (EN) · visibile su sito EN ed ES -->
-          <article data-langs="en es" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all reveal border border-tortora-dark/40">
+          <article data-langs="en es" class="compendi-card flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal border border-tortora-dark/40">
             <img src="assets/cover-adhd-en.png" alt="Cover of the compendium «Adult ADHD: a psychodynamic view», for psychotherapists" class="w-full aspect-square object-cover bg-crema" width="1200" height="1200" loading="lazy">
             <div class="p-6 flex flex-col grow">
               <div class="flex items-center gap-2 mb-4">
@@ -2130,10 +2117,10 @@
       const y = window.scrollY;
       if (y > 40) {
         header.classList.add('shadow-md', 'bg-crema/95');
-        header.classList.remove('bg-crema/80');
+        header.classList.remove('bg-crema/95');
       } else {
         header.classList.remove('shadow-md', 'bg-crema/95');
-        header.classList.add('bg-crema/80');
+        header.classList.add('bg-crema/95');
       }
       // Barra di avanzamento lettura
       if (progress) {
