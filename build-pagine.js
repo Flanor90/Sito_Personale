@@ -102,6 +102,10 @@ function adatta(blocco, lingua) {
  *   -->
  *
  * Il resto del file è il contenuto, che finisce dentro <main>.
+ *
+ * Facoltativo: "script": ["lettore.js"] carica in fondo alla pagina i
+ * file di assets/ elencati, dopo quelli comuni. Serve alle pagine che
+ * hanno bisogno di qualcosa in più, come la finestra di lettura.
  */
 function leggiPagina(file) {
   const grezzo = fs.readFileSync(path.join(SORGENTE, file), 'utf8');
@@ -235,6 +239,7 @@ ${adatta(parti.footer, lingua)}
 <script src="/assets/consenso.js"></script>
 <script src="/assets/newsletter.js"></script>
 <script src="/assets/pagine.js"></script>
+${(meta.script || []).map(f => `<script src="/assets/${f}"></script>`).join('\n')}
 </body>
 </html>
 `;

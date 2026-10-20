@@ -9,7 +9,7 @@
    esistono e riempire la console di errori.
 
    Qui c'è quindi soltanto ciò che serve all'intestazione condivisa:
-   icone, menu mobile, tendina dei servizi, ombra allo scorrimento,
+   icone, menu mobile, ombra allo scorrimento,
    comparsa graduale dei blocchi, anno nel piè di pagina.
    ============================================================ */
 (function () {
@@ -56,31 +56,6 @@
       };
       window.addEventListener('scroll', avanza, { passive: true });
       avanza();
-    }
-
-    /* ---------- Tendina "Servizi" ---------- */
-    var apri = document.getElementById('services-toggle');
-    var menu = document.getElementById('services-menu');
-    var tendina = document.getElementById('services-dropdown');
-    if (apri && menu && tendina) {
-      var chiudi = function () {
-        menu.classList.add('hidden');
-        apri.setAttribute('aria-expanded', 'false');
-      };
-      apri.addEventListener('click', function (e) {
-        e.stopPropagation();
-        if (menu.classList.contains('hidden')) {
-          menu.classList.remove('hidden');
-          apri.setAttribute('aria-expanded', 'true');
-        } else { chiudi(); }
-      });
-      menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', chiudi); });
-      document.addEventListener('click', function (e) {
-        if (!tendina.contains(e.target)) { chiudi(); }
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') { chiudi(); }
-      });
     }
 
     /* ---------- Menu mobile ---------- */

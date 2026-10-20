@@ -62,7 +62,7 @@ Una psicologia che non si accontenta del sintomo: che legge le persone dentro le
 | Payoff | *Insieme possiamo decifrarla.* |
 | Firma breve (footer, bio social) | Alberto Del Bove — Psicologo Psicoterapeuta · Analisi della Domanda |
 
-La tagline è la headline dell'hero del sito e non va riscritta liberamente: è il cuore verbale del brand. Nelle altre lingue si usano le traduzioni ufficiali presenti in `assets/i18n.js`.
+La tagline è il cuore verbale del brand e non va riscritta liberamente. Dal 20 ottobre 2026 **non è più il titolo (H1) dell'apertura**: sta subito sopra, in Newsreader corsivo mirtillo-300. Il titolo dice cosa offro con le parole che usa chi cerca: «Psicoterapia online in italiano, ovunque tu sia.», con lo studio a Itri nella riga sotto. Nelle altre lingue si usano le traduzioni ufficiali presenti in `assets/i18n.js` (`hero.tagline`, `hero.title`).
 
 ### 2.2 Brand story (versione lunga)
 
@@ -85,6 +85,7 @@ Il filo che tiene insieme tutto è uno: quando qualcuno parla di burnout, di un 
 | Lavoro | Il burnout è una relazione malata tra persona e organizzazione, non una debolezza personale. | «Burnout: quando è il contesto a chiederti troppo» |
 | Expat | Fare terapia nella lingua madre non è un dettaglio: è la condizione perché il lavoro vada in profondità. | «L'inconscio ha un accento» |
 | Primo contatto | Il primo passo è una domanda — non un questionario diagnostico. | «Raccontami quello che ti va, come ti viene» |
+| Primo colloquio | Gratuito se prenotato dal sito, 45 minuti, online o in studio. L'onorario delle sedute successive si comunica al primo colloquio, non sul sito. | «Il primo colloquio è gratuito se lo prenoti dal sito» |
 | Supervisione | Uno spazio terzo per pensare il lavoro clinico, non un controllo sull'operato. | «La "difficoltà con un paziente" è una domanda che il caso rivolge a noi» |
 
 ### 2.5 Boilerplate (per stampa/directory)
@@ -316,8 +317,9 @@ Fraunces e Inter (v1.0) sono dismessi sul sito. **Eccezione da sanare:** i PDF g
 
 ### Gerarchia
 
-- **H1 della home:** Newsreader light (300), da 2,6 rem a 5,1 rem, interlinea 1,0–1,04, calce su notte. È l'immagine principale della pagina.
-- **Payoff** (seconda frase della tagline): riga a sé, Hanken Grotesk 500, circa un terzo del titolo, mirtillo-300. **Non** è una seconda metà del titolo in un altro colore.
+- **H1 della home:** «Psicoterapia online in italiano, ovunque tu sia.» Newsreader light (300), da 2,6 rem a 5,1 rem, interlinea 1,0–1,04, calce su notte. È l'immagine principale della pagina.
+- **Riga sotto l'H1** (lo studio a Itri): riga a sé, Hanken Grotesk 500, circa un terzo del titolo, mirtillo-300. **Non** è una seconda metà del titolo in un altro colore.
+- **Tagline** sopra l'H1: Newsreader corsivo, lg–xl, mirtillo-300.
 - **H1 delle pagine interne:** Newsreader 350, da 2,5 rem a 4,25 rem.
 - **H2:** Newsreader 400–450, fino a 3,1 rem su desktop, tracking leggermente stretto.
 - **Etichetta sopra i titoli:** Newsreader **corsivo**, tondo minuscolo, ~1,06 rem, mirtillo-700 (mirtillo-300 su notte). **Mai più maiuscolo spaziato**: era il segno più riconoscibile delle pagine fatte con lo stampo. La regola in `tailwind.input.css` converte automaticamente le vecchie classi `uppercase tracking-[0.1x]`.
@@ -367,7 +369,7 @@ L'intestazione è in **vetro smerigliato** (sfocatura e saturazione) con un filo
 
 | Touchpoint | Regole essenziali |
 |---|---|
-| **Sito** (albertodelbove-psicologo.it) | Fonte canonica. Apertura notte con tagline grande, linea lume e ritratto 3D; sezioni alternate calce/bianco/mirtillo-50/pietra; piè di pagina notte che si apre con «Raccontami quello che ti va, come ti viene.» e un pulsante lume. |
+| **Sito** (albertodelbove-psicologo.it) | Fonte canonica. Menu solo per chi cerca una terapia (Chi sono, Approccio, Italiani all'estero, Test, Primo colloquio); tutto ciò che parla ai colleghi sta su `/colleghi/` (§4.3). Apertura notte con titolo concreto, tagline sopra, linea lume e ritratto 3D; sezioni alternate calce/bianco/mirtillo-50/pietra; piè di pagina notte che si apre con «Raccontami quello che ti va, come ti viene.» e un pulsante lume. |
 | **Pagine di approfondimento** | Corpo in Newsreader, H1 grande e leggero, firma con numero d'albo. Il colore notte compare solo nel piè di pagina. |
 | **PDF (guide e report)** | Palette del brand; i PDF di `build-pdf.js` hanno **font ancora v1.0** (vedi §8). Sempre il disclaimer "strumento di auto-osservazione, non diagnostico" e l'invito al colloquio. |
 | **Social** | Avatar: monogramma AB o ritratto. Per le grafiche: fondo notte con grana, titolo Newsreader light in calce, un solo dettaglio lume. |

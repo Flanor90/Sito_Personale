@@ -129,7 +129,6 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
   content: ''; position: absolute; left: 0; right: 0; bottom: -7px;
   height: 2px; background: #60659B; border-radius: 2px;
 }
-#services-toggle[aria-expanded="true"] i { transform: rotate(180deg); }
 #scroll-progress { transition: width .15s ease-out; }
 
 /* Selettore lingua IT / EN / ES */
@@ -161,12 +160,12 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
 .bg-white:is(.rounded-xl, .rounded-2xl, .rounded-3xl, [class*="rounded-[2"]):not([class*="shadow"]):not(input):not(textarea):not(select) {
   box-shadow: var(--ombra-posata);
 }
-article:is(.rounded-2xl, .rounded-3xl, [class*="rounded-[2"]),
+article:is(.rounded-2xl, .rounded-3xl, [class*="rounded-[2"]):not(#article-modal article),
 a:is(.rounded-2xl, .rounded-3xl).bg-white {
   transition: transform .45s cubic-bezier(.2, .7, .2, 1), box-shadow .45s cubic-bezier(.2, .7, .2, 1);
 }
 @media (hover: hover) {
-  article:is(.rounded-2xl, .rounded-3xl, [class*="rounded-[2"]):hover,
+  article:is(.rounded-2xl, .rounded-3xl, [class*="rounded-[2"]):not(#article-modal article):hover,
   a:is(.rounded-2xl, .rounded-3xl).bg-white:hover {
     transform: translateY(-4px);
     box-shadow: var(--ombra-sollevata);
