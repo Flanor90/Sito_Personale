@@ -262,3 +262,25 @@ article img.object-cover { transition: transform .8s cubic-bezier(.2, .7, .2, 1)
   line-height: 1.04;
   font-weight: 350;
 }
+
+/* Risorse accorciate (script in index.html): le schede oltre il limite
+   restano nel documento ma non si vedono finché non si apre l'elenco. */
+#risorse-griglia > .oltre-limite { display: none; }
+
+/* Test su telefono: un carosello orizzontale invece di quattro schede
+   in colonna (tre schermate). La regola evita .hidden, che lo script
+   dei test usa quando apre un questionario. */
+@media (max-width: 639px) {
+  #test-hub:not(.hidden) {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    gap: 1rem;
+    margin-inline: -1.25rem;
+    padding: 0.25rem 1.25rem 1rem;
+    scrollbar-width: none;
+  }
+  #test-hub::-webkit-scrollbar { display: none; }
+  #test-hub > article { flex: 0 0 84%; scroll-snap-align: start; }
+}

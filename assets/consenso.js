@@ -1,48 +1,68 @@
 /* ============================================================
-   consenso.js — consenso ai cookie statistici (Google Analytics)
+   consenso.js — consenso ai cookie di Google (statistiche e campagne)
    ------------------------------------------------------------
    PERCHÉ ESISTE
 
    Il sito ha sempre avuto statistiche proprie senza cookie e senza
-   indirizzi IP, e la pagina privacy lo dichiara. Google Analytics
-   invece i cookie li scrive, e tratta l'IP: non si può caricare e
-   basta, né lasciando in pagina una frase diventata falsa.
+   indirizzi IP, e la pagina privacy lo dichiara. Gli strumenti di Google
+   invece i cookie li scrivono, e trattano l'IP: non si possono caricare
+   e basta, né lasciando in pagina una frase diventata falsa.
 
-   Qui la regola è una sola, ed è la più prudente fra quelle possibili:
-   finché il visitatore non ha detto di sì, gtag.js NON viene scaricato.
-   Non è solo questione di cookie — è che senza consenso il browser non
-   deve nemmeno contattare i server di Google, perché quella richiesta
-   porta con sé l'indirizzo IP.
+   Due finalità, due consensi distinti:
+   - statistiche: Google Analytics 4, per capire da dove arriva chi legge;
+   - campagne: Google Ads, solo per contare quante persone, arrivate da
+     un annuncio, poi scrivono su WhatsApp. Niente remarketing, niente
+     annunci personalizzati (ad_personalization resta sempre negato).
 
-   Le due scelte hanno lo stesso peso grafico, e chiudere il banner non
-   equivale ad accettare: si può solo scegliere. Il Garante contesta
-   proprio i banner in cui rifiutare costa più fatica che accettare.
+   La regola resta la più prudente: finché il visitatore non ha detto di
+   sì ad almeno una delle due, gtag.js NON viene scaricato, perché anche
+   la sola richiesta ai server di Google porta con sé l'indirizzo IP.
+
+   «Rifiuto» e «Accetto» hanno lo stesso peso grafico, chiudere non vale
+   come accettare, e «Scelgo io» permette di dire sì a una sola delle due:
+   il Garante chiede proprio questa granularità.
 
    Chi cambia idea trova «Preferenze cookie» nel piè di pagina.
    ============================================================ */
 (function () {
   'use strict';
 
-  var CHIAVE = 'consensoStatistiche';   // 'si' | 'no'
+  var CHIAVE_STAT = 'consensoStatistiche';  // 'si' | 'no'
+  var CHIAVE_ADS = 'consensoAnnunci';       // 'si' | 'no' — dal 20/10/2026
   var GA_ID = 'G-GV4Z7PRELC';
+  var ADS_ID = 'AW-18317931670';
+  // Conversione «Clic WhatsApp» configurata in Google Ads.
+  var ADS_CONVERSIONE_WHATSAPP = 'AW-18317931670/VJtCCOqtjqMdEJbp1Z5E';
 
   var TESTI = {
     it: {
-      testo: 'Uso un contatore statistico anonimo, e vorrei aggiungere Google Analytics per capire come arrivi qui. Scrive cookie: lo attivo solo se me lo permetti.',
+      testo: 'Uso un contatore anonimo. Con il tuo permesso aggiungo due strumenti di Google che usano cookie: Analytics (come arrivi qui) e la misura delle campagne (se un annuncio ti ha portato a scrivermi). Niente annunci personalizzati.',
       si: 'Accetto',
       no: 'Rifiuto',
+      scegli: 'Scelgo io',
+      salva: 'Salva le scelte',
+      stat: 'Statistiche (Google Analytics)',
+      ads: 'Misura delle campagne (Google Ads)',
       info: 'Informativa'
     },
     en: {
-      testo: 'This site uses an anonymous counter. I would also like to use Google Analytics to see how you got here. It writes cookies, so I only enable it if you agree.',
+      testo: 'I use an anonymous counter. With your permission I add two Google tools that use cookies: Analytics (how you got here) and campaign measurement (whether an ad led you to write to me). No personalised ads.',
       si: 'Accept',
       no: 'Decline',
+      scegli: 'Let me choose',
+      salva: 'Save choices',
+      stat: 'Statistics (Google Analytics)',
+      ads: 'Campaign measurement (Google Ads)',
       info: 'Privacy notice'
     },
     es: {
-      testo: 'Uso un contador estadístico anónimo y me gustaría añadir Google Analytics para saber cómo has llegado aquí. Usa cookies: solo lo activo si me lo permites.',
+      testo: 'Uso un contador anónimo. Con tu permiso añado dos herramientas de Google que usan cookies: Analytics (cómo has llegado aquí) y la medición de campañas (si un anuncio te ha llevado a escribirme). Sin anuncios personalizados.',
       si: 'Acepto',
       no: 'Rechazo',
+      scegli: 'Elijo yo',
+      salva: 'Guardar',
+      stat: 'Estadísticas (Google Analytics)',
+      ads: 'Medición de campañas (Google Ads)',
       info: 'Información'
     }
   };
@@ -53,43 +73,73 @@
     return TESTI[l] ? l : 'it';
   }
 
-  function leggi() {
-    try { return localStorage.getItem(CHIAVE); } catch (e) { return null; }
+  function leggi(chiave) {
+    try { return localStorage.getItem(chiave); } catch (e) { return null; }
   }
 
-  function scrivi(valore) {
-    try { localStorage.setItem(CHIAVE, valore); } catch (e) { /* niente */ }
+  function scrivi(chiave, valore) {
+    try { localStorage.setItem(chiave, valore); } catch (e) { /* niente */ }
+  }
+
+  function stato() {
+    return { stat: leggi(CHIAVE_STAT) === 'si', ads: leggi(CHIAVE_ADS) === 'si' };
   }
 
   /* ----------------------------------------------------------
-     Avvio di Google Analytics — solo su consenso esplicito.
+     Google — solo su consenso esplicito, per la finalità scelta.
      ---------------------------------------------------------- */
-  function avviaAnalytics() {
-    if (window.__analyticsAvviato) { return; }
-    window.__analyticsAvviato = true;
+  function permessi(s) {
+    return {
+      analytics_storage: s.stat ? 'granted' : 'denied',
+      ad_storage: s.ads ? 'granted' : 'denied',
+      ad_user_data: s.ads ? 'granted' : 'denied',
+      ad_personalization: 'denied'
+    };
+  }
+
+  function applica(s) {
+    if (!s.stat && !s.ads) {
+      // Revoca a metà visita: se Google era già partito, lo spengo.
+      if (window.__googleAvviato) { window.gtag('consent', 'update', permessi(s)); }
+      return;
+    }
+    if (window.__googleAvviato) {
+      window.gtag('consent', 'update', permessi(s));
+      if (s.stat && !window.__gaConfigurato) { window.gtag('config', GA_ID, { anonymize_ip: true }); window.__gaConfigurato = true; }
+      if (s.ads && !window.__adsConfigurato) { window.gtag('config', ADS_ID); window.__adsConfigurato = true; }
+      return;
+    }
+    window.__googleAvviato = true;
 
     window.dataLayer = window.dataLayer || [];
     function gtag() { window.dataLayer.push(arguments); }
     window.gtag = gtag;
 
-    /* Consent Mode: le statistiche sì (le ha appena concesse), la
-       pubblicità no — non la faccio, e non voglio che i dati finiscano
-       in profilazione pubblicitaria. */
-    gtag('consent', 'default', {
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-      analytics_storage: 'granted'
-    });
-
+    gtag('consent', 'default', permessi(s));
     gtag('js', new Date());
-    gtag('config', GA_ID, { anonymize_ip: true });
+    if (s.stat) { gtag('config', GA_ID, { anonymize_ip: true }); window.__gaConfigurato = true; }
+    if (s.ads) { gtag('config', ADS_ID); window.__adsConfigurato = true; }
 
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-    document.head.appendChild(s);
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + (s.stat ? GA_ID : ADS_ID);
+    document.head.appendChild(script);
   }
+
+  /* Conversione Google Ads: un clic verso WhatsApp. Conta solo se la
+     misura delle campagne è stata accettata; altrimenti non parte nulla.
+     I link a WhatsApp si aprono in una nuova scheda, quindi non serve il
+     rinvio della pagina dello snippet di Google: basta il beacon. */
+  document.addEventListener('click', function (ev) {
+    var el = ev.target.closest && ev.target.closest('a[href*="wa.me/"], #whatsapp-send');
+    if (!el || !stato().ads || typeof window.gtag !== 'function') { return; }
+    window.gtag('event', 'conversion', {
+      send_to: ADS_CONVERSIONE_WHATSAPP,
+      value: 1.0,
+      currency: 'EUR',
+      transport_type: 'beacon'
+    });
+  }, true);
 
   /* ----------------------------------------------------------
      Il banner
@@ -101,9 +151,18 @@
     setTimeout(function () { banner.remove(); }, 200);
   }
 
+  function decidi(banner, s) {
+    scrivi(CHIAVE_STAT, s.stat ? 'si' : 'no');
+    scrivi(CHIAVE_ADS, s.ads ? 'si' : 'no');
+    applica(s);
+    chiudi(banner);
+  }
+
   function mostraBanner() {
     if (document.getElementById('banner-consenso')) { return; }
     var t = TESTI[lingua()];
+    var attuale = stato();
+    var pulsante = 'text-sm font-semibold px-4 py-2 rounded-full transition-colors ';
 
     var banner = document.createElement('div');
     banner.id = 'banner-consenso';
@@ -115,18 +174,25 @@
     banner.style.transform = 'translateY(0.5rem)';
 
     banner.innerHTML =
-      '<div class="max-w-3xl mx-auto bg-notte text-crema rounded-2xl shadow-xl ' +
-      'px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4">' +
-        '<p class="text-sm leading-relaxed grow">' + t.testo +
-          ' <a href="/privacy/" class="underline hover:text-white">' + t.info + '</a>' +
-        '</p>' +
-        '<div class="flex items-center gap-2 flex-none">' +
-          '<button type="button" data-scelta="no" ' +
-            'class="text-sm font-semibold border border-crema/40 text-crema px-4 py-2 rounded-full ' +
-            'hover:bg-white/10 transition-colors">' + t.no + '</button>' +
-          '<button type="button" data-scelta="si" ' +
-            'class="text-sm font-semibold bg-mirtillo-600 text-white px-4 py-2 rounded-full ' +
-            'hover:bg-mirtillo-500 transition-colors">' + t.si + '</button>' +
+      '<div class="max-w-3xl mx-auto bg-notte text-crema rounded-2xl shadow-xl px-5 py-4">' +
+        '<div class="flex flex-col sm:flex-row sm:items-center gap-4">' +
+          '<p class="text-sm leading-relaxed grow">' + t.testo +
+            ' <a href="/privacy/" class="underline hover:text-white">' + t.info + '</a>' +
+          '</p>' +
+          '<div class="flex flex-wrap items-center gap-2 flex-none">' +
+            '<button type="button" data-scelta="scegli" class="' + pulsante + 'text-crema/80 underline underline-offset-4 hover:text-white">' + t.scegli + '</button>' +
+            '<button type="button" data-scelta="no" class="' + pulsante + 'border border-crema/40 text-crema hover:bg-white/10">' + t.no + '</button>' +
+            '<button type="button" data-scelta="si" class="' + pulsante + 'border border-transparent bg-mirtillo-600 text-white hover:bg-mirtillo-500">' + t.si + '</button>' +
+          '</div>' +
+        '</div>' +
+        '<div data-pannello hidden class="mt-4 pt-4 border-t border-crema/15">' +
+          '<label class="flex items-center gap-3 text-sm py-1.5 cursor-pointer">' +
+            '<input type="checkbox" data-finalita="stat" class="h-4 w-4 rounded"' + (attuale.stat ? ' checked' : '') + '> ' + t.stat +
+          '</label>' +
+          '<label class="flex items-center gap-3 text-sm py-1.5 cursor-pointer">' +
+            '<input type="checkbox" data-finalita="ads" class="h-4 w-4 rounded"' + (attuale.ads ? ' checked' : '') + '> ' + t.ads +
+          '</label>' +
+          '<button type="button" data-scelta="salva" class="' + pulsante + 'mt-3 bg-crema text-notte hover:bg-white">' + t.salva + '</button>' +
         '</div>' +
       '</div>';
 
@@ -134,9 +200,19 @@
       var b = ev.target.closest ? ev.target.closest('button[data-scelta]') : null;
       if (!b) { return; }
       var scelta = b.getAttribute('data-scelta');
-      scrivi(scelta);
-      if (scelta === 'si') { avviaAnalytics(); }
-      chiudi(banner);
+      if (scelta === 'scegli') {
+        var pannello = banner.querySelector('[data-pannello]');
+        pannello.hidden = !pannello.hidden;
+        return;
+      }
+      if (scelta === 'si') { decidi(banner, { stat: true, ads: true }); return; }
+      if (scelta === 'no') { decidi(banner, { stat: false, ads: false }); return; }
+      if (scelta === 'salva') {
+        decidi(banner, {
+          stat: banner.querySelector('[data-finalita="stat"]').checked,
+          ads: banner.querySelector('[data-finalita="ads"]').checked
+        });
+      }
     });
 
     document.body.appendChild(banner);
@@ -151,16 +227,18 @@
   }
 
   function avvia() {
-    var scelta = leggi();
-    if (scelta === 'si') { avviaAnalytics(); return; }
-    if (scelta === 'no') { return; }
-    mostraBanner();
+    // Chi aveva già scelto sulle statistiche prima che esistesse la misura
+    // delle campagne rivede il banner una volta: è una finalità nuova, e il
+    // sì di allora non la copriva. Intanto vale quello che aveva deciso.
+    var s = stato();
+    if (s.stat || s.ads) { applica(s); }
+    if (leggi(CHIAVE_STAT) === null || leggi(CHIAVE_ADS) === null) { mostraBanner(); }
   }
 
   // Per il link «Preferenze cookie» nel piè di pagina.
   window.ConsensoCookie = {
     apri: mostraBanner,
-    stato: leggi
+    stato: stato
   };
 
   if (document.readyState === 'loading') {

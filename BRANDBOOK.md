@@ -196,7 +196,7 @@ Ogni contenuto deve avere **un solo segmento primario in mente**. I segmenti con
 5. **Domande come porte**: i titoli e le CTA usano spesso la forma interrogativa o l'invito («Cosa sto chiedendo davvero?», «Raccontami quello che ti va, come ti viene»).
 6. **Frasi chiave in grassetto**, una per paragrafo al massimo; corsivo per le sfumature (*nella tua vita*).
 7. **Credenziali sempre verificabili**: numero d'iscrizione all'Albo, scuola, anni — mai "esperto di" senza fondamento.
-8. **CTA calde e non pressanti**: «Inizia il tuo percorso», «Scrivimi da dove sei», «Parliamone» — mai countdown, urgenza artificiale o "posti limitati".
+8. **CTA calde, concrete e non pressanti**: «Prenota il primo colloquio», «Scrivimi da dove sei», «Parliamone» — dicono cosa succede al clic. Mai countdown, urgenza artificiale o "posti limitati".
 
 ### 5.3 Lessico
 
@@ -359,7 +359,7 @@ Il **ritratto 3D** dell'apertura: in prospettiva, si inclina di pochi gradi segu
 L'intestazione è in **vetro smerigliato** (sfocatura e saturazione) con un filo sotto.
 
 ### 9.5 Movimento
-- **Un solo gesto automatico:** la **linea della direzione**, color lume, che si disegna una volta dalla tagline fino a «Inizia il tuo percorso». È la promessa della frase resa visibile. È disegnata di default: se l'animazione non parte, la linea c'è comunque.
+- **Un solo gesto automatico:** la **linea della direzione**, color lume, che si disegna una volta dal titolo fino a «Prenota il primo colloquio». È la promessa della frase resa visibile. È disegnata di default: se l'animazione non parte, la linea c'è comunque.
 - Tutto il resto risponde a un'azione (passaggio, pressione, inclinazione del ritratto). **Niente dissolvenze a ogni sezione**: le classi `.reveal` restano nel markup ma non animano più.
 - `prefers-reduced-motion`: linea già disegnata, ritratto fermo, nessuna transizione.
 

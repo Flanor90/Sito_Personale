@@ -253,7 +253,7 @@
           <path d="M22 78 L44 22 L52 22 L52 78 L44 78 L44 62 L34 62 L28 78 Z M44 32 L37 54 L44 54 Z" fill="#F7F5F1"/>
           <path d="M56 22 L74 22 Q86 22 86 35 Q86 44 79 47 Q88 50 88 62 Q88 78 74 78 L56 78 Z M64 30 L64 43 L72 43 Q78 43 78 36.5 Q78 30 72 30 Z M64 51 L64 70 L73 70 Q80 70 80 60.5 Q80 51 73 51 Z" fill="#7C81B3"/>
         </svg>
-        <span class="hidden sm:block">
+        <span class="block">
           <span class="block font-serif text-lg leading-tight text-notte group-hover:text-mirtillo-700 transition-colors">Alberto Del Bove</span>
           <span class="block text-[11px] uppercase tracking-[0.18em] text-mirtillo-700">Psicoterapeuta</span>
         </span>
@@ -347,7 +347,7 @@
               <p class="text-lg leading-relaxed text-crema/85" data-i18n="hero.p1">
                 Sono <strong>Alberto Del Bove</strong>, <strong>psicologo online</strong> e psicoterapeuta psicoanalitico, specialista in <strong>Analisi della Domanda</strong>. Seguo percorsi online in tutta Italia e dall'estero, e in studio a Itri (LT).
               </p>
-              <p class="text-base leading-relaxed text-crema/65" data-i18n="hero.p2">
+              <p class="hidden sm:block text-base leading-relaxed text-crema/65" data-i18n="hero.p2">
                 Alla pratica clinica affianco anni di esperienza nella salute mentale digitale come Clinical Team Lead e Clinical Operations Manager, e sono Founder di <strong>PsicoVoice</strong>. Conosco da vicino la fatica di chi vive momenti difficili, dentro e fuori dal lavoro.
               </p>
             </div>
@@ -375,7 +375,7 @@
             <path d="M0 18 C 160 18, 220 6, 420 6 L 984 12" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
           </svg>
           <a href="#contatti" class="flex-none inline-flex items-center justify-center gap-2 bg-lume text-notte text-base font-semibold px-7 py-4 rounded-full hover:bg-lume-soft transition-colors">
-            <span data-i18n="hero.cta1">Inizia il tuo percorso</span>
+            <span data-i18n="hero.cta1">Prenota il primo colloquio</span>
           </a>
         </div>
 
@@ -395,30 +395,6 @@
           <li data-i18n="hero.badge2">Specializzazione SPS Roma, 2022</li>
           <li data-i18n="hero.badge3">IT · EN · ES</li>
         </ul>
-      </div>
-    </section>
-
-    <!-- ==================== TEASER TEST (risalto feature) ==================== -->
-    <section id="test-teaser" class="bg-notte-deep text-white" aria-label="Test psicologici gratuiti">
-      <div class="max-w-6xl mx-auto px-5 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <div class="flex items-start gap-4">
-          <span class="hidden sm:flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10" aria-hidden="true"><i data-lucide="sparkles" class="w-6 h-6 text-mirtillo-300"></i></span>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-300 mb-1" data-i18n="teaser.kicker">Strumenti gratuiti · anonimi · 2-3 minuti · con report PDF</p>
-            <p class="font-serif text-xl sm:text-2xl leading-snug mb-3" data-i18n="teaser.title">Quattro test per iniziare a capirti meglio.</p>
-            <div class="flex flex-wrap gap-2">
-              <button type="button" data-test="junghiano" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="scan-face" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="teaser.chip.personalita">Personalità</span></button>
-              <button type="button" data-test="burnout" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="flame" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="teaser.chip.carico">Carico di lavoro</span></button>
-              <button type="button" data-test="adhd" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="zap" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="teaser.chip.adhd">Attenzione &amp; impulsività</span> <span class="bg-mirtillo-600 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full">new</span></button>
-              <button type="button" data-test="domanda" class="test-link inline-flex items-center gap-1.5 text-xs font-semibold bg-white/10 hover:bg-mirtillo-600 px-3 py-1.5 rounded-full transition-colors"><i data-lucide="compass" class="w-3.5 h-3.5" aria-hidden="true"></i> <span data-i18n="teaser.chip.domanda">La tua domanda</span></button>
-            </div>
-          </div>
-        </div>
-        <div class="flex flex-wrap gap-3 shrink-0">
-          <a href="#test" class="inline-flex items-center gap-2 bg-mirtillo-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-mirtillo-500 transition-colors">
-            <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> <span data-i18n="teaser.cta">Fai un test gratuito</span>
-          </a>
-        </div>
       </div>
     </section>
 
@@ -883,6 +859,27 @@
       </script>
     </section>
 
+    <!-- ==================== INVITO AL PRIMO COLLOQUIO ==================== -->
+    <!-- Dopo i test c'erano tredici schermate senza un invito a scrivere.
+         Questa fascia lo rimette dove serve, con il fatto che decide:
+         il primo colloquio è gratuito. -->
+    <section class="bg-notte text-crema" aria-labelledby="invito-title">
+      <div class="max-w-6xl mx-auto px-5 py-14 lg:py-16 grid lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7">
+          <h2 id="invito-title" class="font-serif font-light text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] text-crema mb-3" data-i18n="cta.band.t">Il primo colloquio è gratuito.</h2>
+          <p class="text-crema/75 text-lg" data-i18n="cta.band.p">45 minuti, online o in studio a Itri, se lo prenoti dal sito. Ti rispondo entro 24–48 ore.</p>
+        </div>
+        <div class="lg:col-span-5 flex flex-col sm:flex-row lg:justify-end gap-3">
+          <a href="#contatti" data-evento="cta_click" data-evento-etichetta="banda-primo-colloquio" class="inline-flex items-center justify-center bg-lume text-notte text-base font-semibold px-7 py-4 rounded-full hover:bg-lume-soft transition-colors">
+            <span data-i18n="cta.band.btn">Prenota il primo colloquio</span>
+          </a>
+          <a href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20vorrei%20prenotare%20il%20primo%20colloquio%20gratuito." data-evento="cta_click" data-evento-etichetta="wa-banda" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 border border-crema/35 text-crema text-base font-semibold px-6 py-4 rounded-full hover:border-crema hover:bg-crema/5 transition-colors">
+            <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="cta.band.wa">Scrivimi su WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- ==================== RISORSE & ARTICOLI ==================== -->
     <section id="risorse" class="py-20 lg:py-28 bg-mirtillo-50" aria-labelledby="risorse-title">
       <div class="max-w-6xl mx-auto px-5">
@@ -892,7 +889,7 @@
           <p class="text-inchiostro/75" data-i18n="ris.intro">Brevi letture su temi che incontro ogni giorno, in terapia e nelle organizzazioni.</p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6">
+        <div id="risorse-griglia" class="grid md:grid-cols-3 gap-6">
           <!-- Articoli di attualità italiana: data-solo-lingua="it" perché
                riguardano leggi e proposte italiane e non sono tradotti. -->
           <article data-solo-lingua="it" class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
@@ -934,7 +931,7 @@
           <article class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all reveal">
             <img src="assets/cover-guida-macchina.png"
                  alt="Copertina della guida «Perché è più facile parlarne a una macchina», immagine dell'articolo su cosa chiediamo a un'intelligenza artificiale"
-                 class="w-full h-44 object-cover bg-notte" width="1200" height="1200" loading="lazy">
+                 class="w-full h-44 object-cover object-top bg-notte" width="1200" height="1200" loading="lazy">
             <div class="p-6">
               <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2" data-i18n="ris.a9.cat">Psicologia &amp; tecnologia</p>
               <h3 class="font-serif text-xl text-notte mb-3 leading-snug" data-i18n="ris.a9.t">Perché è più facile parlarne a una macchina</h3>
@@ -1027,77 +1024,11 @@
             </div>
           </article>
         </div>
-      </div>
-    </section>
-
-    <!-- ==================== PER I COLLEGHI (rimando) ==================== -->
-    <!-- Supervisione, compendi, PsicoVoice, portfolio e curriculum stanno
-         su /colleghi/: la home parla a chi cerca una terapia, e prima il
-         menu mescolava le due cose. Qui resta solo il rimando. -->
-    <section id="colleghi" class="py-20 lg:py-24 bg-white" aria-labelledby="colleghi-title">
-      <div class="max-w-6xl mx-auto px-5">
-        <div class="rounded-3xl bg-notte text-crema p-8 sm:p-12 lg:p-14 shadow-xl">
-          <div class="grid lg:grid-cols-12 gap-10 items-end">
-            <div class="lg:col-span-7">
-              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-300 mb-3" data-i18n="col.kicker">Per i colleghi</p>
-              <h2 id="colleghi-title" class="font-serif text-3xl lg:text-4xl text-crema leading-tight mb-5" data-i18n="col.title">Sei psicologo o psicoterapeuta?</h2>
-              <p class="text-crema/75 text-lg leading-relaxed" data-i18n="col.p">Supervisione clinica, i compendi che scrivo per chi lavora in stanza, PsicoVoice, il mio curriculum e i case study del Master: è tutto in una pagina a parte, per non mescolarlo con chi cerca una terapia.</p>
-            </div>
-            <div class="lg:col-span-5 lg:text-right">
-              <a href="/colleghi/" class="inline-flex items-center justify-center bg-lume text-notte text-base font-semibold px-7 py-4 rounded-full hover:bg-lume-soft transition-colors">
-                <span data-i18n="col.cta">Vai alla pagina per i colleghi</span>
-              </a>
-            </div>
-          </div>
-          <ul class="mt-10 pt-8 border-t border-crema/10 grid sm:grid-cols-3 gap-6 text-[0.95rem]">
-            <li><a href="/colleghi/#supervisione" class="block text-crema hover:text-lume transition-colors"><span class="block font-serif text-xl mb-1" data-i18n="col.s1.t">Supervisione clinica</span><span class="text-crema/60" data-i18n="col.s1.d">Individuale e di équipe, online o in studio</span></a></li>
-            <li><a href="/colleghi/#compendi" class="block text-crema hover:text-lume transition-colors"><span class="block font-serif text-xl mb-1" data-i18n="col.s2.t">Compendi e guide</span><span class="text-crema/60" data-i18n="col.s2.d">Testi clinici su ADHD, trauma e IA</span></a></li>
-            <li><a href="/colleghi/#psicovoice" class="block text-crema hover:text-lume transition-colors"><span class="block font-serif text-xl mb-1">PsicoVoice</span><span class="text-crema/60" data-i18n="col.s3.d">La webapp di gestione per psicologi</span></a></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== NEWSLETTER ==================== -->
-    <section id="newsletter" class="py-20 lg:py-28 bg-mirtillo-50" aria-labelledby="newsletter-title">
-      <div class="max-w-4xl mx-auto px-5">
-        <div class="bg-white rounded-3xl shadow-lg p-8 sm:p-10 lg:p-12 reveal">
-          <div class="grid lg:grid-cols-5 gap-8 lg:gap-12 items-center">
-            <div class="lg:col-span-3">
-              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="nl.kicker">La newsletter</p>
-              <h2 id="newsletter-title" class="font-serif text-3xl sm:text-4xl text-notte leading-tight mb-4" data-i18n="nl.title">Uno spunto al mese, per guardarti dentro con più chiarezza</h2>
-              <p class="text-inchiostro/75 mb-4 text-[1.02rem]" data-i18n="nl.p">Ogni mese ti scrivo una riflessione sulla vita interiore, un nuovo strumento di auto-osservazione e le uscite dei compendi. Testi curati, mai spam. Ti disiscrivi con un clic quando vuoi.</p>
-              <p class="mb-6">
-                <a href="/newsletter/" class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">
-                  Di cosa scrivo, e il patto che ti propongo
-                  <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
-                </a>
-              </p>
-              <ul class="space-y-2.5 text-[0.95rem] text-inchiostro/80">
-                <li class="flex items-start gap-2.5"><i data-lucide="feather" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="nl.b1">Una riflessione clinica, scritta con cura</span></li>
-                <li class="flex items-start gap-2.5"><i data-lucide="compass" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="nl.b2">Nuovi test e strumenti prima che sugli altri canali</span></li>
-                <li class="flex items-start gap-2.5"><i data-lucide="book-open" class="w-5 h-5 shrink-0 text-mirtillo-600" aria-hidden="true"></i> <span data-i18n="nl.b3">Gli estratti e le uscite dei compendi</span></li>
-              </ul>
-            </div>
-            <div class="lg:col-span-2">
-              <form data-newsletter data-nl-source="newsletter" class="bg-crema/60 rounded-2xl p-6 sm:p-7" novalidate>
-                <label for="nl-email" class="block text-sm font-semibold text-notte mb-1.5"><span data-i18n="nl.f.email">La tua email</span> <span class="text-mirtillo-700" aria-hidden="true">*</span></label>
-                <input type="email" id="nl-email" name="email" required autocomplete="email"
-                       class="w-full rounded-xl border border-tortora-dark bg-white px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors"
-                       placeholder="nome@esempio.it" data-i18n-ph="nl.f.email.ph">
-                <label class="flex items-start gap-2.5 mt-4 cursor-pointer">
-                  <input type="checkbox" name="consent" required class="mt-0.5 h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-xs text-inchiostro/70" data-i18n="nl.f.consent">Acconsento a ricevere la newsletter e al trattamento della mia email secondo il <a href="#privacy-newsletter" class="underline underline-offset-2 hover:text-notte">GDPR</a>. Nessuna condivisione con terzi.</span>
-                </label>
-                <button type="submit" class="w-full mt-5 inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-6 py-3.5 rounded-full hover:bg-mirtillo-700 transition-colors">
-                  <i data-lucide="send" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="nl.f.cta">Iscrivimi</span>
-                </button>
-                <p data-nl-feedback class="hidden mt-4 rounded-xl px-4 py-3 text-sm" role="status" aria-live="polite"></p>
-                <p class="text-[11px] text-inchiostro/50 mt-4" id="privacy-newsletter" data-i18n="nl.f.privacy">Riceverai una email di conferma (double opt-in): l'iscrizione si completa solo cliccando il link al suo interno. I dati sono trattati nel rispetto del GDPR.</p>
-              </form>
-            </div>
-          </div>
-        </div>
+        <p class="mt-8 text-center">
+          <button type="button" id="risorse-tutti" hidden class="inline-flex items-center gap-2 border border-tortora-dark px-6 py-3 rounded-full font-semibold text-notte hover:bg-white transition-colors" aria-controls="risorse-griglia" aria-expanded="false">
+            <span data-i18n="ris.tutti">Vedi tutti gli articoli</span>
+          </button>
+        </p>
       </div>
     </section>
 
@@ -1150,7 +1081,7 @@
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="con.kicker">Contatti &amp; Sede</p>
           <h2 id="contatti-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="con.title">Il primo passo è una domanda</h2>
           <p class="text-inchiostro/75 text-lg" data-i18n="con.intro">
-            Questo non è un questionario diagnostico: è il primo spazio in cui la tua domanda viene ascoltata. Raccontami quello che ti va, come ti viene. <strong>Ti ricontatto entro 24–48 ore</strong> per fissare un primo colloquio conoscitivo, online o in studio.
+            Questo non è un questionario diagnostico: è il primo spazio in cui la tua domanda viene ascoltata. Raccontami quello che ti va, come ti viene. <strong>Ti ricontatto entro 24–48 ore</strong> per fissare un primo colloquio conoscitivo, online o in studio: se lo prenoti da qui è gratuito e dura 45 minuti.
           </p>
         </div>
 
@@ -1189,52 +1120,52 @@
               </div>
             </div>
 
-            <fieldset class="mb-7">
-              <legend class="text-sm font-semibold text-notte mb-1.5" data-i18n="con.f.temi.legend">Di cosa vorresti parlare?</legend>
-              <p class="text-xs text-inchiostro/55 mb-4" data-i18n="con.f.temi.help">Seleziona uno o più temi, solo se ti va: aiuta me ad accoglierti meglio, non è obbligatorio.</p>
-              <div class="grid sm:grid-cols-2 gap-2.5">
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
-                  <input type="checkbox" name="temi" value="Ansia / Attacchi di panico" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]" data-i18n="con.f.tema.ansia">Ansia / Attacchi di panico</span>
-                </label>
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
-                  <input type="checkbox" name="temi" value="Stress lavorativo / Burnout" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]" data-i18n="con.f.tema.burnout">Stress lavorativo / Burnout</span>
-                </label>
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
-                  <input type="checkbox" name="temi" value="Difficoltà relazionali" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]" data-i18n="con.f.tema.rel">Difficoltà relazionali</span>
-                </label>
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
-                  <input type="checkbox" name="temi" value="Crescita personale" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]" data-i18n="con.f.tema.crescita">Crescita personale</span>
-                </label>
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
-                  <input type="checkbox" name="temi" value="Orientamento professionale" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]" data-i18n="con.f.tema.orient">Orientamento professionale</span>
-                </label>
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
-                  <input type="checkbox" name="temi" value="Vivo all'estero" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]" data-i18n="con.f.tema.estero">Vivo all'estero</span>
-                </label>
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
-                  <input type="checkbox" name="temi" value="Percorso di coppia" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]" data-i18n="con.f.tema.coppia">Percorso di coppia</span>
-                </label>
-                <label class="symptom-option flex items-center gap-3 rounded-xl border border-tortora-dark px-4 py-3 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
-                  <input type="checkbox" name="temi" value="Supervisione clinica" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
-                  <span class="text-[0.92rem]" data-i18n="con.f.tema.superv">Supervisione clinica (per colleghi)</span>
-                </label>
-              </div>
-              <p id="temi-feedback" class="hidden mt-3 text-sm text-mirtillo-700 font-medium" aria-live="polite" data-i18n="con.f.temi.feedback">Grazie: partiremo da qui.</p>
-            </fieldset>
-
             <div class="mb-6">
               <label for="cf-messaggio" class="block text-sm font-semibold text-notte mb-1.5" data-i18n="con.f.msg">Il tuo messaggio</label>
               <textarea id="cf-messaggio" name="messaggio" rows="5"
                         class="w-full rounded-xl border border-tortora-dark bg-crema/50 px-4 py-3 text-[0.95rem] focus:border-mirtillo-600 focus:ring-0 transition-colors resize-y"
                         placeholder="Scrivimi liberamente: cosa ti porta qui, da quanto tempo, cosa vorresti cambiasse…" data-i18n-ph="con.f.msg.ph"></textarea>
             </div>
+
+            <fieldset class="mb-6">
+              <legend class="text-sm font-semibold text-notte mb-1.5" data-i18n="con.f.temi.legend">Di cosa vorresti parlare?</legend>
+              <p class="text-xs text-inchiostro/55 mb-4" data-i18n="con.f.temi.help">Seleziona uno o più temi, solo se ti va: aiuta me ad accoglierti meglio, non è obbligatorio.</p>
+              <div class="flex flex-wrap gap-2">
+                <label class="symptom-option inline-flex items-center gap-2 rounded-full border border-tortora-dark px-3.5 py-2 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Ansia / Attacchi di panico" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.ansia">Ansia / Attacchi di panico</span>
+                </label>
+                <label class="symptom-option inline-flex items-center gap-2 rounded-full border border-tortora-dark px-3.5 py-2 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Stress lavorativo / Burnout" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.burnout">Stress lavorativo / Burnout</span>
+                </label>
+                <label class="symptom-option inline-flex items-center gap-2 rounded-full border border-tortora-dark px-3.5 py-2 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Difficoltà relazionali" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.rel">Difficoltà relazionali</span>
+                </label>
+                <label class="symptom-option inline-flex items-center gap-2 rounded-full border border-tortora-dark px-3.5 py-2 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Crescita personale" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.crescita">Crescita personale</span>
+                </label>
+                <label class="symptom-option inline-flex items-center gap-2 rounded-full border border-tortora-dark px-3.5 py-2 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Orientamento professionale" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.orient">Orientamento professionale</span>
+                </label>
+                <label class="symptom-option inline-flex items-center gap-2 rounded-full border border-tortora-dark px-3.5 py-2 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Vivo all'estero" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.estero">Vivo all'estero</span>
+                </label>
+                <label class="symptom-option inline-flex items-center gap-2 rounded-full border border-tortora-dark px-3.5 py-2 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Percorso di coppia" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.coppia">Percorso di coppia</span>
+                </label>
+                <label class="symptom-option inline-flex items-center gap-2 rounded-full border border-tortora-dark px-3.5 py-2 cursor-pointer hover:border-mirtillo-600 hover:bg-mirtillo-50 transition-colors">
+                  <input type="checkbox" name="temi" value="Supervisione clinica" class="h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
+                  <span class="text-[0.92rem]" data-i18n="con.f.tema.superv">Supervisione clinica (per colleghi)</span>
+                </label>
+              </div>
+              <p id="temi-feedback" class="hidden mt-3 text-sm text-mirtillo-700 font-medium" aria-live="polite" data-i18n="con.f.temi.feedback">Grazie: partiremo da qui.</p>
+            </fieldset>
 
             <label class="flex items-start gap-2.5 mb-5 cursor-pointer">
               <input type="checkbox" id="cf-newsletter" name="newsletter" class="mt-0.5 h-4 w-4 rounded border-tortora-dark text-mirtillo-700 focus:ring-mirtillo-600">
@@ -1245,7 +1176,7 @@
 
             <div class="flex flex-col sm:flex-row gap-3">
               <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-6 py-4 rounded-full hover:bg-mirtillo-700 transition-colors">
-                <i data-lucide="mail" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="con.f.send.email">Invia via Email</span>
+                <i data-lucide="send" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="con.f.send.email">Invia la richiesta</span>
               </button>
               <button type="button" id="whatsapp-send" class="flex-1 inline-flex items-center justify-center gap-2 bg-mirtillo-700 text-white font-semibold px-6 py-4 rounded-full hover:bg-mirtillo-600 transition-colors">
                 <i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="con.f.send.wa">Scrivimi su WhatsApp</span>
@@ -1359,6 +1290,35 @@
       </div>
     </section>
 
+
+    <!-- ==================== PER I COLLEGHI (rimando) ==================== -->
+    <!-- Supervisione, compendi, PsicoVoice, portfolio e curriculum stanno
+         su /colleghi/: la home parla a chi cerca una terapia, e prima il
+         menu mescolava le due cose. Qui resta solo il rimando. -->
+    <section id="colleghi" class="py-20 lg:py-24 bg-white" aria-labelledby="colleghi-title">
+      <div class="max-w-6xl mx-auto px-5">
+        <div class="rounded-3xl bg-notte text-crema p-8 sm:p-12 lg:p-14 shadow-xl">
+          <div class="grid lg:grid-cols-12 gap-10 items-end">
+            <div class="lg:col-span-7">
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-300 mb-3" data-i18n="col.kicker">Per i colleghi</p>
+              <h2 id="colleghi-title" class="font-serif text-3xl lg:text-4xl text-crema leading-tight mb-5" data-i18n="col.title">Sei psicologo o psicoterapeuta?</h2>
+              <p class="text-crema/75 text-lg leading-relaxed" data-i18n="col.p">Supervisione clinica, i compendi che scrivo per chi lavora in stanza, PsicoVoice, il mio curriculum e i case study del Master: è tutto in una pagina a parte, per non mescolarlo con chi cerca una terapia.</p>
+            </div>
+            <div class="lg:col-span-5 lg:text-right">
+              <a href="/colleghi/" class="inline-flex items-center justify-center bg-lume text-notte text-base font-semibold px-7 py-4 rounded-full hover:bg-lume-soft transition-colors">
+                <span data-i18n="col.cta">Vai alla pagina per i colleghi</span>
+              </a>
+            </div>
+          </div>
+          <ul class="mt-10 pt-8 border-t border-crema/10 grid sm:grid-cols-3 gap-6 text-[0.95rem]">
+            <li><a href="/colleghi/#supervisione" class="block text-crema hover:text-lume transition-colors"><span class="block font-serif text-xl mb-1" data-i18n="col.s1.t">Supervisione clinica</span><span class="text-crema/60" data-i18n="col.s1.d">Individuale e di équipe, online o in studio</span></a></li>
+            <li><a href="/colleghi/#compendi" class="block text-crema hover:text-lume transition-colors"><span class="block font-serif text-xl mb-1" data-i18n="col.s2.t">Compendi e guide</span><span class="text-crema/60" data-i18n="col.s2.d">Testi clinici su ADHD, trauma e IA</span></a></li>
+            <li><a href="/colleghi/#psicovoice" class="block text-crema hover:text-lume transition-colors"><span class="block font-serif text-xl mb-1">PsicoVoice</span><span class="text-crema/60" data-i18n="col.s3.d">La webapp di gestione per psicologi</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ==================== FOOTER ==================== -->
@@ -1388,7 +1348,7 @@
             <li><a href="#approccio" class="hover:text-white transition-colors" data-i18n="foot.nav.approccio">Approccio</a></li>
             <li><a href="#expat" class="hover:text-white transition-colors" data-i18n="foot.nav.expat">Italiani all'estero</a></li>
             <li><a href="/colleghi/" class="hover:text-white transition-colors" data-i18n="col.kicker">Per i colleghi</a></li>
-            <li><a href="#newsletter" class="hover:text-white transition-colors" data-i18n="foot.nav.newsletter">Newsletter</a></li>
+            <li><a href="/newsletter/" class="hover:text-white transition-colors" data-i18n="foot.nav.newsletter">Newsletter</a></li>
             <li><a href="#contatti" class="hover:text-white transition-colors" data-i18n="foot.nav.contatti">Contatti</a></li>
             <li><a href="/privacy/" class="hover:text-white transition-colors">Privacy</a></li>
             <li><a href="/note-legali/" class="hover:text-white transition-colors">Note legali</a></li>
@@ -1525,6 +1485,38 @@
         scena.style.setProperty('--ry', '0deg');
         scena.style.setProperty('--rx', '0deg');
       });
+    })();
+
+    /* ---------- Risorse: le prime schede, poi «Vedi tutti» ----------
+       Undici articoli in colonna erano sette schermate di telefono fra i
+       test e il modulo di contatto. Ne mostro 3 su telefono e 6 da
+       tablet in su; gli altri restano nella pagina (e per Google), e un
+       pulsante li apre. Conta solo le schede visibili nella lingua
+       attiva: quelle solo-italiano spariscono in inglese e spagnolo. */
+    (function () {
+      var griglia = document.getElementById('risorse-griglia');
+      var tutti = document.getElementById('risorse-tutti');
+      if (!griglia || !tutti) return;
+      var aperto = false;
+      function aggiorna() {
+        var limite = window.matchMedia('(min-width: 768px)').matches ? 6 : 3;
+        var visibili = 0;
+        Array.prototype.forEach.call(griglia.children, function (scheda) {
+          scheda.classList.remove('oltre-limite');
+          if (scheda.hasAttribute('hidden') || scheda.classList.contains('hidden')) return;
+          visibili++;
+          if (!aperto && visibili > limite) scheda.classList.add('oltre-limite');
+        });
+        tutti.hidden = aperto || visibili <= limite;
+      }
+      tutti.addEventListener('click', function () {
+        aperto = true;
+        tutti.setAttribute('aria-expanded', 'true');
+        aggiorna();
+      });
+      window.addEventListener('resize', aggiorna);
+      if (window.SiteI18N) window.SiteI18N.onChange(function () { setTimeout(aggiorna, 0); });
+      aggiorna();
     })();
 
     /* ---------- Anno footer ---------- */
