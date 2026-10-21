@@ -62,7 +62,7 @@ Una psicologia che non si accontenta del sintomo: che legge le persone dentro le
 | Payoff | *Insieme possiamo decifrarla.* |
 | Firma breve (footer, bio social) | Alberto Del Bove — Psicologo Psicoterapeuta · Analisi della Domanda |
 
-La tagline è il cuore verbale del brand e non va riscritta liberamente. Dal 20 ottobre 2026 **non è più il titolo (H1) dell'apertura**: sta subito sopra, in Newsreader corsivo mirtillo-300. Il titolo dice cosa offro con le parole che usa chi cerca: «Psicoterapia online in italiano, ovunque tu sia.», con lo studio a Itri nella riga sotto. Nelle altre lingue si usano le traduzioni ufficiali presenti in `assets/i18n.js` (`hero.tagline`, `hero.title`).
+La tagline è il cuore verbale del brand e non va riscritta liberamente. Dal 20 ottobre 2026 **non è più il titolo (H1) dell'apertura**: sta subito sopra, in Newsreader corsivo mirtillo-300. Il titolo dice cosa offro con le parole che usa chi cerca: «Psicoterapia online, in tutta Italia e dall'estero.», con lo studio a Itri nella riga sotto. Deve nominare tutti e tre i pubblici: online in Italia, online dall'estero, in presenza (§4.1). Nelle altre lingue si usano le traduzioni ufficiali presenti in `assets/i18n.js` (`hero.tagline`, `hero.title`).
 
 ### 2.2 Brand story (versione lunga)
 
@@ -317,7 +317,7 @@ Fraunces e Inter (v1.0) sono dismessi sul sito. **Eccezione da sanare:** i PDF g
 
 ### Gerarchia
 
-- **H1 della home:** «Psicoterapia online in italiano, ovunque tu sia.» Newsreader light (300), da 2,6 rem a 5,1 rem, interlinea 1,0–1,04, calce su notte. È l'immagine principale della pagina.
+- **H1 della home:** «Psicoterapia online, in tutta Italia e dall'estero.» Newsreader light (300), da 2,6 rem a 5,1 rem, interlinea 1,0–1,04, calce su notte. È l'immagine principale della pagina.
 - **Riga sotto l'H1** (lo studio a Itri): riga a sé, Hanken Grotesk 500, circa un terzo del titolo, mirtillo-300. **Non** è una seconda metà del titolo in un altro colore.
 - **Tagline** sopra l'H1: Newsreader corsivo, lg–xl, mirtillo-300.
 - **H1 delle pagine interne:** Newsreader 350, da 2,5 rem a 4,25 rem.
@@ -369,7 +369,7 @@ L'intestazione è in **vetro smerigliato** (sfocatura e saturazione) con un filo
 
 | Touchpoint | Regole essenziali |
 |---|---|
-| **Sito** (albertodelbove-psicologo.it) | Fonte canonica. Menu solo per chi cerca una terapia (Chi sono, Approccio, Italiani all'estero, Test, Primo colloquio); tutto ciò che parla ai colleghi sta su `/colleghi/` (§4.3). Apertura notte con titolo concreto, tagline sopra, linea lume e ritratto 3D; sezioni alternate calce/bianco/mirtillo-50/pietra; piè di pagina notte che si apre con «Raccontami quello che ti va, come ti viene.» e un pulsante lume. |
+| **Sito** (albertodelbove-psicologo.it) | Fonte canonica. Menu solo per chi cerca una terapia (Chi sono, Online, Studio a Itri, Dall'estero, Test, Primo colloquio): i tre pubblici clinici — online in Italia, in presenza, dall'estero — hanno lo stesso peso, e nessuno deve sentirsi escluso; tutto ciò che parla ai colleghi sta su `/colleghi/` (§4.3). Apertura notte con titolo concreto, tagline sopra, linea lume e ritratto 3D; sezioni alternate calce/bianco/mirtillo-50/pietra; piè di pagina notte che si apre con «Raccontami quello che ti va, come ti viene.» e un pulsante lume. |
 | **Pagine di approfondimento** | Corpo in Newsreader, H1 grande e leggero, firma con numero d'albo. Il colore notte compare solo nel piè di pagina. |
 | **Pagine di destinazione degli annunci** (`/psicoterapia-online/`, `/psicologo-a-itri/`, `/psicologo-per-italiani-all-estero/`) | Si aprono su notte come la home: H1, una promessa concreta, tre dati in elenco (primo colloquio, dove/orari, risposta), numero d'albo; a destra il **modulo breve** in una scheda chiara sospesa con il filo lume in alto (`assets/richiesta.js`). Su telefono il modulo viene subito dopo la promessa, e un pulsante lume in basso riporta al modulo quando esce dallo schermo. Gli annunci puntano qui, non alla home. |
 | **PDF (guide e report)** | Palette del brand; i PDF di `build-pdf.js` hanno **font ancora v1.0** (vedi §8). Sempre il disclaimer "strumento di auto-osservazione, non diagnostico" e l'invito al colloquio. |
