@@ -47,9 +47,33 @@
     );
   }
 
-  function modulo(n) {
+  /* Nelle pagine tematiche (coppia, ansia…) non si sa ancora se la
+     persona cerca l'online o lo studio: glielo chiedo con tre scelte,
+     «Non so ancora» compresa, così nessuno resta fuori. */
+  var SCELTE_SETTING = ['Online', 'In studio a Itri (LT)', 'Non so ancora'];
+
+  function sceltaSetting(n) {
+    return (
+      '<fieldset>' +
+        '<legend class="block text-sm font-semibold text-notte mb-2">Come preferisci incontrarci?</legend>' +
+        '<div class="flex flex-wrap gap-2">' +
+          SCELTE_SETTING.map(function (v, i) {
+            return '<label class="cursor-pointer">' +
+              '<input type="radio" name="setting" value="' + v + '" class="peer sr-only"' + (i === 2 ? ' checked' : '') + '>' +
+              '<span class="inline-block rounded-full border border-tortora-dark px-4 py-2 text-sm text-notte peer-checked:bg-notte peer-checked:border-notte peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-mirtillo-600 transition-colors">' +
+                (v === 'In studio a Itri (LT)' ? 'In studio a Itri' : v) +
+              '</span>' +
+            '</label>';
+          }).join('') +
+        '</div>' +
+      '</fieldset>'
+    );
+  }
+
+  function modulo(n, chiediSetting) {
     return (
       '<form novalidate class="space-y-4" data-modulo-richiesta>' +
+        (chiediSetting ? sceltaSetting(n) : '') +
         campo('rq-nome-' + n, 'Nome <span class="text-mirtillo-700" aria-hidden="true">*</span>', 'text',
               'name="nome" autocomplete="name" required placeholder="Come ti chiami"') +
         campo('rq-email-' + n, 'Email <span class="text-mirtillo-700" aria-hidden="true">*</span>', 'email',
@@ -97,14 +121,16 @@
   }
 
   function collega(contenitore, n) {
-    var setting = contenitore.getAttribute('data-setting') || '';
+    var settingFisso = contenitore.getAttribute('data-setting') || '';
     var tema = contenitore.getAttribute('data-tema') || '';
-    contenitore.innerHTML = modulo(n);
+    contenitore.innerHTML = modulo(n, !settingFisso);
     var form = contenitore.querySelector('form');
 
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       if (form.hp.value) { return; }   // trappola per i bot
+      var scelto = form.querySelector('input[name="setting"]:checked');
+      var setting = settingFisso || (scelto ? scelto.value : '');
       var dati = {
         nome: form.nome.value.trim(),
         email: form.email.value.trim(),
@@ -154,6 +180,7 @@
           if (window.SiteAnalytics) {
             window.SiteAnalytics.evento('contatto_inviato', { fonte: 'destinazione', pagina: location.pathname });
           }
+          if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo(); }
         })
         .catch(function () {
           // Server irraggiungibile: apro la posta col messaggio già pronto.
@@ -185,11 +212,19 @@
       '</a>';
     document.body.appendChild(barra);
     document.body.classList.add('con-ritorno');
+    // Nelle pagine di lettura il modulo sta in fondo: la barra aspetta che
+    // la persona abbia cominciato a leggere, invece di comparire subito.
+    var moduloInVista = false;
+    function aggiorna() {
+      var mostra = !moduloInVista && window.scrollY > window.innerHeight * 0.6;
+      barra.classList.toggle('translate-y-full', !mostra);
+    }
     var osservatore = new IntersectionObserver(function (voci) {
-      var visibile = voci[0].isIntersecting;
-      barra.classList.toggle('translate-y-full', visibile);
+      moduloInVista = voci[0].isIntersecting;
+      aggiorna();
     }, { rootMargin: '0px 0px -10% 0px' });
     osservatore.observe(bersaglio);
+    window.addEventListener('scroll', aggiorna, { passive: true });
   }
 
   function avvia() {

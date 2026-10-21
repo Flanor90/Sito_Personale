@@ -2129,6 +2129,7 @@
           showFeedback('Ho ricevuto la tua richiesta. Ti rispondo io personalmente, di solito entro due giorni lavorativi. Se nel frattempo preferisci scrivermi direttamente, trovi email e WhatsApp qui accanto.', false);
           form.reset();
           if (window.SiteAnalytics) { window.SiteAnalytics.evento('contatto_inviato'); }
+          if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo(); }
         })
         .catch(function () {
           // Server irraggiungibile: non lascio la persona a mani vuote.

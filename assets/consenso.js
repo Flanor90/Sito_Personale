@@ -141,6 +141,18 @@
     });
   }, true);
 
+  /* Conversione Google Ads: una richiesta di primo colloquio arrivata
+     davvero (il server ha risposto ok). In Ads è l'azione «Invio modulo
+     per i lead», importata da GA4: per questo l'evento parte con il nome
+     che GA4 si aspetta, e solo se le statistiche sono state accettate.
+     generate_lead è l'evento standard di GA4 per lo stesso fatto. */
+  function conversioneModulo() {
+    var s = stato();
+    if (!(s.stat || s.ads) || typeof window.gtag !== 'function') { return; }
+    window.gtag('event', 'ads_conversion_Invio_modulo_per_i_lead_1');
+    window.gtag('event', 'generate_lead', { value: 1.0, currency: 'EUR' });
+  }
+
   /* ----------------------------------------------------------
      Il banner
      ---------------------------------------------------------- */
@@ -238,7 +250,8 @@
   // Per il link «Preferenze cookie» nel piè di pagina.
   window.ConsensoCookie = {
     apri: mostraBanner,
-    stato: stato
+    stato: stato,
+    conversioneModulo: conversioneModulo
   };
 
   if (document.readyState === 'loading') {
