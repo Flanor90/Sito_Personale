@@ -239,20 +239,66 @@
   </header>
 
 <main id="main" class="pt-24">
-<section class="max-w-3xl mx-auto px-5 pt-10 pb-12">
-  <nav class="text-sm text-inchiostro/55 mb-7" aria-label="Percorso">
-    <a href="/" class="hover:text-mirtillo-700 transition-colors">Home</a>
-    <span class="mx-2" aria-hidden="true">›</span>
-    <span>Studio a Itri</span>
-  </nav>
+<!-- ============================================================
+     Apertura di conversione (pagina di destinazione degli annunci)
+     ------------------------------------------------------------
+     Chi arriva da un annuncio deve poter scrivere senza lasciare la
+     pagina: il modulo breve sta qui, a destra del titolo (sotto, su
+     telefono). Lo disegna assets/richiesta.js nel contenitore
+     [data-richiesta]; senza JavaScript restano i link di ripiego.
+     Il testo della pagina continua, intatto, nella sezione dopo.
+     ============================================================ -->
+<section class="destinazione relative bg-notte text-crema -mt-24 pt-32 lg:pt-36 pb-16 lg:pb-20 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-5">
+    <nav class="text-sm text-crema/50 mb-8" aria-label="Percorso">
+      <a href="/" class="hover:text-crema transition-colors">Home</a>
+      <span class="mx-2" aria-hidden="true">›</span>
+      <span>Studio a Itri</span>
+    </nav>
 
-  <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-3">
-    Lo studio
-  </p>
+    <!-- Su telefono l'ordine è titolo, modulo, dati; da computer il
+         modulo sta a destra su due righe. -->
+    <div class="grid lg:grid-cols-12 lg:grid-rows-[auto_1fr] gap-x-14 gap-y-10 items-start">
+      <div class="lg:col-span-7">
+        <p class="font-serif italic text-lg text-mirtillo-300 mb-4">Lo studio</p>
+        <h1 class="font-serif font-light text-crema text-[2.6rem] leading-[1.04] sm:text-6xl lg:text-[4.4rem] mb-6">Psicologo e psicoterapeuta a Itri</h1>
+        <p class="text-lg leading-relaxed text-crema/80 max-w-xl">Studio in Via Luigi Pirandello 8, a pochi minuti da Formia, Gaeta, Fondi e Sperlonga. Per chi preferisce, anche online.</p>
+      </div>
 
-  <h1 class="font-serif text-4xl sm:text-5xl leading-[1.12] text-notte mb-6">
-    Psicologo e psicoterapeuta a Itri
-  </h1>
+      <div class="lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:row-span-2">
+        <div id="richiesta" class="scheda-richiesta scroll-mt-28 rounded-2xl bg-white text-inchiostro p-6 sm:p-8 shadow-2xl">
+          <h2 class="font-serif text-2xl text-notte leading-tight mb-1">Prenota il primo colloquio</h2>
+          <p class="text-sm text-inchiostro/65 mb-6">Gratuito, 45 minuti. Basta il nome e un'email.</p>
+          <div data-richiesta data-setting="In studio a Itri (LT)" data-tema="">
+            <p class="text-sm text-inchiostro/75 mb-4">Scrivimi direttamente:</p>
+            <a href="https://wa.me/393455032318" class="block mb-2 font-semibold text-mirtillo-700 underline">WhatsApp: +39 345 503 2318</a>
+            <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="block font-semibold text-mirtillo-700 underline">alberto.delbove.psicoterapeuta@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 lg:row-start-2">
+        <dl class="max-w-xl divide-y divide-crema/10 border-y border-crema/10">
+          <div class="flex gap-4 py-3.5">
+            <dt class="w-32 flex-none text-sm text-crema/55">Primo colloquio</dt>
+            <dd class="text-[0.97rem] text-crema">gratuito, 45 minuti, se lo prenoti da qui</dd>
+          </div>
+          <div class="flex gap-4 py-3.5">
+            <dt class="w-32 flex-none text-sm text-crema/55">Dove</dt>
+            <dd class="text-[0.97rem] text-crema">Via Luigi Pirandello 8, Itri (LT), con parcheggio facile in zona</dd>
+          </div>
+          <div class="flex gap-4 py-3.5">
+            <dt class="w-32 flex-none text-sm text-crema/55">Risposta</dt>
+            <dd class="text-[0.97rem] text-crema">ti scrivo io entro 24–48 ore</dd>
+          </div>
+        </dl>
+        <p class="mt-6 text-sm text-crema/50">Dott. Alberto Del Bove, psicologo e psicoterapeuta. Ordine degli Psicologi del Lazio n. 23754.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-3xl mx-auto px-5 pt-14 pb-12">
 
   <p class="text-lg leading-relaxed text-inchiostro/80 mb-5">
     Ricevo a Itri, in provincia di Latina, in una zona tranquilla e facile da
@@ -491,6 +537,6 @@
 <script src="/assets/consenso.js"></script>
 <script src="/assets/newsletter.js"></script>
 <script src="/assets/pagine.js"></script>
-
+<script src="/assets/richiesta.js"></script>
 </body>
 </html>

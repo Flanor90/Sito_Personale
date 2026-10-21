@@ -284,3 +284,27 @@ article img.object-cover { transition: transform .8s cubic-bezier(.2, .7, .2, 1)
   #test-hub::-webkit-scrollbar { display: none; }
   #test-hub > article { flex: 0 0 84%; scroll-snap-align: start; }
 }
+
+/* ------------------------------------------------------------
+   Pagine di destinazione degli annunci
+   Stessa notte dell'apertura della home, con la luce di lampada; il
+   modulo è una scheda chiara sospesa, con il filo color lume in alto
+   che riprende la linea della direzione.
+   ------------------------------------------------------------ */
+.destinazione { isolation: isolate; }
+.destinazione::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40rem 28rem at 88% 20%, rgb(233 184 114 / .14), transparent 62%),
+    radial-gradient(34rem 26rem at 4% 100%, rgb(124 129 179 / .18), transparent 65%);
+}
+.scheda-richiesta { position: relative; }
+.scheda-richiesta::before {
+  content: "";
+  position: absolute; left: 1.5rem; right: 1.5rem; top: 0;
+  height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #E9B872 18%, #E9B872 82%, transparent);
+}
+.con-banner-consenso #richiesta-ritorno { display: none; }
+@media (max-width: 1023px) { body.con-ritorno { padding-bottom: 5.5rem; } }
