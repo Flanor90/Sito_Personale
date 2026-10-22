@@ -185,7 +185,7 @@
         .catch(function () {
           // Server irraggiungibile: apro la posta col messaggio già pronto.
           window.location.href = 'mailto:' + EMAIL +
-            '?subject=' + encodeURIComponent('Richiesta primo colloquio — ' + dati.nome) +
+            '?subject=' + encodeURIComponent('Richiesta primo colloquio, ' + dati.nome) +
             '&body=' + encodeURIComponent(corpo(dati));
           esito(form, 'Si sta aprendo il tuo programma di posta con il messaggio già pronto. Se non succede nulla, scrivimi a ' + EMAIL + ' oppure su WhatsApp.', false);
         })
