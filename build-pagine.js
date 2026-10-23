@@ -330,6 +330,40 @@ ${collegati.map((p) => `      <li><a href="/${p.slug}/" class="group flex items-
 </section>`;
 }
 
+/**
+ * La home non è generata da questo script, ma ha un riquadro «Ultimi
+ * articoli» fra due marcatori. Lo riscrivo a ogni build, così quando il
+ * lunedì esce un articolo compare anche lì, senza toccare index.html a mano.
+ */
+const ULTIMI_INIZIO = '<!--INIZIO ULTIMI ARTICOLI-->';
+const ULTIMI_FINE = '<!--FINE ULTIMI ARTICOLI-->';
+
+function aggiornaUltimiInHome(pagine) {
+  const file = path.join(RADICE, 'index.html');
+  const html = fs.readFileSync(file, 'utf8');
+  const a = html.indexOf(ULTIMI_INIZIO);
+  const b = html.indexOf(ULTIMI_FINE);
+  if (a === -1 || b === -1) { return; }
+  const ultimi = articoliInOrdine(pagine).slice(0, 3);
+  const blocco = ultimi.length ? `
+        <div class="mb-14 reveal">
+          <div class="flex items-baseline justify-between gap-4 mb-5">
+            <h3 class="font-serif text-2xl text-notte">Ultimi articoli</h3>
+            <a href="/articoli/" class="shrink-0 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Tutti gli articoli e le guide</a>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6">
+${ultimi.map((p) => `            <a href="/${p.slug}/" class="group block bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">${p.articolo.categoria}</p>
+              <p class="font-serif text-xl leading-snug text-notte group-hover:text-mirtillo-700 transition-colors mb-3">${p.h1 || p.ogTitolo || p.titolo}</p>
+              <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></span>
+            </a>`).join('\n')}
+          </div>
+        </div>
+        ` : '\n        ';
+  const nuovo = html.slice(0, a + ULTIMI_INIZIO.length) + blocco + html.slice(b);
+  if (nuovo !== html) { fs.writeFileSync(file, nuovo); }
+}
+
 function scriviFeed(pagine) {
   const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const voci = articoliInOrdine(pagine).map((p) => `  <item>
@@ -414,6 +448,7 @@ function main() {
   });
 
   scriviSitemap(fatte);
+  aggiornaUltimiInHome(fatte);
   if (fs.existsSync(path.join(RADICE, 'articoli'))) { scriviFeed(fatte); }
   console.log(`\n${fatte.length} pagine generate, sitemap.xml aggiornata.`);
 }

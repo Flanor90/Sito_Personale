@@ -267,6 +267,10 @@
         <li><a href="/psicoterapia-online/" class="nav-link" data-i18n="nav.online">Online</a></li>
         <li><a href="/psicologo-a-itri/" class="nav-link" data-i18n="nav.studio">Studio a Itri</a></li>
         <li><a href="/psicologo-per-italiani-all-estero/" class="nav-link" data-i18n="nav.estero">Dall'estero</a></li>
+        <!-- Articoli, guide gratuite e compendi stavano solo nel piè di pagina
+             o dietro «Per i colleghi»: una voce sola, che porta a /articoli/,
+             dove le guide sono in cima. -->
+        <li><a href="/articoli/" class="nav-link" data-i18n="nav.letture">Articoli e guide</a></li>
         <li>
           <a href="#contatti" class="inline-flex items-center gap-2 bg-notte text-white px-4 py-2.5 rounded-full hover:bg-mirtillo-700 transition-colors">
             <i data-lucide="calendar-heart" class="w-4 h-4" aria-hidden="true"></i>
@@ -307,7 +311,8 @@
         <li><a href="/psicologo-a-itri/" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="map-pin" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="nav.studio.m">In studio a Itri (LT)</span></a></li>
         <li><a href="/psicologo-per-italiani-all-estero/" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="plane" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="nav.estero.m">Dall'estero, in italiano</span></a></li>
         <li><a href="#test" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="sparkles" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.test">Test di auto-osservazione</span></a></li>
-        <li><a href="#risorse" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.articoli">Risorse &amp; Articoli</span></a></li>
+        <li><a href="/articoli/" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="book-open" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.articoli">Articoli</span></a></li>
+        <li><a href="/compendi/" class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-tortora"><i data-lucide="library" class="w-5 h-5 text-mirtillo-700" aria-hidden="true"></i> <span data-i18n="m.compendi">Guide gratuite e compendi</span></a></li>
       </ul>
       <!-- Tutto ciò che parla ai colleghi sta su /colleghi/: qui un solo link. -->
       <a href="/colleghi/" class="flex items-center justify-between gap-3 mt-3 px-3 py-3 rounded-xl border border-tortora text-[0.98rem] font-medium text-notte hover:bg-tortora">
@@ -912,6 +917,32 @@
           <h2 id="risorse-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="ris.title">Spunti per iniziare a riflettere</h2>
           <p class="text-inchiostro/75" data-i18n="ris.intro">Brevi letture su temi che incontro ogni giorno, in terapia e nelle organizzazioni.</p>
         </div>
+
+        <!--INIZIO ULTIMI ARTICOLI-->
+        <div class="mb-14 reveal">
+          <div class="flex items-baseline justify-between gap-4 mb-5">
+            <h3 class="font-serif text-2xl text-notte">Ultimi articoli</h3>
+            <a href="/articoli/" class="shrink-0 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Tutti gli articoli e le guide</a>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <a href="/burnout-sintomi-fisici/" class="group block bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Burnout</p>
+              <p class="font-serif text-xl leading-snug text-notte group-hover:text-mirtillo-700 transition-colors mb-3">I sintomi fisici del burnout, quando il corpo arriva prima</p>
+              <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></span>
+            </a>
+            <a href="/chi-cura-ansia-e-attacchi-di-panico/" class="group block bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Ansia</p>
+              <p class="font-serif text-xl leading-snug text-notte group-hover:text-mirtillo-700 transition-colors mb-3">Chi cura l'ansia e gli attacchi di panico? Psicologo, psicoterapeuta o psichiatra</p>
+              <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></span>
+            </a>
+            <a href="/cosa-fa-uno-psicoterapeuta/" class="group block bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">Psicoterapia</p>
+              <p class="font-serif text-xl leading-snug text-notte group-hover:text-mirtillo-700 transition-colors mb-3">Cosa fa uno psicoterapeuta, e cosa cambia con l'approccio psicoanalitico</p>
+              <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></span>
+            </a>
+          </div>
+        </div>
+        <!--FINE ULTIMI ARTICOLI-->
 
         <div id="risorse-griglia" class="grid md:grid-cols-3 gap-6">
 
