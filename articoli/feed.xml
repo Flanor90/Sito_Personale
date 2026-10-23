@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generato da build-pagine.js: non modificare a mano. -->
+<rss version="2.0">
+<channel>
+  <title>Alberto Del Bove, psicoterapeuta: articoli</title>
+  <link>https://www.albertodelbove-psicologo.it/articoli/</link>
+  <description>Brevi letture su sintomi, relazioni e psicoterapia, scritte da uno psicoterapeuta psicoanalitico.</description>
+  <language>it</language>
+  <item>
+    <title>I sintomi fisici del burnout, quando il corpo arriva prima</title>
+    <link>https://www.albertodelbove-psicologo.it/burnout-sintomi-fisici/</link>
+    <guid>https://www.albertodelbove-psicologo.it/burnout-sintomi-fisici/</guid>
+    <pubDate>Fri, 23 Oct 2026 08:00:00 GMT</pubDate>
+    <category>Burnout</category>
+    <description>Spesso il burnout si fa sentire nel corpo prima che nei pensieri. Quali segnali fisici ricorrono, perché conviene sentire prima il medico e che cosa può voler dire un corpo che chiede di fermarsi.</description>
+  </item>
+  <item>
+    <title>Chi cura l'ansia e gli attacchi di panico? Psicologo, psicoterapeuta o psichiatra</title>
+    <link>https://www.albertodelbove-psicologo.it/chi-cura-ansia-e-attacchi-di-panico/</link>
+    <guid>https://www.albertodelbove-psicologo.it/chi-cura-ansia-e-attacchi-di-panico/</guid>
+    <pubDate>Fri, 23 Oct 2026 08:00:00 GMT</pubDate>
+    <category>Ansia</category>
+    <description>Medico di base, psicologo, psicoterapeuta o psichiatra: a chi rivolgersi per l'ansia e gli attacchi di panico, quando servono i farmaci e che cosa fa una psicoterapia psicoanalitica.</description>
+  </item>
+  <item>
+    <title>Cosa fa uno psicoterapeuta, e cosa cambia con l'approccio psicoanalitico</title>
+    <link>https://www.albertodelbove-psicologo.it/cosa-fa-uno-psicoterapeuta/</link>
+    <guid>https://www.albertodelbove-psicologo.it/cosa-fa-uno-psicoterapeuta/</guid>
+    <pubDate>Fri, 23 Oct 2026 08:00:00 GMT</pubDate>
+    <category>Psicoterapia</category>
+    <description>La differenza tra psicologo, psicoterapeuta e psichiatra, che cosa succede davvero in seduta e perché l'approccio psicoanalitico guarda al senso di un sintomo prima che alla sua eliminazione.</description>
+  </item>
+</channel>
+</rss>

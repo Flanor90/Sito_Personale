@@ -1,0 +1,39 @@
+name: Pubblica gli articoli programmati
+
+# Ogni lunedì mattina ricompila il sito. Gli articoli in pagine/ con una
+# data arrivata a scadenza (blocco "articolo" nei metadati) compaiono così
+# come pagine, nell'elenco di /articoli/, nel feed e nella sitemap.
+# Se non c'è niente di nuovo, non fa nessun commit.
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pubblica:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm run build
+      - run: node --test
+      - name: Commit se è uscito qualcosa
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Nessun articolo nuovo questa settimana."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Pubblica gli articoli programmati per questa settimana"
+          git push

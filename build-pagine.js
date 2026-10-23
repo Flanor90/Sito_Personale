@@ -161,13 +161,15 @@ function componi({ meta, contenuto }, parti) {
 
   // Dati strutturati: le briciole di pane aiutano Google a capire che la
   // pagina è un ramo del sito, non un doppione della home.
+  // Gli articoli stanno sotto /articoli/ anche nelle briciole, così
+  // Google mostra «Home › Articoli › titolo» invece di due livelli soli.
+  const livelli = [{ name: 'Home', item: `${SITO}/` }];
+  if (meta.articolo) { livelli.push({ name: 'Articoli', item: `${SITO}/articoli/` }); }
+  livelli.push({ name: meta.briciola || meta.h1, item: url });
   const briciole = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITO}/` },
-      { '@type': 'ListItem', position: 2, name: meta.briciola || meta.h1, item: url }
-    ]
+    itemListElement: livelli.map((l, i) => ({ '@type': 'ListItem', position: i + 1, ...l }))
   };
 
   // `schema` accetta un oggetto o un elenco: una pagina sanitaria di solito
@@ -177,7 +179,7 @@ function componi({ meta, contenuto }, parti) {
   const extra = meta.schema
     ? (Array.isArray(meta.schema) ? meta.schema : [meta.schema])
     : [];
-  const schemi = [briciole].concat(extra);
+  const schemi = [briciole].concat(meta.articolo ? [schemaArticolo(meta, url, immagine)] : [], extra);
 
   return `<!DOCTYPE html>
 <html lang="${lingua}" class="scroll-smooth">
@@ -194,6 +196,7 @@ function componi({ meta, contenuto }, parti) {
   <meta name="author" content="Alberto Del Bove">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="${url}">
+  <link rel="alternate" type="application/rss+xml" title="Articoli di Alberto Del Bove" href="${SITO}/articoli/feed.xml">
 ${alternati}
 
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -206,7 +209,9 @@ ${alternati}
   <meta property="og:locale" content="${lingua === 'en' ? 'en_GB' : lingua === 'es' ? 'es_ES' : 'it_IT'}">
   <meta property="og:title" content="${meta.ogTitolo || meta.titolo}">
   <meta property="og:description" content="${meta.descrizione}">
-  <meta property="og:url" content="${url}">
+  <meta property="og:url" content="${url}">${meta.articolo ? `
+  <meta property="article:published_time" content="${meta.articolo.data}">
+  <meta property="article:author" content="Alberto Del Bove">` : ''}
   <meta property="og:image" content="${immagine}">
   <meta property="og:site_name" content="Alberto Del Bove — Psicoterapeuta">
   <meta name="twitter:card" content="summary_large_image">
@@ -245,6 +250,110 @@ ${(meta.script || []).map(f => `<script src="/assets/${f}"></script>`).join('\n'
 `;
 }
 
+/**
+ * Gli articoli dichiarano nei metadati un blocco "articolo":
+ *
+ *   "articolo": { "data": "2026-10-23", "categoria": "Ansia",
+ *                 "sommario": "Due righe per l'elenco." }
+ *
+ * Da lì escono, senza scriverli a mano ogni volta, lo schema BlogPosting
+ * per Google, la voce nell'elenco di /articoli/ e quella nel feed RSS.
+ * Un articolo nuovo è quindi un file solo in pagine/.
+ */
+function schemaArticolo(meta, url, immagine) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: meta.h1 || meta.ogTitolo || meta.titolo,
+    description: meta.descrizione,
+    url,
+    mainEntityOfPage: url,
+    image: immagine,
+    inLanguage: meta.lingua || 'it',
+    datePublished: meta.articolo.data,
+    dateModified: meta.articolo.aggiornato || meta.articolo.data,
+    articleSection: meta.articolo.categoria,
+    author: {
+      '@type': 'Person',
+      name: 'Alberto Del Bove',
+      jobTitle: 'Psicologo e psicoterapeuta psicoanalitico',
+      identifier: 'Ordine degli Psicologi del Lazio n. 23754',
+      url: `${SITO}/`
+    },
+    publisher: { '@id': `${SITO}/#psicoterapeuta` }
+  };
+}
+
+const MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio',
+  'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+
+function dataLeggibile(iso) {
+  const [a, m, g] = iso.split('-').map(Number);
+  return `${g} ${MESI[m - 1]} ${a}`;
+}
+
+function articoliInOrdine(pagine) {
+  return pagine
+    .filter((p) => p.articolo)
+    .sort((a, b) => b.articolo.data.localeCompare(a.articolo.data));
+}
+
+/** L'elenco che sostituisce <!--ELENCO-ARTICOLI--> nella pagina /articoli/. */
+function elencoArticoli(pagine) {
+  return articoliInOrdine(pagine).map((p) => `
+    <article class="border-t border-tortora pt-7 pb-9">
+      <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">${p.articolo.categoria} <span class="text-inchiostro/45 font-normal normal-case tracking-normal">· <time datetime="${p.articolo.data}">${dataLeggibile(p.articolo.data)}</time></span></p>
+      <h2 class="font-serif text-2xl sm:text-[1.7rem] leading-snug text-notte mb-3"><a href="/${p.slug}/" class="hover:text-mirtillo-700 transition-colors">${p.h1 || p.ogTitolo || p.titolo}</a></h2>
+      <p class="leading-relaxed text-inchiostro/75 mb-3">${p.articolo.sommario || p.descrizione}</p>
+      <a href="/${p.slug}/" class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></a>
+    </article>`).join('\n');
+}
+
+/**
+ * Le pagine d'area (ansia, burnout, coppia…) mostrano gli articoli che le
+ * riguardano: un articolo dichiara "area": "/ansia-e-attacchi-di-panico/"
+ * nel blocco "articolo", e la pagina d'area mette <!--ARTICOLI-COLLEGATI-->
+ * dove vuole l'elenco. Finché non c'è nessun articolo pubblicato per
+ * quell'area, il segnaposto sparisce senza lasciare un riquadro vuoto.
+ */
+function articoliCollegati(pagine, slugArea) {
+  const collegati = articoliInOrdine(pagine)
+    .filter((p) => p.articolo.area === `/${slugArea}/`);
+  if (!collegati.length) { return ''; }
+  return `<section class="py-12" aria-labelledby="h-letture">
+  <div class="max-w-3xl mx-auto px-5">
+    <h2 id="h-letture" class="font-serif text-2xl text-notte mb-5">Per approfondire</h2>
+    <ul class="space-y-3">
+${collegati.map((p) => `      <li><a href="/${p.slug}/" class="group flex items-start gap-2 text-lg text-notte hover:text-mirtillo-700 transition-colors"><i data-lucide="arrow-right" class="w-5 h-5 mt-1 shrink-0 text-mirtillo-600" aria-hidden="true"></i><span class="underline underline-offset-4 decoration-tortora-dark group-hover:decoration-mirtillo-600">${p.h1 || p.ogTitolo || p.titolo}</span></a></li>`).join('\n')}
+    </ul>
+  </div>
+</section>`;
+}
+
+function scriviFeed(pagine) {
+  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const voci = articoliInOrdine(pagine).map((p) => `  <item>
+    <title>${esc(p.h1 || p.ogTitolo || p.titolo)}</title>
+    <link>${SITO}/${p.slug}/</link>
+    <guid>${SITO}/${p.slug}/</guid>
+    <pubDate>${new Date(p.articolo.data + 'T08:00:00Z').toUTCString()}</pubDate>
+    <category>${esc(p.articolo.categoria)}</category>
+    <description>${esc(p.articolo.sommario || p.descrizione)}</description>
+  </item>`).join('\n');
+  fs.writeFileSync(path.join(RADICE, 'articoli', 'feed.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generato da build-pagine.js: non modificare a mano. -->
+<rss version="2.0">
+<channel>
+  <title>Alberto Del Bove, psicoterapeuta: articoli</title>
+  <link>${SITO}/articoli/</link>
+  <description>Brevi letture su sintomi, relazioni e psicoterapia, scritte da uno psicoterapeuta psicoanalitico.</description>
+  <language>it</language>
+${voci}
+</channel>
+</rss>
+`);
+}
+
 /* ------------------------------------------------------------
    4. Esecuzione
    ------------------------------------------------------------ */
@@ -268,9 +377,35 @@ function main() {
   if (!file.length) { throw new Error('La cartella pagine/ è vuota.'); }
 
   const fatte = [];
+  /* Un articolo con una data futura resta in pagine/ ma non viene
+     pubblicato: niente pagina, niente sitemap, niente elenco. Così si
+     possono scrivere più articoli insieme e farli uscire uno alla
+     settimana; la build del lunedì (.github/workflows/pubblica-articoli.yml)
+     li fa comparire quando arriva la loro data. Con BOZZE=1 si vedono
+     tutti, per controllarli in locale. */
+  const oggi = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
+  const lette = file.map((f) => [f, leggiPagina(f)]).filter(([f, p]) => {
+    const inAttesa = p.meta.articolo && p.meta.articolo.data > oggi;
+    if (inAttesa && !process.env.BOZZE) {
+      console.log(`  (in attesa fino al ${p.meta.articolo.data})  pagine/${f}`);
+      // Se una build con BOZZE=1 l'aveva già generata, la tolgo: non deve
+      // finire online prima della sua data con il prossimo commit.
+      const generata = path.join(RADICE, p.meta.slug, 'index.html');
+      if (fs.existsSync(generata) &&
+          fs.readFileSync(generata, 'utf8').includes('Pagina generata da build-pagine.js')) {
+        fs.rmSync(path.join(RADICE, p.meta.slug), { recursive: true });
+      }
+      return false;
+    }
+    return true;
+  });
+  const elenco = elencoArticoli(lette.map(([, p]) => p.meta));
 
-  file.forEach((f) => {
-    const pagina = leggiPagina(f);
+  lette.forEach(([f, pagina]) => {
+    pagina.contenuto = pagina.contenuto
+      .replace('<!--ELENCO-ARTICOLI-->', elenco)
+      .replace('<!--ARTICOLI-COLLEGATI-->',
+        articoliCollegati(lette.map(([, p]) => p.meta), pagina.meta.slug));
     const cartella = path.join(RADICE, pagina.meta.slug);
     fs.mkdirSync(cartella, { recursive: true });
     fs.writeFileSync(path.join(cartella, 'index.html'), componi(pagina, parti));
@@ -279,6 +414,7 @@ function main() {
   });
 
   scriviSitemap(fatte);
+  if (fs.existsSync(path.join(RADICE, 'articoli'))) { scriviFeed(fatte); }
   console.log(`\n${fatte.length} pagine generate, sitemap.xml aggiornata.`);
 }
 
@@ -298,6 +434,20 @@ function scriviSitemap(pagine) {
    * sorgente di quella pagina.
    */
   const modificato = (percorso) => {
+    // Prima la data dell'ultimo commit che ha toccato il file: è stabile
+    // anche sulla build automatica del lunedì, dove un checkout appena
+    // fatto darebbe a ogni file la data di oggi. Se il file non è ancora
+    // in un commit, la data di modifica sul disco.
+    try {
+      const daGit = require('child_process')
+        .execFileSync('git', ['log', '-1', '--format=%cs', '--', percorso],
+          { cwd: RADICE, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
+        .trim();
+      if (daGit && !require('child_process')
+        .execFileSync('git', ['status', '--porcelain', '--', percorso],
+          { cwd: RADICE, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
+        .trim()) { return daGit; }
+    } catch (e) { /* niente git: si passa alla data del file */ }
     try {
       return fs.statSync(percorso).mtime.toISOString().slice(0, 10);
     } catch (e) {
