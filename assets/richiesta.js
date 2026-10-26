@@ -70,7 +70,34 @@
     );
   }
 
-  function modulo(n, chiediSetting) {
+  /* Il messaggio WhatsApp già scritto cambia con la pagina: chi arriva
+     dalla pagina sull'ansia non deve trovare le parole da solo, e io so
+     da dove arriva chi mi scrive. */
+  var PAGINA_DEL_TEMA = {
+    'Ansia / Attacchi di panico': "sull'ansia e gli attacchi di panico",
+    'Percorso di coppia': 'sulla terapia di coppia',
+    'Depressione': 'sulla depressione',
+    'Stress lavorativo / Burnout': 'sul burnout',
+    'ADHD adulto': "sull'ADHD negli adulti",
+    "Vivo all'estero": "per chi vive all'estero"
+  };
+
+  function messaggioWhatsApp(tema, setting) {
+    var base = 'Buongiorno Dott. Del Bove, ';
+    if (PAGINA_DEL_TEMA[tema]) {
+      return base + 'ho letto la pagina ' + PAGINA_DEL_TEMA[tema] + ' e vorrei capire se posso iniziare un percorso.';
+    }
+    if (setting === 'In studio a Itri (LT)') {
+      return base + 'vorrei prenotare un colloquio conoscitivo nello studio di Itri.';
+    }
+    return base + 'vorrei prenotare un colloquio conoscitivo.';
+  }
+
+  function linkWhatsApp(tema, setting) {
+    return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(messaggioWhatsApp(tema, setting));
+  }
+
+  function modulo(n, chiediSetting, tema, setting) {
     return (
       '<form novalidate class="space-y-4" data-modulo-richiesta>' +
         (chiediSetting ? sceltaSetting(n) : '') +
@@ -88,14 +115,24 @@
         '<input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden">' +
         '<p data-esito class="hidden rounded-xl px-4 py-3 text-sm" role="status" aria-live="polite"></p>' +
         '<button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-notte text-white text-base font-semibold px-6 py-4 rounded-full hover:bg-mirtillo-700 transition-colors">' +
-          'Prenota il primo colloquio' +
+          'Prenota il colloquio conoscitivo' +
         '</button>' +
-        '<a href="https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Buongiorno Dott. Del Bove, vorrei prenotare il primo colloquio gratuito.') + '"' +
+        '<a href="' + linkWhatsApp(tema, setting) + '"' +
           ' target="_blank" rel="noopener" data-evento="cta_click" data-evento-etichetta="wa-destinazione"' +
           ' class="w-full inline-flex items-center justify-center gap-2 border border-tortora-dark text-notte text-base font-semibold px-6 py-3.5 rounded-full hover:bg-crema-dark transition-colors">' +
           '<i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> Oppure su WhatsApp' +
         '</a>' +
-        '<p class="text-xs leading-relaxed text-inchiostro/55">Ti rispondo io, di solito entro 24–48 ore. I dati servono solo a ricontattarti e restano coperti dal segreto professionale. <a href="/privacy/" class="underline underline-offset-2 hover:text-notte">Informativa</a></p>' +
+        // Chi sta per scrivere a uno psicoterapeuta per la prima volta si
+        // chiede soprattutto che cosa succederà dopo: lo dico in tre righe.
+        '<div class="rounded-xl bg-crema/70 px-4 py-3">' +
+          '<p class="text-xs font-semibold uppercase tracking-[0.12em] text-mirtillo-700 mb-2">Cosa succede dopo</p>' +
+          '<ol class="space-y-1.5 text-sm leading-relaxed text-inchiostro/75 list-decimal pl-4">' +
+            '<li>Ti rispondo io, di solito entro 24-48 ore, per fissare un giorno.</li>' +
+            '<li>Ci incontriamo per 45 minuti, online o in studio, per capire che cosa ti porta.</li>' +
+            '<li>Decidi tu se e come continuare, senza impegno; se ti serve altro, te lo dico.</li>' +
+          '</ol>' +
+        '</div>' +
+        '<p class="text-xs leading-relaxed text-inchiostro/55">I dati servono solo a ricontattarti e restano coperti dal segreto professionale. <a href="/privacy/" class="underline underline-offset-2 hover:text-notte">Informativa</a></p>' +
       '</form>'
     );
   }
@@ -123,7 +160,7 @@
   function collega(contenitore, n) {
     var settingFisso = contenitore.getAttribute('data-setting') || '';
     var tema = contenitore.getAttribute('data-tema') || '';
-    contenitore.innerHTML = modulo(n, !settingFisso);
+    contenitore.innerHTML = modulo(n, !settingFisso, tema, settingFisso);
     var form = contenitore.querySelector('form');
 
     form.addEventListener('submit', function (ev) {
@@ -198,18 +235,26 @@
     return form;
   }
 
-  /* Pulsante in basso, solo su telefono: compare quando il modulo è
-     uscito dallo schermo e ci riporta. Sparisce mentre il banner dei
-     cookie occupa lo stesso angolo (regola in tailwind.input.css). */
-  function pulsanteRitorno(bersaglio) {
+  /* Pulsanti in basso: compaiono quando il modulo è uscito dallo schermo
+     e ci riportano, con accanto WhatsApp, che per molti è il modo più
+     facile di fare il primo passo. Su telefono occupano la larghezza, su
+     computer stanno in un angolo. Spariscono mentre il banner dei cookie
+     occupa lo stesso spazio (regola in tailwind.input.css). */
+  function pulsanteRitorno(bersaglio, tema, setting) {
     if (!('IntersectionObserver' in window)) { return; }
     var barra = document.createElement('div');
     barra.id = 'richiesta-ritorno';
-    barra.className = 'lg:hidden fixed inset-x-0 bottom-0 z-40 p-3 transition-transform duration-300 translate-y-full';
+    barra.className = 'fixed inset-x-0 bottom-0 z-40 p-3 lg:inset-x-auto lg:right-6 lg:bottom-6 lg:p-0 transition-transform duration-300 translate-y-[150%]';
     barra.innerHTML =
-      '<a href="#richiesta" class="flex items-center justify-center w-full bg-lume text-notte font-semibold px-6 py-4 rounded-full">' +
-        'Primo colloquio gratuito, 45 minuti' +
-      '</a>';
+      '<div class="flex gap-2 lg:shadow-xl lg:rounded-full">' +
+        '<a href="' + linkWhatsApp(tema, setting) + '" target="_blank" rel="noopener" data-evento="cta_click" data-evento-etichetta="wa-barra"' +
+          ' class="flex-none inline-flex items-center justify-center gap-2 bg-white text-notte border border-tortora-dark font-semibold px-5 py-4 rounded-full" aria-label="Scrivimi su WhatsApp">' +
+          '<i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i><span class="hidden sm:inline">WhatsApp</span>' +
+        '</a>' +
+        '<a href="#richiesta" data-evento="cta_click" data-evento-etichetta="barra-colloquio" class="flex-1 flex items-center justify-center bg-lume text-notte font-semibold px-6 py-4 rounded-full">' +
+          'Colloquio conoscitivo, 45 minuti' +
+        '</a>' +
+      '</div>';
     document.body.appendChild(barra);
     document.body.classList.add('con-ritorno');
     // Nelle pagine di lettura il modulo sta in fondo: la barra aspetta che
@@ -217,7 +262,7 @@
     var moduloInVista = false;
     function aggiorna() {
       var mostra = !moduloInVista && window.scrollY > window.innerHeight * 0.6;
-      barra.classList.toggle('translate-y-full', !mostra);
+      barra.classList.toggle('translate-y-[150%]', !mostra);
     }
     var osservatore = new IntersectionObserver(function (voci) {
       moduloInVista = voci[0].isIntersecting;
@@ -227,13 +272,25 @@
     window.addEventListener('scroll', aggiorna, { passive: true });
   }
 
+  /* Il pulsante «Primo colloquio» dell'intestazione porta al modulo della
+     home. Su una pagina che ha già il suo modulo, porta lì: chi è arrivato
+     sulla pagina dell'ansia non deve ricominciare dalla home. */
+  function intestazioneVersoModulo() {
+    var sel = '#site-header a[href="/#contatti"], #mobile-menu a[href="/#contatti"]';
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function (a) {
+      a.setAttribute('href', '#richiesta');
+    });
+  }
+
   function avvia() {
     var contenitori = document.querySelectorAll('[data-richiesta]');
     if (!contenitori.length) { return; }
     Array.prototype.forEach.call(contenitori, function (c, i) { collega(c, i); });
-    if (window.lucide) { window.lucide.createIcons(); }
     var primo = document.getElementById('richiesta') || contenitori[0];
-    pulsanteRitorno(primo);
+    var fonte = primo.querySelector('[data-richiesta]') || contenitori[0];
+    pulsanteRitorno(primo, fonte.getAttribute('data-tema') || '', fonte.getAttribute('data-setting') || '');
+    if (document.getElementById('richiesta')) { intestazioneVersoModulo(); }
+    if (window.lucide) { window.lucide.createIcons(); }
   }
 
   if (document.readyState === 'loading') {
