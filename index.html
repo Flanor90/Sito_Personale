@@ -896,7 +896,7 @@
       <div class="max-w-6xl mx-auto px-5 py-14 lg:py-16 grid lg:grid-cols-12 gap-8 items-center">
         <div class="lg:col-span-7">
           <h2 id="invito-title" class="font-serif font-light text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] text-crema mb-3" data-i18n="cta.band.t">Il primo passo è un colloquio conoscitivo.</h2>
-          <p class="text-crema/75 text-lg" data-i18n="cta.band.p">Dura 45 minuti, online o in studio a Itri, è gratuito se lo prenoti dal sito e ti rispondo entro 24-48 ore.</p>
+          <p class="text-crema/75 text-lg" data-i18n="cta.band.p">Dura 45 minuti, online o in studio a Itri, è gratuito se lo prenoti dal sito e di solito ti rispondo entro poche ore.</p>
         </div>
         <div class="lg:col-span-5 flex flex-col sm:flex-row lg:justify-end gap-3">
           <a href="#contatti" data-evento="cta_click" data-evento-etichetta="banda-primo-colloquio" class="inline-flex items-center justify-center bg-lume text-notte text-base font-semibold px-7 py-4 rounded-full hover:bg-lume-soft transition-colors">
@@ -1097,7 +1097,7 @@
           <p class="text-xs font-semibold uppercase tracking-[0.2em] text-mirtillo-700 mb-3" data-i18n="con.kicker">Contatti &amp; Sede</p>
           <h2 id="contatti-title" class="font-serif text-3xl lg:text-4xl text-notte leading-tight mb-4" data-i18n="con.title">Il primo passo è una domanda</h2>
           <p class="text-inchiostro/75 text-lg" data-i18n="con.intro">
-            Più che un questionario, questo è il primo spazio in cui la tua domanda viene ascoltata, e puoi raccontarmi quello che ti va, nel modo in cui ti viene. <strong>Ti ricontatto entro 24-48 ore</strong> per fissare un primo colloquio conoscitivo, online o in studio, che se lo prenoti da qui è gratuito e dura 45 minuti.
+            Più che un questionario, questo è il primo spazio in cui la tua domanda viene ascoltata, e puoi raccontarmi quello che ti va, nel modo in cui ti viene. <strong>Ti ricontatto io, di solito entro poche ore,</strong> per fissare un primo colloquio conoscitivo, online o in studio, che se lo prenoti da qui è gratuito e dura 45 minuti.
           </p>
         </div>
 
@@ -1917,19 +1917,19 @@
     const STEPS_BY_LANG = {
       it: [
         { title: '1 · Mi scrivi, come ti viene', body: 'Puoi usare il modulo, WhatsApp o una semplice email, senza preoccuparti di trovare le parole giuste. Bastano due righe su che cosa ti porta qui, e al resto pensiamo insieme.' },
-        { title: '2 · Ti rispondo entro 24-48 ore', body: 'Ti ricontatto personalmente per proporti giorno e orario del primo colloquio. Se hai preferenze di fascia oraria o di setting (online o studio), le rispettiamo.' },
+        { title: '2 · Ti rispondo entro poche ore', body: 'Ti ricontatto personalmente per proporti giorno e orario del primo colloquio. Se hai preferenze di fascia oraria o di setting (online o studio), le rispettiamo.' },
         { title: '3 · Primo colloquio conoscitivo', body: 'Dura 45 minuti, online o in studio a Itri, ed è gratuito se lo prenoti dal sito. È uno spazio in cui raccontarti e capire insieme che cosa stai chiedendo davvero, senza esami e senza diagnosi lampo.' },
         { title: '4 · Decidiamo insieme, senza impegno', body: 'Alla fine facciamo il punto su se e come proseguire, con quale frequenza e con quali obiettivi. Puoi anche prenderti del tempo per pensarci, perché il percorso inizia solo se sei tu a sceglierlo.' }
       ],
       en: [
         { title: '1 · You write to me, however it comes', body: 'Use the form, WhatsApp or a simple email: no need to find the right words. Two lines on what brings you here are enough — we\'ll work out the rest together.' },
-        { title: '2 · I reply within 24–48 hours', body: 'I get back to you personally to propose a day and time for the first session. If you have preferences of time slot or setting (online or in person), we\'ll respect them.' },
+        { title: '2 · I usually reply within a few hours', body: 'I get back to you personally to propose a day and time for the first session. If you have preferences of time slot or setting (online or in person), we\'ll respect them.' },
         { title: '3 · First exploratory session', body: '45 minutes, online or in person in Itri, free if you book it through this site. It\'s a space to tell your story and to understand together what you\'re really asking for: not an exam, not a snap diagnosis.' },
         { title: '4 · We decide together, no commitment', body: 'At the end we take stock: whether and how to continue, at what frequency, with what goals. You can also take time to think it over — the path begins only if you choose it.' }
       ],
       es: [
         { title: '1 · Me escribes, como te salga', body: 'Usa el formulario, WhatsApp o un simple email: no hace falta encontrar las palabras justas. Dos líneas sobre qué te trae aquí bastan — del resto nos ocupamos juntos.' },
-        { title: '2 · Te respondo en 24–48 horas', body: 'Te contacto personalmente para proponerte día y hora de la primera sesión. Si tienes preferencias de franja horaria o de modalidad (online o presencial), las respetamos.' },
+        { title: '2 · Suelo responder en pocas horas', body: 'Te contacto personalmente para proponerte día y hora de la primera sesión. Si tienes preferencias de franja horaria o de modalidad (online o presencial), las respetamos.' },
         { title: '3 · Primera sesión de conocimiento', body: '45 minutos, online o presencial en Itri, gratuita si la reservas desde esta web. Es un espacio para contarte y entender juntos qué estás pidiendo de verdad: no un examen, ni un diagnóstico exprés.' },
         { title: '4 · Decidimos juntos, sin compromiso', body: 'Al final hacemos balance: si continuar y cómo, con qué frecuencia, con qué objetivos. También puedes tomarte tiempo para pensarlo — el proceso empieza solo si lo eliges tú.' }
       ]
@@ -2160,7 +2160,7 @@
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
         .then(function (esito) {
           if (!esito || !esito.ok) { throw new Error('rifiutata'); }
-          showFeedback('Ho ricevuto la tua richiesta. Ti rispondo io personalmente, di solito entro due giorni lavorativi. Se nel frattempo preferisci scrivermi direttamente, trovi email e WhatsApp qui accanto.', false);
+          showFeedback('Ho ricevuto la tua richiesta. Ti rispondo io personalmente, di solito entro poche ore. Se nel frattempo preferisci scrivermi direttamente, trovi email e WhatsApp qui accanto.', false);
           form.reset();
           if (window.SiteAnalytics) { window.SiteAnalytics.evento('contatto_inviato'); }
           if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo(); }

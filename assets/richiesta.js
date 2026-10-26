@@ -127,7 +127,7 @@
         '<div class="rounded-xl bg-crema/70 px-4 py-3">' +
           '<p class="text-xs font-semibold uppercase tracking-[0.12em] text-mirtillo-700 mb-2">Cosa succede dopo</p>' +
           '<ol class="space-y-1.5 text-sm leading-relaxed text-inchiostro/75 list-decimal pl-4">' +
-            '<li>Ti rispondo io, di solito entro 24-48 ore, per fissare un giorno.</li>' +
+            '<li>Ti rispondo io, di solito entro poche ore, per fissare un giorno.</li>' +
             '<li>Ci incontriamo per 45 minuti, online o in studio, per capire che cosa ti porta.</li>' +
             '<li>Decidi tu se e come continuare, senza impegno; se ti serve altro, te lo dico.</li>' +
           '</ol>' +
@@ -212,7 +212,7 @@
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
         .then(function (r) {
           if (!r || !r.ok) { throw new Error('rifiutata'); }
-          esito(form, 'Ho ricevuto la tua richiesta, grazie. Ti rispondo io personalmente, di solito entro due giorni lavorativi.', false);
+          esito(form, 'Ho ricevuto la tua richiesta, grazie. Ti rispondo io personalmente, di solito entro poche ore.', false);
           form.reset();
           if (window.SiteAnalytics) {
             window.SiteAnalytics.evento('contatto_inviato', { fonte: 'destinazione', pagina: location.pathname });
