@@ -432,6 +432,10 @@
       'temi.dep.t': 'Depression',
       'temi.ansia.d': 'When the body sounds the alarm and you can\'t tell why.',
       'temi.ansia.t': 'Anxiety and panic attacks',
+
+      /* --- Pagina /ansia-e-attacchi-di-panico/: risposta diretta --- */
+      'ansia.risposta': 'If you are looking for someone to turn to for anxiety or panic attacks, the right professional is a psychotherapist, who can help you understand where they come from and ease the weight they put on everyday life. I work psychoanalytically with adults and couples, online from anywhere in Italy and abroad, or in person at my practice in Itri (LT). We begin with a 45-minute exploratory session, in which we work out together what is happening to you and whether a course of therapy could help.',
+      'ansia.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20suffer%20from%20anxiety%2Fpanic%20attacks%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy.',
       'temi.leggi': 'Read the page',
       'temi.p': 'With adults and couples, online or in person. And then difficulties in relationships, transitions, questions that don\'t have a name yet: we always start from the first session.',
       'temi.title': 'The difficulties I meet most often',
@@ -946,6 +950,10 @@
       'temi.dep.t': 'Depresión',
       'temi.ansia.d': 'Cuando el cuerpo da la alarma y no se entiende por qué.',
       'temi.ansia.t': 'Ansiedad y ataques de pánico',
+
+      /* --- Pagina /ansia-e-attacchi-di-panico/: risposta diretta --- */
+      'ansia.risposta': 'Si buscas a quién acudir por la ansiedad o los ataques de pánico, la figura indicada es el psicoterapeuta, que puede ayudarte a entender de dónde nacen y a reducir su peso en la vida diaria. Trabajo con orientación psicoanalítica con adultos y parejas, online desde toda Italia y desde el extranjero o en mi consulta de Itri (LT). Se empieza con una sesión de conocimiento de 45 minutos, en la que entendemos juntos qué te está pasando y si un proceso terapéutico puede serte útil.',
+      'ansia.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20sufro%20de%20ansiedad%2Fataques%20de%20p%C3%A1nico%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico.',
       'temi.leggi': 'Leer la página',
       'temi.p': 'Con adultos y parejas, online o presencial. Y además las dificultades en las relaciones, los momentos de cambio, las preguntas que aún no tienen nombre: siempre se empieza por la primera sesión.',
       'temi.title': 'Las dificultades que encuentro más a menudo',
@@ -1093,6 +1101,8 @@
     document.querySelectorAll('[data-i18n]').forEach(function (el) { translateNode(el, lang); });
     document.querySelectorAll('[data-i18n-ph]').forEach(function (el) { translateAttr(el, 'placeholder', 'data-i18n-ph', lang); });
     document.querySelectorAll('[data-i18n-aria]').forEach(function (el) { translateAttr(el, 'aria-label', 'data-i18n-aria', lang); });
+    // Link con un testo precompilato (WhatsApp): il messaggio segue la lingua
+    document.querySelectorAll('[data-i18n-href]').forEach(function (el) { translateAttr(el, 'href', 'data-i18n-href', lang); });
 
     // <html lang="…"> per accessibilità e SEO on-page
     document.documentElement.setAttribute('lang', lang);
