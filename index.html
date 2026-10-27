@@ -201,7 +201,7 @@
   <!-- Versione fissata, non "@latest": una dipendenza esterna non versionata
        sul percorso critico significa che una pubblicazione di terzi può
        cambiare o rompere le icone del sito senza che nessuno tocchi niente. -->
-  <script src="https://unpkg.com/lucide@1.28.0/dist/umd/lucide.js" defer></script>
+  <script src="/assets/icone.js" defer></script>
 
   <style>
     html { scroll-padding-top: 5.5rem; }
@@ -341,7 +341,7 @@
          è la «direzione» che la frase promette, e porta all'invito a
          iniziare. È l'unico movimento automatico del sito (CSS in
          tailwind.input.css, .linea-direzione). -->
-    <section id="hero" class="relative bg-notte text-crema pt-28 lg:pt-36 pb-16 lg:pb-20 overflow-hidden" aria-labelledby="hero-title">
+    <section id="hero" class="relative bg-notte text-crema pt-24 sm:pt-28 lg:pt-36 pb-16 lg:pb-20 overflow-hidden" aria-labelledby="hero-title">
       <div class="max-w-6xl mx-auto px-5">
         <!-- La tagline del brand resta, ma sopra il titolo: il titolo vero
              dice cosa offro con le parole che usa chi cerca. -->
@@ -349,13 +349,13 @@
 
         <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           <div class="lg:col-span-8">
-            <h1 id="hero-title" class="hero-titolo font-serif font-light text-crema text-[2.6rem] leading-[1.04] sm:text-6xl lg:text-[5.1rem] lg:leading-[1.0] mb-8" data-i18n="hero.title">
+            <h1 id="hero-title" class="hero-titolo font-serif font-light text-crema text-[2.6rem] leading-[1.04] sm:text-6xl lg:text-[5.1rem] lg:leading-[1.0] mb-6 sm:mb-8" data-i18n="hero.title">
               Psicoterapia per i momenti di passaggio, anche lontano da casa.<br>
               <span class="text-mirtillo-600">Online in tutta Italia e dall'estero, e in studio a Itri (LT).</span>
             </h1>
             <div class="max-w-[38rem] space-y-4">
               <p class="text-lg leading-relaxed text-crema/85" data-i18n="hero.p1">
-                Sono <strong>Alberto Del Bove</strong>, psicologo e <strong>psicoterapeuta psicoanalitico</strong> iscritto all'Albo del Lazio. Seguo adulti e coppie <strong>online</strong>, in tutta Italia e dall'estero, e <strong>in studio a Itri (LT)</strong>.
+                Sono <strong>Alberto Del Bove</strong>, psicologo e <strong>psicoterapeuta psicoanalitico</strong> iscritto all'Albo del Lazio, e seguo adulti e coppie.
               </p>
               <p class="hidden sm:block text-base leading-relaxed text-crema/65" data-i18n="hero.p2">
                 Lavoro con chi attraversa ansia e attacchi di panico, depressione, burnout, difficoltà di coppia e nelle relazioni, o un momento di passaggio che non sa ancora nominare.
@@ -380,7 +380,7 @@
         </div>
 
         <!-- La direzione: dalla frase all'invito. -->
-        <div class="mt-12 lg:mt-14 flex items-center gap-5">
+        <div class="mt-8 sm:mt-12 lg:mt-14 flex items-center gap-5">
           <svg class="linea-direzione flex-1 min-w-[3rem] h-6 text-lume" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <path d="M0 18 C 160 18, 220 6, 420 6 L 984 12" fill="none" stroke="currentColor" stroke-width="2" pathLength="1"/>
           </svg>

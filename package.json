@@ -9,10 +9,12 @@
     "build:css": "tailwindcss -c tailwind.config.js -i tailwind.input.css -o assets/tailwind.css --minify",
     "build:pagine": "node build-pagine.js",
     "build:pdf": "node build-pdf.js",
-    "build": "npm run build:pagine && npm run build:css"
+    "build": "npm run build:pagine && npm run build:icone && npm run build:css",
+    "build:icone": "node build-icone.js"
   },
   "license": "UNLICENSED",
   "devDependencies": {
+    "lucide": "1.28.0",
     "tailwindcss": "^3.4.17"
   }
 }

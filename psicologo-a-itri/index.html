@@ -142,6 +142,14 @@
       },
       {
         "@type": "Question",
+        "name": "Quali sono gli orari dello studio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lo studio riceve dal lunedì al venerdì, dalle 8:30 alle 20:30, su appuntamento. L'orario delle sedute si concorda al primo colloquio e poi resta fisso, così che il percorso trovi un posto stabile nella tua settimana."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "Da quali comuni arrivano le persone che segui in studio?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -173,7 +181,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/tailwind.css">
-  <script src="https://unpkg.com/lucide@1.28.0/dist/umd/lucide.js" defer></script>
+  <script src="/assets/icone.js" defer></script>
 </head>
 <body class="pagina-lettura bg-crema text-inchiostro font-sans antialiased">
 
@@ -324,6 +332,19 @@
             <dd class="text-[0.97rem] text-crema">ti scrivo io, di solito entro poche ore</dd>
           </div>
         </dl>
+        <!-- Chi cerca uno studio vicino spesso preferisce telefonare o
+             vedere subito dove si trova. -->
+        <div class="flex flex-wrap gap-x-7 gap-y-3 mt-5 text-[0.97rem]">
+          <a href="tel:+393455032318" data-evento="cta_click" data-evento-etichetta="tel-itri-apertura"
+             class="inline-flex items-center gap-2 font-semibold text-crema underline decoration-crema/30 underline-offset-4 hover:decoration-lume transition-colors">
+            <i data-lucide="phone" class="w-4 h-4" aria-hidden="true"></i> Chiama lo studio
+          </a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Via+Luigi+Pirandello+8+04020+Itri+LT"
+             target="_blank" rel="noopener" data-evento="cta_click" data-evento-etichetta="mappa-itri-apertura"
+             class="inline-flex items-center gap-2 font-semibold text-crema underline decoration-crema/30 underline-offset-4 hover:decoration-lume transition-colors">
+            <i data-lucide="map-pin" class="w-4 h-4" aria-hidden="true"></i> Apri la mappa
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -456,11 +477,11 @@
     </p>
 
     <div class="flex flex-wrap gap-3">
-      <a href="/#contatti" data-evento="cta_click" data-evento-etichetta="itri-colloquio"
+      <a href="#richiesta" data-evento="cta_click" data-evento-etichetta="itri-colloquio"
          class="inline-flex items-center gap-2 bg-notte text-white px-6 py-3.5 rounded-full font-semibold hover:bg-mirtillo-700 transition-colors">
-        Richiedi un primo colloquio <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
+        Prenota il colloquio conoscitivo <i data-lucide="arrow-up" class="w-4 h-4" aria-hidden="true"></i>
       </a>
-      <a href="tel:+393455032318"
+      <a href="tel:+393455032318" data-evento="cta_click" data-evento-etichetta="tel-itri"
          class="inline-flex items-center gap-2 border border-tortora-dark px-6 py-3.5 rounded-full font-semibold text-notte hover:bg-crema-dark transition-colors">
         <i data-lucide="phone" class="w-4 h-4" aria-hidden="true"></i> Chiama
       </a>
@@ -470,7 +491,7 @@
       <p>
         <strong class="text-notte">Dott. Alberto Del Bove</strong>, psicologo e psicoterapeuta,
         iscritto all'Ordine degli Psicologi del Lazio n. 23754 dal 2018.
-        P. IVA IT02988610594. Ultima revisione: 4 agosto 2026.
+        P. IVA IT02988610594. Ultima revisione: 27 ottobre 2026.
       </p>
     </div>
   </div>
@@ -490,6 +511,10 @@
       <div class="rounded-2xl bg-white border border-tortora p-6">
         <h3 class="font-serif text-lg text-notte mb-2">Dove si trova lo studio e come ci si arriva?</h3>
         <p class="text-inchiostro/75 leading-relaxed">Lo studio è in Via Luigi Pirandello 8 a Itri, in provincia di Latina, a pochi minuti dall'uscita della superstrada e con parcheggio in strada davanti all'ingresso. Chi arriva da fuori Itri impiega di norma tra i dieci e i trenta minuti da Formia, Gaeta o Fondi.</p>
+      </div>
+      <div class="rounded-2xl bg-white border border-tortora p-6">
+        <h3 class="font-serif text-lg text-notte mb-2">Quali sono gli orari dello studio?</h3>
+        <p class="text-inchiostro/75 leading-relaxed">Lo studio riceve dal lunedì al venerdì, dalle 8:30 alle 20:30, su appuntamento. L'orario delle sedute si concorda al primo colloquio e poi resta fisso, così che il percorso trovi un posto stabile nella tua settimana.</p>
       </div>
       <div class="rounded-2xl bg-white border border-tortora p-6">
         <h3 class="font-serif text-lg text-notte mb-2">Da quali comuni arrivano le persone che segui in studio?</h3>
