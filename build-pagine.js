@@ -298,15 +298,42 @@ function articoliInOrdine(pagine) {
     .sort((a, b) => b.articolo.data.localeCompare(a.articolo.data));
 }
 
-/** L'elenco che sostituisce <!--ELENCO-ARTICOLI--> nella pagina /articoli/. */
+/**
+ * L'elenco che sostituisce <!--ELENCO-ARTICOLI--> nella pagina /articoli/.
+ * Sta sotto il titolo «Tutti gli articoli», quindi ogni voce è un h3.
+ */
 function elencoArticoli(pagine) {
   return articoliInOrdine(pagine).map((p) => `
-    <article class="border-t border-tortora pt-7 pb-9">
-      <p class="text-xs font-semibold uppercase tracking-[0.15em] text-mirtillo-700 mb-2">${p.articolo.categoria} <span class="text-inchiostro/45 font-normal normal-case tracking-normal">· <time datetime="${p.articolo.data}">${dataLeggibile(p.articolo.data)}</time></span></p>
-      <h2 class="font-serif text-2xl sm:text-[1.7rem] leading-snug text-notte mb-3"><a href="/${p.slug}/" class="hover:text-mirtillo-700 transition-colors">${p.h1 || p.ogTitolo || p.titolo}</a></h2>
-      <p class="leading-relaxed text-inchiostro/75 mb-3">${p.articolo.sommario || p.descrizione}</p>
-      <a href="/${p.slug}/" class="inline-flex items-center gap-1.5 text-sm font-semibold text-mirtillo-700 hover:text-notte transition-colors">Leggi l'articolo <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i></a>
+    <article class="border-t border-tortora pt-6 pb-8">
+      <p class="font-serif italic text-mirtillo-700 mb-1.5">${p.articolo.categoria}, <time datetime="${p.articolo.data}">${dataLeggibile(p.articolo.data)}</time></p>
+      <h3 class="font-serif text-2xl sm:text-[1.6rem] leading-snug text-notte mb-2.5"><a href="/${p.slug}/" class="hover:text-mirtillo-700 transition-colors">${p.h1 || p.ogTitolo || p.titolo}</a></h3>
+      <p class="leading-relaxed text-inchiostro/75">${p.articolo.sommario || p.descrizione}</p>
     </article>`).join('\n');
+}
+
+/**
+ * La pagina /articoli/ è divisa per temi, e ogni tema ha un segnaposto
+ * <!--ARTICOLI-TEMA:ansia--> dove finiscono gli articoli usciti della sua
+ * categoria. Un articolo nuovo compare da solo nel tema giusto il lunedì
+ * in cui esce; finché un tema non ne ha, il segnaposto sparisce.
+ */
+const TEMA_DELLA_CATEGORIA = {
+  'Ansia': 'ansia',
+  'Depressione': 'umore',
+  'Burnout': 'lavoro',
+  'Coppia e relazioni': 'coppia',
+  "Vivere all'estero": 'estero',
+  'ADHD': 'attenzione',
+  'Psicoterapia': 'terapia',
+};
+
+function articoliDelTema(pagine, tema) {
+  const delTema = articoliInOrdine(pagine)
+    .filter((p) => TEMA_DELLA_CATEGORIA[p.articolo.categoria] === tema);
+  if (!delTema.length) { return ''; }
+  return `<ul class="tema-letture">
+${delTema.map((p) => `        <li><a href="/${p.slug}/" data-evento="cta_click" data-evento-etichetta="hub-articolo-${p.slug}"><span class="tema-letture-titolo">${p.h1 || p.ogTitolo || p.titolo}</span><span class="tema-letture-sommario">${p.articolo.sommario || p.descrizione}</span></a></li>`).join('\n')}
+      </ul>`;
 }
 
 /**
@@ -438,6 +465,8 @@ function main() {
   lette.forEach(([f, pagina]) => {
     pagina.contenuto = pagina.contenuto
       .replace('<!--ELENCO-ARTICOLI-->', elenco)
+      .replace(/<!--ARTICOLI-TEMA:([a-z]+)-->/g,
+        (_, tema) => articoliDelTema(lette.map(([, p]) => p.meta), tema))
       .replace('<!--ARTICOLI-COLLEGATI-->',
         articoliCollegati(lette.map(([, p]) => p.meta), pagina.meta.slug));
     const cartella = path.join(RADICE, pagina.meta.slug);
