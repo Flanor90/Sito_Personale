@@ -70,6 +70,156 @@
     );
   }
 
+  /* ----------------------------------------------------------------
+     Proposta di orari per il colloquio online
+     Non è una prenotazione: chi scrive propone fino a tre orari e io li
+     confermo o ne propongo un altro. Le fasce sono quelle in cui lavoro,
+     dal lunedì al venerdì alle 9, 10, 11, 12, 14, 15, 16 e 17 (alle 13 c'è
+     la pausa), sui prossimi dieci giorni lavorativi, festivi esclusi.
+     Gli orari sono in ora italiana; chi è in un altro fuso vede accanto
+     anche la sua. Le proposte viaggiano dentro il testo del messaggio,
+     così il server non cambia.
+     ---------------------------------------------------------------- */
+  var ORE = [9, 10, 11, 12, 14, 15, 16, 17];
+  var GIORNI_AVANTI = 10;
+  var MAX_PROPOSTE = 3;
+  var NOMI_GIORNO = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
+  var NOMI_MESE = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio',
+    'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+
+  /* Quanto Roma è avanti rispetto a UTC in un dato istante (ora legale
+     compresa), ricavato dal browser invece che scritto a mano. */
+  function scartoRoma(ms) {
+    var parti = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Rome', hourCycle: 'h23', year: 'numeric', month: '2-digit',
+      day: '2-digit', hour: '2-digit', minute: '2-digit'
+    }).formatToParts(new Date(ms));
+    function v(t) { return Number(parti.filter(function (p) { return p.type === t; })[0].value); }
+    return Date.UTC(v('year'), v('month') - 1, v('day'), v('hour'), v('minute')) - ms;
+  }
+  function istanteRoma(a, m, g, ora) {
+    var stima = Date.UTC(a, m, g, ora);
+    return stima - scartoRoma(stima);
+  }
+
+  function pasquetta(a) {
+    // Calcolo gregoriano della Pasqua, poi il giorno dopo.
+    var b = a % 19, c = Math.floor(a / 100), d = a % 100, e = Math.floor(c / 4), f = c % 4,
+        g = Math.floor((c + 8) / 25), h = Math.floor((c - g + 1) / 3),
+        i = (19 * b + c - e - h + 15) % 30, k = Math.floor(d / 4), l = d % 4,
+        x = (32 + 2 * f + 2 * k - i - l) % 7, y = Math.floor((b + 11 * i + 22 * x) / 451),
+        mese = Math.floor((i + x - 7 * y + 114) / 31), giorno = ((i + x - 7 * y + 114) % 31) + 1;
+    var p = new Date(Date.UTC(a, mese - 1, giorno + 1));
+    return p.getUTCMonth() + '-' + p.getUTCDate();
+  }
+  var FESTIVI = ['0-1', '0-6', '3-25', '4-1', '5-2', '7-15', '10-1', '11-8', '11-25', '11-26'];
+
+  function prossimiGiorni() {
+    var oggi = new Date(Date.now() + scartoRoma(Date.now()));
+    var giorno = new Date(Date.UTC(oggi.getUTCFullYear(), oggi.getUTCMonth(), oggi.getUTCDate()));
+    var giorni = [];
+    while (giorni.length < GIORNI_AVANTI) {
+      giorno = new Date(giorno.getTime() + 864e5);
+      var dow = giorno.getUTCDay();
+      var chiave = giorno.getUTCMonth() + '-' + giorno.getUTCDate();
+      if (dow === 0 || dow === 6) { continue; }
+      if (FESTIVI.indexOf(chiave) !== -1 || chiave === pasquetta(giorno.getUTCFullYear())) { continue; }
+      giorni.push({ a: giorno.getUTCFullYear(), m: giorno.getUTCMonth(), g: giorno.getUTCDate(), dow: dow });
+    }
+    return giorni;
+  }
+
+  var FUSO_LOCALE = (function () {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; }
+  })();
+  function oraLocale(ms) {
+    if (!FUSO_LOCALE || FUSO_LOCALE === 'Europe/Rome') { return ''; }
+    var locale = new Date(ms).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    var roma = new Date(ms).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' });
+    return locale === roma ? '' : locale;
+  }
+
+  function etichettaGiorno(d) {
+    return NOMI_GIORNO[d.dow] + ' ' + d.g + ' ' + NOMI_MESE[d.m];
+  }
+
+  function sceltaOrari(n) {
+    var giorni = prossimiGiorni();
+    return (
+      '<fieldset data-orari class="min-w-0">' +
+        '<legend class="block text-sm font-semibold text-notte mb-1">Quando ti farebbe comodo? <span class="font-normal text-inchiostro/45">(facoltativo)</span></legend>' +
+        '<p class="text-xs leading-relaxed text-inchiostro/60 mb-3">Proponi fino a tre orari per il colloquio online, in ora italiana' +
+          (oraLocale(Date.now()) ? ', con accanto l\'ora da te' : '') +
+          '. Te ne confermo uno, o ne cerchiamo un altro insieme.</p>' +
+        '<div class="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" role="group" aria-label="Giorno">' +
+          giorni.map(function (d, i) {
+            return '<button type="button" data-giorno="' + i + '" aria-pressed="' + (i === 0) + '"' +
+              ' class="flex-none rounded-xl border border-tortora-dark px-3 py-2 text-left text-sm leading-tight text-notte aria-pressed:bg-notte aria-pressed:border-notte aria-pressed:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-mirtillo-600 transition-colors">' +
+              '<span class="block text-xs opacity-70">' + NOMI_GIORNO[d.dow].slice(0, 3) + '</span>' +
+              '<span class="block font-semibold">' + d.g + ' ' + NOMI_MESE[d.m].slice(0, 3) + '</span>' +
+            '</button>';
+          }).join('') +
+        '</div>' +
+        giorni.map(function (d, i) {
+          // Classe e non attributo hidden: la classe grid vincerebbe sull'attributo.
+          return '<div data-ore-del-giorno="' + i + '" class="grid-cols-4 gap-2 mt-2 ' + (i === 0 ? 'grid' : 'hidden') + '">' +
+            ORE.map(function (ora) {
+              var ms = istanteRoma(d.a, d.m, d.g, ora);
+              var testo = etichettaGiorno(d) + ', ' + ora + ':00';
+              var locale = oraLocale(ms);
+              var id = 'rq-ora-' + n + '-' + i + '-' + ora;
+              return '<label for="' + id + '" class="cursor-pointer">' +
+                '<input id="' + id + '" type="checkbox" name="orario" value="' + testo + (locale ? ' (da te ' + locale + ')' : '') + '" class="peer sr-only">' +
+                '<span class="block rounded-full border border-tortora-dark px-2 py-2 text-center text-sm text-notte peer-checked:bg-notte peer-checked:border-notte peer-checked:text-white peer-disabled:opacity-35 peer-focus-visible:ring-2 peer-focus-visible:ring-mirtillo-600 transition-colors">' +
+                  ora + ':00' + (locale ? '<span class="block text-[0.7rem] opacity-70">da te ' + locale + '</span>' : '') +
+                '</span>' +
+              '</label>';
+            }).join('') +
+          '</div>';
+        }).join('') +
+        '<p data-proposte class="mt-3 text-sm text-inchiostro/75" aria-live="polite"></p>' +
+      '</fieldset>'
+    );
+  }
+
+  function attivaOrari(form) {
+    var box = form.querySelector('[data-orari]');
+    if (!box) { return; }
+    var giorni = box.querySelectorAll('[data-giorno]');
+    var riepilogo = box.querySelector('[data-proposte]');
+    Array.prototype.forEach.call(giorni, function (b) {
+      b.addEventListener('click', function () {
+        Array.prototype.forEach.call(giorni, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        Array.prototype.forEach.call(box.querySelectorAll('[data-ore-del-giorno]'), function (o) {
+          var scelto = o.getAttribute('data-ore-del-giorno') === b.getAttribute('data-giorno');
+          o.classList.toggle('grid', scelto);
+          o.classList.toggle('hidden', !scelto);
+        });
+      });
+    });
+    box.addEventListener('change', function () {
+      var scelti = proposte(form);
+      Array.prototype.forEach.call(box.querySelectorAll('input[name="orario"]'), function (c) {
+        c.disabled = !c.checked && scelti.length >= MAX_PROPOSTE;
+      });
+      riepilogo.textContent = scelti.length
+        ? 'Proponi: ' + scelti.join('; ') + (scelti.length >= MAX_PROPOSTE ? '. Ne hai scelti tre, il massimo.' : '.')
+        : '';
+    });
+    // Gli orari valgono per l'online: se si sceglie lo studio, spariscono.
+    Array.prototype.forEach.call(form.querySelectorAll('input[name="setting"]'), function (r) {
+      r.addEventListener('change', function () {
+        box.hidden = form.querySelector('input[name="setting"]:checked').value === 'In studio a Itri (LT)';
+      });
+    });
+  }
+
+  function proposte(form) {
+    var box = form.querySelector('[data-orari]');
+    if (!box || box.hidden) { return []; }
+    return Array.prototype.map.call(box.querySelectorAll('input[name="orario"]:checked'), function (c) { return c.value; });
+  }
+
   /* Il messaggio WhatsApp già scritto cambia con la pagina: chi arriva
      dalla pagina sull'ansia non deve trovare le parole da solo, e io so
      da dove arriva chi mi scrive. */
@@ -101,6 +251,7 @@
     return (
       '<form novalidate class="space-y-4" data-modulo-richiesta>' +
         (chiediSetting ? sceltaSetting(n) : '') +
+        (setting === 'In studio a Itri (LT)' ? '' : sceltaOrari(n)) +
         campo('rq-nome-' + n, 'Nome <span class="text-mirtillo-700" aria-hidden="true">*</span>', 'text',
               'name="nome" autocomplete="name" required placeholder="Come ti chiami"') +
         campo('rq-email-' + n, 'Email <span class="text-mirtillo-700" aria-hidden="true">*</span>', 'email',
@@ -127,7 +278,7 @@
         '<div class="rounded-xl bg-crema/70 px-4 py-3">' +
           '<p class="text-xs font-semibold uppercase tracking-[0.12em] text-mirtillo-700 mb-2">Cosa succede dopo</p>' +
           '<ol class="space-y-1.5 text-sm leading-relaxed text-inchiostro/75 list-decimal pl-4">' +
-            '<li>Ti rispondo io, di solito entro poche ore, per fissare un giorno.</li>' +
+            '<li>Ti rispondo io, di solito entro poche ore, per confermare l\'orario che hai proposto o sceglierne un altro.</li>' +
             '<li>Ci incontriamo per 45 minuti, online o in studio, per capire che cosa ti porta.</li>' +
             '<li>Decidi tu se e come continuare, senza impegno; se ti serve altro, te lo dico.</li>' +
           '</ol>' +
@@ -153,8 +304,13 @@
     ];
     if (dati.telefono) { righe.push('Telefono: ' + dati.telefono); }
     if (dati.setting) { righe.push('Preferenza: ' + dati.setting); }
+    if (dati.orari.length) { righe.push('', testoOrari(dati.orari)); }
     if (dati.messaggio) { righe.push('', dati.messaggio); }
     return righe.join('\n');
+  }
+
+  function testoOrari(orari) {
+    return 'Orari proposti per il colloquio online (ora italiana):\n- ' + orari.join('\n- ');
   }
 
   function collega(contenitore, n) {
@@ -162,6 +318,7 @@
     var tema = contenitore.getAttribute('data-tema') || '';
     contenitore.innerHTML = modulo(n, !settingFisso, tema, settingFisso);
     var form = contenitore.querySelector('form');
+    attivaOrari(form);
 
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
@@ -173,7 +330,8 @@
         email: form.email.value.trim(),
         telefono: form.telefono.value.trim(),
         messaggio: form.messaggio.value.trim(),
-        setting: setting
+        setting: setting,
+        orari: proposte(form)
       };
       if (!dati.nome) {
         esito(form, 'Scrivi il tuo nome: mi serve per sapere come rivolgermi a te.', true);
@@ -203,7 +361,7 @@
           consent: false,
           setting: setting,
           topics: tema ? [tema] : [],
-          message: dati.messaggio,
+          message: [dati.orari.length ? testoOrari(dati.orari) : '', dati.messaggio].filter(Boolean).join('\n\n'),
           page: location.pathname,
           referrer: document.referrer,
           hp: ''
@@ -212,10 +370,14 @@
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
         .then(function (r) {
           if (!r || !r.ok) { throw new Error('rifiutata'); }
-          esito(form, 'Ho ricevuto la tua richiesta, grazie. Ti rispondo io personalmente, di solito entro poche ore.', false);
+          esito(form, dati.orari.length
+            ? 'Ho ricevuto la tua proposta, grazie. Ti confermo io l\'orario, o te ne propongo un altro, di solito entro poche ore.'
+            : 'Ho ricevuto la tua richiesta, grazie. Ti rispondo io personalmente, di solito entro poche ore.', false);
           form.reset();
+          var orari = form.querySelector('[data-orari]');
+          if (orari) { orari.dispatchEvent(new Event('change')); }
           if (window.SiteAnalytics) {
-            window.SiteAnalytics.evento('contatto_inviato', { fonte: 'destinazione', pagina: location.pathname });
+            window.SiteAnalytics.evento('contatto_inviato', { fonte: 'destinazione', pagina: location.pathname, orari: dati.orari.length });
           }
           if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo(); }
         })
