@@ -1143,6 +1143,9 @@
               </div>
             </div>
 
+            <!-- La proposta di orari la disegna assets/richiesta.js (ProposteOrari). -->
+            <div id="cf-orari" class="mb-7"></div>
+
             <div class="mb-6">
               <label for="cf-messaggio" class="block text-sm font-semibold text-notte mb-1.5" data-i18n="con.f.msg">Il tuo messaggio</label>
               <textarea id="cf-messaggio" name="messaggio" rows="5"
@@ -1475,6 +1478,7 @@
   <script src="assets/newsletter.js"></script>
   <!-- Finestra di lettura (articoli, case study, estratti) e filtro dei compendi per lingua -->
   <script src="assets/lettore.js"></script>
+  <script src="assets/richiesta.js"></script>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
 
@@ -2082,11 +2086,24 @@
       const messaggio = document.getElementById('cf-messaggio').value.trim();
       const temi = Array.from(document.querySelectorAll('input[name="temi"]:checked')).map(function (c) { return c.value; });
 
-      const body = window.QuizCore.buildEmailBody({
+      let body = window.QuizCore.buildEmailBody({
         nome: nome, email: email, telefono: telefono,
         setting: setting, messaggio: messaggio, temi: temi
       });
-      return { nome: nome, email: email, body: body };
+      const orari = orariProposti();
+      if (orari.length) { body += '\n\n' + window.ProposteOrari.testo(orari); }
+      return { nome: nome, email: email, body: body, orari: orari };
+    }
+
+    /* Fino a tre orari proposti per il colloquio online: li confermo o ne
+       propongo un altro. Se richiesta.js non è arrivato, il modulo funziona
+       come prima, senza questa parte. */
+    if (window.ProposteOrari) {
+      document.getElementById('cf-orari').innerHTML = window.ProposteOrari.html('home');
+      window.ProposteOrari.attiva(form);
+    }
+    function orariProposti() {
+      return window.ProposteOrari ? window.ProposteOrari.proposte(form) : [];
     }
 
     function validate() {
@@ -2158,7 +2175,10 @@
           setting: document.getElementById('cf-setting').value,
           topics:  Array.from(document.querySelectorAll('input[name="temi"]:checked'))
                      .map(function (c) { return c.value; }),
-          message: document.getElementById('cf-messaggio').value.trim(),
+          message: [
+            data.orari.length ? window.ProposteOrari.testo(data.orari) : '',
+            document.getElementById('cf-messaggio').value.trim()
+          ].filter(Boolean).join('\n\n'),
           page:    location.pathname + location.hash,
           referrer: document.referrer,
           hp: ''
@@ -2167,8 +2187,12 @@
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
         .then(function (esito) {
           if (!esito || !esito.ok) { throw new Error('rifiutata'); }
-          showFeedback('Ho ricevuto la tua richiesta. Ti rispondo io personalmente, di solito entro poche ore. Se nel frattempo preferisci scrivermi direttamente, trovi email e WhatsApp qui accanto.', false);
+          showFeedback(data.orari.length
+            ? 'Ho ricevuto la tua proposta. Ti confermo io l\'orario, o te ne propongo un altro, di solito entro poche ore.'
+            : 'Ho ricevuto la tua richiesta. Ti rispondo io personalmente, di solito entro poche ore. Se nel frattempo preferisci scrivermi direttamente, trovi email e WhatsApp qui accanto.', false);
           form.reset();
+          const boxOrari = form.querySelector('[data-orari]');
+          if (boxOrari) { boxOrari.dispatchEvent(new Event('change')); boxOrari.hidden = false; }
           if (window.SiteAnalytics) { window.SiteAnalytics.evento('contatto_inviato'); }
           if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo(); }
         })

@@ -207,11 +207,20 @@
         : '';
     });
     // Gli orari valgono per l'online: se si sceglie lo studio, spariscono.
-    Array.prototype.forEach.call(form.querySelectorAll('input[name="setting"]'), function (r) {
-      r.addEventListener('change', function () {
-        box.hidden = form.querySelector('input[name="setting"]:checked').value === 'In studio a Itri (LT)';
-      });
+    // La modalità è un gruppo di pulsanti nel modulo breve e un menu a
+    // tendina nel modulo della home: vanno bene tutti e due.
+    function aggiornaSetting() { box.hidden = settingScelto(form) === 'In studio a Itri (LT)'; }
+    Array.prototype.forEach.call(form.querySelectorAll('[name="setting"]'), function (r) {
+      r.addEventListener('change', aggiornaSetting);
     });
+    aggiornaSetting();
+  }
+
+  function settingScelto(form) {
+    var radio = form.querySelector('input[name="setting"]:checked');
+    if (radio) { return radio.value; }
+    var menu = form.querySelector('select[name="setting"]');
+    return menu ? menu.value : '';
   }
 
   function proposte(form) {
@@ -219,6 +228,15 @@
     if (!box || box.hidden) { return []; }
     return Array.prototype.map.call(box.querySelectorAll('input[name="orario"]:checked'), function (c) { return c.value; });
   }
+
+  /* La home ha un suo modulo, più lungo: carica questo file solo per
+     riusare la proposta di orari, con le stesse regole e lo stesso testo. */
+  window.ProposteOrari = {
+    html: sceltaOrari,
+    attiva: attivaOrari,
+    proposte: proposte,
+    testo: function (orari) { return testoOrari(orari); }
+  };
 
   /* Il messaggio WhatsApp già scritto cambia con la pagina: chi arriva
      dalla pagina sull'ansia non deve trovare le parole da solo, e io so
