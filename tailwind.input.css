@@ -392,3 +392,28 @@ article img.object-cover { transition: transform .8s cubic-bezier(.2, .7, .2, 1)
 @media (prefers-reduced-motion: reduce) {
   .frase-porta-testo { transition: none; }
 }
+
+/* ------------------------------------------------------------
+   Pagina /chi-sono/: il percorso e i dettagli pratici
+   Il percorso è davvero una sequenza nel tempo, quindi ha una linea
+   verticale e gli anni in colonna; i dettagli pratici sono una lista
+   di definizioni, senza schede, perché sono risposte e non offerte.
+   ------------------------------------------------------------ */
+.percorso-titolo { font-family: theme('fontFamily.serif'); font-style: italic; font-size: 1.15rem; color: #4C507F; margin-bottom: 1.25rem; }
+.percorso { list-style: none; margin: 0; padding: 0 0 0 1.25rem; border-left: 1px solid #C4C7C1; }
+.percorso li { position: relative; display: flex; flex-direction: column; gap: .2rem; padding-bottom: 1.6rem; }
+.percorso li:last-child { padding-bottom: 0; }
+.percorso li::before {
+  content: ""; position: absolute; left: calc(-1.25rem - 4px); top: .45rem;
+  width: 7px; height: 7px; border-radius: 50%; background: #F4F5F2; border: 1.5px solid #4C507F;
+}
+.percorso li:first-child::before { background: #4C507F; }
+.percorso-anni { font-size: .85rem; font-variant-numeric: tabular-nums; color: rgb(34 38 45 / .55); }
+.percorso-ruolo { font-family: theme('fontFamily.serif'); font-size: 1.15rem; line-height: 1.35; color: #1B2A3A; }
+.percorso-testo { font-size: .95rem; line-height: 1.55; color: rgb(34 38 45 / .7); }
+
+.dettagli-pratici { margin: 0; border-top: 1px solid #DDDFDA; }
+.dettagli-pratici > div { display: grid; gap: .3rem 2rem; padding: 1.1rem 0; border-bottom: 1px solid #DDDFDA; }
+@media (min-width: 640px) { .dettagli-pratici > div { grid-template-columns: 11rem 1fr; } }
+.dettagli-pratici dt { font-family: theme('fontFamily.serif'); font-size: 1.15rem; color: #1B2A3A; }
+.dettagli-pratici dd { margin: 0; line-height: 1.65; color: rgb(34 38 45 / .8); max-width: 38rem; }
