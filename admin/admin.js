@@ -43,14 +43,24 @@
                    sessionStorage.getItem(CHIAVE_SESSIONE);
       sessione = grezzo ? JSON.parse(grezzo) : null;
     } catch (e) { sessione = null; }
+    if (sessione) { nonContareQuestoBrowser(); }
     return sessione;
+  }
+
+  /**
+   * Chi entra nel pannello è Alberto: da qui in avanti le sue visite al
+   * sito non finiscono nelle statistiche. La chiave è quella letta da
+   * assets/analytics.js, e resta anche dopo l'uscita dal pannello.
+   */
+  function nonContareQuestoBrowser() {
+    try { localStorage.setItem('adb-non-contare', '1'); } catch (e) { /* niente */ }
   }
 
   function salvaSessione(s, permanente) {
     sessione = s;
     var deposito = permanente ? localStorage : sessionStorage;
     (permanente ? sessionStorage : localStorage).removeItem(CHIAVE_SESSIONE);
-    if (s) { deposito.setItem(CHIAVE_SESSIONE, JSON.stringify(s)); }
+    if (s) { deposito.setItem(CHIAVE_SESSIONE, JSON.stringify(s)); nonContareQuestoBrowser(); }
     else {
       localStorage.removeItem(CHIAVE_SESSIONE);
       sessionStorage.removeItem(CHIAVE_SESSIONE);

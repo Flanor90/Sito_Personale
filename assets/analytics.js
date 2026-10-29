@@ -36,6 +36,12 @@
 
   var CONFIG = {
     endpoint: 'https://ynmxgdcikqlgcupfszza.supabase.co/functions/v1/api/track',
+    // Solo il sito pubblicato conta: le copie in locale e le anteprime
+    // riempirebbero le statistiche di visite che non sono di nessuno.
+    dominio: 'albertodelbove-psicologo.it',
+    // Segno lasciato sui browser di Alberto (dal pannello, o aprendo una
+    // pagina con ?non-contarmi): le sue visite non sono visite.
+    chiaveEsclusione: 'adb-non-contare',
     // Ogni quanto svuotare la coda, in millisecondi. Raggruppare gli
     // eventi tiene basso il numero di richieste (e di conseguenza
     // il consumo del piano gratuito) senza perdere nulla.
@@ -115,9 +121,45 @@
     return '/' + h;
   }
 
+  /** Vero solo sul dominio pubblicato (con o senza www). */
+  function dominioDelSito(host) {
+    var h = String(host || '').toLowerCase();
+    return h === CONFIG.dominio || h === 'www.' + CONFIG.dominio;
+  }
+
+  /**
+   * Il segno di esclusione dopo aver letto l'indirizzo: ?non-contarmi lo
+   * mette, ?contami lo toglie, altrimenti resta com'era.
+   */
+  function esclusioneDopo(ricerca, attuale) {
+    var p = new URLSearchParams(String(ricerca || ''));
+    if (p.has('contami')) { return false; }
+    if (p.has('non-contarmi')) { return true; }
+    return !!attuale;
+  }
+
   /* ---------- Parte browser ---------- */
 
   var haDOM = typeof document !== 'undefined' && typeof window !== 'undefined';
+
+  /**
+   * Decide una volta sola, all'avvio, se questa scheda va contata. È
+   * l'unico punto in cui il file tocca localStorage, e lo fa per non
+   * registrare: il segno riguarda il browser di Alberto, non i visitatori.
+   */
+  function daContare() {
+    if (!dominioDelSito(location.hostname)) { return false; }
+    var escluso = false;
+    try {
+      escluso = esclusioneDopo(location.search,
+        localStorage.getItem(CONFIG.chiaveEsclusione) === '1');
+      if (escluso) { localStorage.setItem(CONFIG.chiaveEsclusione, '1'); }
+      else { localStorage.removeItem(CONFIG.chiaveEsclusione); }
+    } catch (e) { /* storage bloccato: si conta, come per chiunque */ }
+    return !escluso;
+  }
+
+  var attivo = haDOM && daContare();
 
   var sessione = null;
   var coda = { views: [], events: [] };
@@ -192,7 +234,7 @@
 
   /** Registra una nuova vista (pagina o sezione). */
   function vista(percorsoEsplicito, titolo) {
-    if (!haDOM) { return; }
+    if (!attivo) { return; }
     chiudiVista();
 
     var utm = campagna(location.search);
@@ -218,7 +260,7 @@
    * sito (quale test, quale compendio), mai sulla persona.
    */
   function evento(nome, props) {
-    if (!haDOM || !nome) { return; }
+    if (!attivo || !nome) { return; }
     coda.events.push({
       name: String(nome).slice(0, 60),
       path: percorso(location.pathname, location.hash),
@@ -249,7 +291,7 @@
     });
   }
 
-  if (haDOM) {
+  if (attivo) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', avvia);
     } else {
@@ -268,6 +310,8 @@
     browser: browser,
     paese: paese,
     campagna: campagna,
-    percorso: percorso
+    percorso: percorso,
+    dominioDelSito: dominioDelSito,
+    esclusioneDopo: esclusioneDopo
   };
 });

@@ -114,8 +114,33 @@ test('nel file non compare nessun uso di cookie', () => {
   const sorgente = require('fs').readFileSync(
     require('path').join(__dirname, '..', 'assets', 'analytics.js'), 'utf8');
   assert.ok(!/document\.cookie/.test(sorgente), 'analytics.js non deve toccare i cookie');
-  assert.ok(!/localStorage/.test(sorgente),
-    'nessun deposito permanente: l\'identificativo deve morire con la scheda');
+  // localStorage serve solo al segno che esclude i browser di Alberto:
+  // nessun dato del visitatore deve finirci.
+  const usi = sorgente.match(/localStorage\.\w+\([^)]*\)/g) || [];
+  assert.ok(usi.length > 0);
+  usi.forEach((uso) => assert.match(uso, /^localStorage\.\w+\(CONFIG\.chiaveEsclusione\b/,
+    'nessun deposito permanente: l\'identificativo deve morire con la scheda'));
+});
+
+/* ---------------- Visite da non contare ---------------- */
+
+test('dominioDelSito: conta solo il sito pubblicato', () => {
+  assert.equal(A.dominioDelSito('www.albertodelbove-psicologo.it'), true);
+  assert.equal(A.dominioDelSito('albertodelbove-psicologo.it'), true);
+  assert.equal(A.dominioDelSito('WWW.AlbertoDelBove-Psicologo.it'), true);
+  assert.equal(A.dominioDelSito('localhost'), false);
+  assert.equal(A.dominioDelSito('127.0.0.1'), false);
+  assert.equal(A.dominioDelSito('flanor90.github.io'), false);
+  assert.equal(A.dominioDelSito('albertodelbove-psicologo.it.esempio.com'), false);
+  assert.equal(A.dominioDelSito(''), false);
+});
+
+test('esclusioneDopo: ?non-contarmi mette il segno, ?contami lo toglie', () => {
+  assert.equal(A.esclusioneDopo('?non-contarmi', false), true);
+  assert.equal(A.esclusioneDopo('?non-contarmi=1&lang=en', false), true);
+  assert.equal(A.esclusioneDopo('?contami', true), false);
+  assert.equal(A.esclusioneDopo('', true), true);
+  assert.equal(A.esclusioneDopo('?utm_source=google', false), false);
 });
 
 test('l\'identificativo di sessione sta in sessionStorage, non altrove', () => {
