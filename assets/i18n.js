@@ -1169,7 +1169,21 @@
 
     try {
       var q = new URLSearchParams(location.search).get('lang');
-      if (q && LANGS.indexOf(q) !== -1) { return { lang: q, ricorda: true }; }
+      if (q && LANGS.indexOf(q) !== -1) {
+        // Google rende la pagina in inglese, la vede diversa dall'originale
+        // e la indicizza come un URL a sé, ignorando il canonical. Il link
+        // resta condivisibile, ma fuori dall'indice.
+        if (q !== 'it') {
+          var robots = document.querySelector('meta[name="robots"]');
+          if (!robots) {
+            robots = document.createElement('meta');
+            robots.name = 'robots';
+            document.head.appendChild(robots);
+          }
+          robots.content = 'noindex, follow';
+        }
+        return { lang: q, ricorda: true };
+      }
     } catch (e) { /* browser vecchio: si prosegue */ }
 
     var salvata = 'it';
