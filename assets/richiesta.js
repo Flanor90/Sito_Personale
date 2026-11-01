@@ -250,15 +250,20 @@
     "Vivo all'estero": "per chi vive all'estero"
   };
 
+  /* Chi scrive sceglie già la modalità cancellando quella che non vuole,
+     e la prima risposta non deve chiederla. Nella pagina dello studio la
+     scelta è già fatta. */
+  var PREFERENZA = ' Preferirei: online / in studio a Itri';
+
   function messaggioWhatsApp(tema, setting) {
     var base = 'Buongiorno Dott. Del Bove, ';
-    if (PAGINA_DEL_TEMA[tema]) {
-      return base + 'ho letto la pagina ' + PAGINA_DEL_TEMA[tema] + ' e vorrei capire se posso iniziare un percorso.';
-    }
     if (setting === 'In studio a Itri (LT)') {
       return base + 'vorrei prenotare un colloquio conoscitivo nello studio di Itri.';
     }
-    return base + 'vorrei prenotare un colloquio conoscitivo.';
+    if (PAGINA_DEL_TEMA[tema]) {
+      return base + 'ho letto la pagina ' + PAGINA_DEL_TEMA[tema] + ' e vorrei capire se posso iniziare un percorso.' + PREFERENZA;
+    }
+    return base + 'vorrei prenotare un colloquio conoscitivo.' + PREFERENZA;
   }
 
   function linkWhatsApp(tema, setting) {

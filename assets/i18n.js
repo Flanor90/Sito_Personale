@@ -436,7 +436,8 @@
 
       /* --- Pagina /ansia-e-attacchi-di-panico/: risposta diretta --- */
       'ansia.risposta': 'If you are looking for someone to turn to for anxiety or panic attacks, the right professional is a psychotherapist, who can help you understand where they come from and ease the weight they put on everyday life. I work psychoanalytically with adults and couples, online from anywhere in Italy and abroad, or in person at my practice in Itri (LT). We begin with a 45-minute exploratory session, in which we work out together what is happening to you and whether a course of therapy could help.',
-      'ansia.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20suffer%20from%20anxiety%2Fpanic%20attacks%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy.',
+      'ansia.risposta.modalita': 'I see people online, by video call, wherever they live in Italy or abroad; in person, at my practice in Itri (LT).',
+      'ansia.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20suffer%20from%20anxiety%2Fpanic%20attacks%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy.%20I%20would%20prefer%3A%20online%20%2F%20in%20person%20in%20Itri',
       'temi.leggi': 'Read the page',
       'temi.p': 'With adults and couples, online or in person. And then difficulties in relationships, transitions, questions that don\'t have a name yet: we always start from the first session.',
       'temi.title': 'The difficulties I meet most often',
@@ -955,7 +956,8 @@
 
       /* --- Pagina /ansia-e-attacchi-di-panico/: risposta diretta --- */
       'ansia.risposta': 'Si buscas a quién acudir por la ansiedad o los ataques de pánico, la figura indicada es el psicoterapeuta, que puede ayudarte a entender de dónde nacen y a reducir su peso en la vida diaria. Trabajo con orientación psicoanalítica con adultos y parejas, online desde toda Italia y desde el extranjero o en mi consulta de Itri (LT). Se empieza con una sesión de conocimiento de 45 minutos, en la que entendemos juntos qué te está pasando y si un proceso terapéutico puede serte útil.',
-      'ansia.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20sufro%20de%20ansiedad%2Fataques%20de%20p%C3%A1nico%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico.',
+      'ansia.risposta.modalita': 'Atiendo online, por videollamada, a quien vive en cualquier parte de Italia o en el extranjero; en persona, en mi consulta de Itri (LT).',
+      'ansia.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20sufro%20de%20ansiedad%2Fataques%20de%20p%C3%A1nico%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico.%20Preferir%C3%ADa%3A%20online%20%2F%20en%20la%20consulta%20de%20Itri',
       'temi.leggi': 'Leer la página',
       'temi.p': 'Con adultos y parejas, online o presencial. Y además las dificultades en las relaciones, los momentos de cambio, las preguntas que aún no tienen nombre: siempre se empieza por la primera sesión.',
       'temi.title': 'Las dificultades que encuentro más a menudo',
