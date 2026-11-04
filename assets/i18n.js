@@ -438,7 +438,27 @@
       'ansia.risposta': 'If you are looking for someone to turn to for anxiety or panic attacks, the right professional is a psychotherapist, who can help you understand where they come from and ease the weight they put on everyday life. I work psychoanalytically with adults and couples, online from anywhere in Italy and abroad, or in person at my practice in Itri (LT). We begin with a 45-minute exploratory session, in which we work out together what is happening to you and whether a course of therapy could help.',
       'ansia.risposta.modalita': 'I see people online, by video call, wherever they live in Italy or abroad; in person, at my practice in Itri (LT).',
       'ansia.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20suffer%20from%20anxiety%2Fpanic%20attacks%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy.%20I%20would%20prefer%3A%20online%20%2F%20in%20person%20in%20Itri',
-      'temi.leggi': 'Read the page',
+            /* --- Pagina depressione: risposta diretta --- */
+      'depressione.risposta': 'If everything has felt switched off for a while and you don\'t know who to turn to, the right professional is a psychotherapist.',
+      'depressione.risposta.modalita': 'I see people online from anywhere in Italy and in person at my practice in Itri (LT).',
+      'depressione.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20have%20been%20feeling%20low%20for%20a%20while%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy.%20I%20would%20prefer%3A%20online%20%2F%20in%20person%20in%20Itri',
+
+      /* --- Pagina coppia: risposta diretta --- */
+      'coppia.risposta': 'If things between you have got stuck and you don\'t know who to turn to, the right professional is a psychotherapist.',
+      'coppia.risposta.modalita': 'I see couples online from anywhere in Italy and in person at my practice in Itri (LT), and to get started just one of you can write to me.',
+      'coppia.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20we%20would%20like%20to%20understand%20whether%20we%20can%20begin%20couples%20therapy.%20We%20would%20prefer%3A%20online%20%2F%20in%20person%20in%20Itri',
+
+      /* --- Pagina itri: risposta diretta --- */
+      'itri.risposta': 'My practice is at Via Pirandello 8 in Itri, a few minutes from Formia, Gaeta and Fondi.',
+      'itri.risposta.modalita': 'If you prefer, the same course of therapy can be done online.',
+      'itri.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20would%20like%20to%20book%20a%20first%20session%20at%20the%20practice%20in%20Itri.',
+
+      /* --- Pagina estero: risposta diretta --- */
+      'estero.risposta': 'Do you live outside Italy and want therapy in your own language?',
+      'estero.risposta.modalita': 'I work online with Italians all over the world, and also in English and Spanish.',
+      'estero.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20live%20abroad%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy%20online.',
+
+'temi.leggi': 'Read the page',
       'temi.p': 'With adults and couples, online or in person. And then difficulties in relationships, transitions, questions that don\'t have a name yet: we always start from the first session.',
       'temi.title': 'The difficulties I meet most often',
       'temi.kicker': 'What I work on',
@@ -958,7 +978,27 @@
       'ansia.risposta': 'Si buscas a quién acudir por la ansiedad o los ataques de pánico, la figura indicada es el psicoterapeuta, que puede ayudarte a entender de dónde nacen y a reducir su peso en la vida diaria. Trabajo con orientación psicoanalítica con adultos y parejas, online desde toda Italia y desde el extranjero o en mi consulta de Itri (LT). Se empieza con una sesión de conocimiento de 45 minutos, en la que entendemos juntos qué te está pasando y si un proceso terapéutico puede serte útil.',
       'ansia.risposta.modalita': 'Atiendo online, por videollamada, a quien vive en cualquier parte de Italia o en el extranjero; en persona, en mi consulta de Itri (LT).',
       'ansia.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20sufro%20de%20ansiedad%2Fataques%20de%20p%C3%A1nico%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico.%20Preferir%C3%ADa%3A%20online%20%2F%20en%20la%20consulta%20de%20Itri',
-      'temi.leggi': 'Leer la página',
+            /* --- Pagina depressione: risposta diretta --- */
+      'depressione.risposta': 'Si desde hace tiempo todo parece apagado y no sabes a quién acudir, la figura indicada es el psicoterapeuta.',
+      'depressione.risposta.modalita': 'Atiendo online desde toda Italia y en mi consulta de Itri (LT).',
+      'depressione.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20desde%20hace%20un%20tiempo%20me%20siento%20deca%C3%ADdo%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico.%20Preferir%C3%ADa%3A%20online%20%2F%20en%20la%20consulta%20de%20Itri',
+
+      /* --- Pagina coppia: risposta diretta --- */
+      'coppia.risposta': 'Si entre vosotros las cosas se han atascado y no sabéis a quién acudir, la figura indicada es el psicoterapeuta.',
+      'coppia.risposta.modalita': 'Atiendo a parejas online desde toda Italia y en mi consulta de Itri (LT), y para empezar puede escribirme uno solo de los dos.',
+      'coppia.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20nos%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20una%20terapia%20de%20pareja.%20Preferir%C3%ADamos%3A%20online%20%2F%20en%20la%20consulta%20de%20Itri',
+
+      /* --- Pagina itri: risposta diretta --- */
+      'itri.risposta': 'La consulta está en via Pirandello 8, en Itri, a pocos minutos de Formia, Gaeta y Fondi.',
+      'itri.risposta.modalita': 'Si lo prefieres, el mismo proceso se puede hacer online.',
+      'itri.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20me%20gustar%C3%ADa%20concertar%20una%20primera%20sesi%C3%B3n%20en%20la%20consulta%20de%20Itri.',
+
+      /* --- Pagina estero: risposta diretta --- */
+      'estero.risposta': '¿Vives fuera de Italia y quieres hacer terapia en tu idioma?',
+      'estero.risposta.modalita': 'Trabajo online con italianos de todo el mundo, también en inglés y español.',
+      'estero.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20vivo%20en%20el%20extranjero%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico%20online.',
+
+'temi.leggi': 'Leer la página',
       'temi.p': 'Con adultos y parejas, online o presencial. Y además las dificultades en las relaciones, los momentos de cambio, las preguntas que aún no tienen nombre: siempre se empieza por la primera sesión.',
       'temi.title': 'Las dificultades que encuentro más a menudo',
       'temi.kicker': 'En qué trabajo',
