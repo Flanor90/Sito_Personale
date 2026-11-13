@@ -275,6 +275,7 @@ function schemaArticolo(meta, url, immagine) {
     articleSection: meta.articolo.categoria,
     author: {
       '@type': 'Person',
+      '@id': `${SITO}/#alberto-del-bove`,
       name: 'Alberto Del Bove',
       jobTitle: 'Psicologo e psicoterapeuta psicoanalitico',
       identifier: 'Ordine degli Psicologi del Lazio n. 23754',
@@ -290,6 +291,51 @@ const MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'lug
 function dataLeggibile(iso) {
   const [a, m, g] = iso.split('-').map(Number);
   return `${g} ${MESI[m - 1]} ${a}`;
+}
+
+/**
+ * llms.txt: il riassunto del sito per ChatGPT, Claude, Perplexity e
+ * affini (formato proposto su llmstxt.org). Quando qualcuno chiede a un
+ * assistente «uno psicoterapeuta online che parli italiano» o «chi cura
+ * gli attacchi di panico», il modello capisce in poche righe chi sono,
+ * dove ricevo e quale pagina risponde a quale domanda. Si rigenera con
+ * le pagine, così non resta mai indietro rispetto a sitemap e articoli.
+ */
+function scriviLlms(pagine) {
+  const escluse = new Set(['privacy', 'note-legali', 'articoli']);
+  const riga = (p) => `- [${p.h1 || p.ogTitolo || p.titolo}](${SITO}/${p.slug}/): ` +
+    `${(p.articolo && p.articolo.sommario) || p.descrizione}`;
+  const temi = pagine.filter((p) => !p.articolo && !escluse.has(p.slug));
+  const articoli = articoliInOrdine(pagine);
+  const testo = `# Dott. Alberto Del Bove, psicologo e psicoterapeuta psicoanalitico
+
+> Psicoterapeuta a orientamento psicoanalitico iscritto all'Ordine degli Psicologi del Lazio (n. 23754), specializzato alla SPS di Roma. Lavora con adulti e coppie, online in videochiamata con chi vive in tutta Italia e all'estero, e in presenza nello studio di Itri (LT), vicino a Formia, Gaeta e Fondi. Sedute in italiano, inglese e spagnolo.
+
+## In breve
+
+- Si comincia da un colloquio conoscitivo di 45 minuti, in cui si capisce insieme che cosa succede e se un percorso può essere utile.
+- Studio: Via Luigi Pirandello 8, 04020 Itri (LT), Italia.
+- Online: da qualsiasi città italiana e dall'estero, con orari adattati al fuso.
+- Temi principali: ansia e attacchi di panico, depressione, burnout e stress da lavoro, terapia di coppia, difficoltà di chi vive all'estero, supervisione clinica per colleghi.
+- Contatti: WhatsApp e telefono +39 345 503 2318; prenotazione dal sito: ${SITO}/#contatti
+- Albo: https://ordinepsicologilazio.it/albo/delbovealberto23754
+
+## Pagine
+
+- [Home](${SITO}/): chi sono, come lavoro, modalità e contatti.
+${temi.map(riga).join('\n')}
+
+## Articoli
+
+${articoli.map(riga).join('\n')}
+
+## Optional
+
+- [Privacy](${SITO}/privacy/)
+- [Note legali](${SITO}/note-legali/)
+- [Feed RSS degli articoli](${SITO}/articoli/feed.xml)
+`;
+  fs.writeFileSync(path.join(RADICE, 'llms.txt'), testo);
 }
 
 function articoliInOrdine(pagine) {
@@ -479,6 +525,7 @@ function main() {
   scriviSitemap(fatte);
   aggiornaUltimiInHome(fatte);
   if (fs.existsSync(path.join(RADICE, 'articoli'))) { scriviFeed(fatte); }
+  scriviLlms(fatte);
   console.log(`\n${fatte.length} pagine generate, sitemap.xml aggiornata.`);
 }
 
