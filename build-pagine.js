@@ -179,7 +179,22 @@ function componi({ meta, contenuto }, parti) {
   const extra = meta.schema
     ? (Array.isArray(meta.schema) ? meta.schema : [meta.schema])
     : [];
-  const schemi = [briciole].concat(meta.articolo ? [schemaArticolo(meta, url, immagine)] : [], extra);
+  // Per gli articoli, oltre al BlogPosting, la pagina dichiara chi l'ha
+  // rivista e quando: su temi di salute Google e gli assistenti IA pesano
+  // molto chi firma e quanto è recente il testo.
+  const revisione = meta.articolo ? [{
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': url,
+    url,
+    name: meta.titolo,
+    inLanguage: lingua,
+    lastReviewed: meta.articolo.aggiornato || meta.articolo.data,
+    reviewedBy: { '@id': `${SITO}/#alberto-del-bove` },
+    author: { '@id': `${SITO}/#alberto-del-bove` },
+    isPartOf: { '@type': 'WebSite', url: `${SITO}/` }
+  }] : [];
+  const schemi = [briciole].concat(meta.articolo ? [schemaArticolo(meta, url, immagine)] : [], revisione, extra);
 
   return `<!DOCTYPE html>
 <html lang="${lingua}" class="scroll-smooth">
@@ -334,8 +349,50 @@ ${articoli.map(riga).join('\n')}
 - [Privacy](${SITO}/privacy/)
 - [Note legali](${SITO}/note-legali/)
 - [Feed RSS degli articoli](${SITO}/articoli/feed.xml)
+- [Testo completo di tutte le pagine](${SITO}/llms-full.txt)
 `;
   fs.writeFileSync(path.join(RADICE, 'llms.txt'), testo);
+}
+
+/**
+ * llms-full.txt: il testo di tutte le pagine pubblicate, senza grafica,
+ * in un file solo. Gli assistenti IA che lo leggono hanno le parole
+ * esatte delle pagine invece di doverle ricostruire dall'HTML.
+ */
+function testoSemplice(html) {
+  const ent = { '&nbsp;': ' ', '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'", '&rsquo;': '’', '&laquo;': '«', '&raquo;': '»' };
+  return html
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<(script|style|svg|noscript|form|template|nav)[\s\S]*?<\/\1>/gi, '')
+    .replace(/\s+/g, ' ')
+    .replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, '\n\n# $1\n\n')
+    .replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, '\n\n## $1\n\n')
+    .replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, '\n\n### $1\n\n')
+    .replace(/<li[^>]*>/gi, '\n- ')
+    .replace(/<\/(p|div|section|blockquote|ul|ol|dl|dt|dd|tr)>/gi, '\n\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&[a-z#0-9]+;/gi, (e) => ent[e] || ' ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/ *\n */g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/^(#+) +/gm, '$1 ')
+    .trim();
+}
+
+function scriviLlmsCompleto(pagine) {
+  const escluse = new Set(['privacy', 'note-legali']);
+  const blocchi = pagine
+    .filter((p) => !escluse.has(p.meta.slug))
+    .map((p) => `---\n\nURL: ${SITO}/${p.meta.slug}/\nTitolo: ${p.meta.titolo}\n` +
+      (p.meta.articolo ? `Pubblicato: ${p.meta.articolo.data}\n` : '') +
+      `Descrizione: ${p.meta.descrizione}\n\n${testoSemplice(p.contenuto)}\n`);
+  const testo = `# Dott. Alberto Del Bove, psicologo e psicoterapeuta psicoanalitico: testo completo del sito
+
+> Psicoterapeuta iscritto all'Ordine degli Psicologi del Lazio (n. 23754). Online da tutta Italia e dall'estero, in studio a Itri (LT). Indice breve: ${SITO}/llms.txt
+
+${blocchi.join('\n')}`;
+  fs.writeFileSync(path.join(RADICE, 'llms-full.txt'), testo);
 }
 
 function articoliInOrdine(pagine) {
@@ -484,6 +541,7 @@ function main() {
   if (!file.length) { throw new Error('La cartella pagine/ è vuota.'); }
 
   const fatte = [];
+  const testi = [];
   /* Un articolo con una data futura resta in pagine/ ma non viene
      pubblicato: niente pagina, niente sitemap, niente elenco. Così si
      possono scrivere più articoli insieme e farli uscire uno alla
@@ -519,6 +577,7 @@ function main() {
     fs.mkdirSync(cartella, { recursive: true });
     fs.writeFileSync(path.join(cartella, 'index.html'), componi(pagina, parti));
     fatte.push(pagina.meta);
+    testi.push(pagina);
     console.log(`  /${pagina.meta.slug}/  ←  pagine/${f}`);
   });
 
@@ -526,6 +585,7 @@ function main() {
   aggiornaUltimiInHome(fatte);
   if (fs.existsSync(path.join(RADICE, 'articoli'))) { scriviFeed(fatte); }
   scriviLlms(fatte);
+  scriviLlmsCompleto(testi);
   console.log(`\n${fatte.length} pagine generate, sitemap.xml aggiornata.`);
 }
 

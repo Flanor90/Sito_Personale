@@ -50,3 +50,4 @@
 - [Privacy](https://www.albertodelbove-psicologo.it/privacy/)
 - [Note legali](https://www.albertodelbove-psicologo.it/note-legali/)
 - [Feed RSS degli articoli](https://www.albertodelbove-psicologo.it/articoli/feed.xml)
+- [Testo completo di tutte le pagine](https://www.albertodelbove-psicologo.it/llms-full.txt)

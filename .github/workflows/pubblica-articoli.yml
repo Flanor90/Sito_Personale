@@ -37,3 +37,5 @@ jobs:
           git add -A
           git commit -m "Pubblica gli articoli programmati per questa settimana"
           git push
+      - name: Avvisa Bing e gli altri motori (IndexNow)
+        run: node tools/indexnow.js

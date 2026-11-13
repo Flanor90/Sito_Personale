@@ -1,0 +1,25 @@
+name: Avvisa i motori di ricerca
+
+# A ogni modifica del sito su main, dopo che GitHub Pages ha avuto il
+# tempo di pubblicarla, segnala gli indirizzi a Bing tramite IndexNow.
+# La ricerca di ChatGPT e di altri assistenti si appoggia anche a Bing.
+# Le pubblicazioni del lunedì lo fanno già da sole nel loro workflow.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "sitemap.xml"
+      - "llms.txt"
+
+jobs:
+  avvisa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: sleep 120
+      - run: node tools/indexnow.js
