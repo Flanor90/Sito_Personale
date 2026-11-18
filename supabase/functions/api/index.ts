@@ -13,7 +13,10 @@
 // ============================================================
 
 import { entroIlLimite, type ImpostazioniSito, type ImpostazioniSmtp, type ImpostazioniTrello, leggiImpostazioni, servizio } from './lib/db.ts';
-import { avvisa, connessione, emailAvviso, emailConferma, emailMateriale, emailNotificaRichiesta, type Materiale, smtpConfigurato } from './lib/mail.ts';
+import {
+  ACCOGLIENZA_GIORNI, avvisa, connessione, emailAccoglienza, emailAvviso, emailConferma, emailMateriale,
+  emailNotificaRichiesta, emailRicevutaRichiesta, inviaUna, type Materiale, smtpConfigurato,
+} from './lib/mail.ts';
 import { creaScheda, descrizioneRichiesta } from './lib/trello.ts';
 import {
   cors,
@@ -222,6 +225,15 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
     await avvisa(smtp, emailNotificaRichiesta({
       nome: nome || email, email, telefono, setting, temi, messaggio: corpo, linkTrello, sito,
     }));
+
+    // E alla persona: la conferma che la richiesta è arrivata, che cosa
+    // succede adesso e, se preferisce, WhatsApp.
+    const ricevuta = emailRicevutaRichiesta({ nome, lang, sito });
+    if (await inviaUna(smtp, email, ricevuta)) {
+      await sb.from('contact_events').insert({
+        contact_id: contatto!.id, kind: 'email_ricevuta', source, lang, page: pagina, payload: {},
+      });
+    }
   } else {
     // Ogni altro contatto (newsletter, guida, risultati di un test chiesti
     // per email): prima arrivava solo nel pannello, ora anche per email.
@@ -448,6 +460,17 @@ async function track(req: Request, origin: string | null): Promise<Response> {
     })));
   }
 
+  // Le visite fanno anche da orologio: al massimo ogni 30 minuti una
+  // chiamata manda le email di accoglienza arrivate a scadenza. Così non
+  // serve nessun cron da configurare a parte.
+  if (await entroIlLimite(sb, 'accoglienza', 1, 30)) {
+    try {
+      await accoglienza(sb);
+    } catch (e) {
+      console.error('[accoglienza]', e);
+    }
+  }
+
   if (eventi.length) {
     await avvisiDaEventi(sb, eventi, viste[0] as Record<string, unknown> | undefined);
     await sb.from('events').insert(eventi.map((e: Record<string, unknown>) => ({
@@ -501,4 +524,85 @@ async function avvisiDaEventi(
       ],
     }));
   }
+}
+
+/* ============================================================
+   Accoglienza per chi si iscrive (vedi emailAccoglienza in mail.ts)
+   ------------------------------------------------------------
+   Tre email nei primi giorni dopo la conferma dell'iscrizione. Regole:
+   - solo contatti confermati (consenso newsletter dato e verificato);
+   - solo chi ha confermato DOPO l'attivazione del flusso: chi era già
+     iscritto non riceve un benvenuto fuori tempo;
+   - mai a chi ha già chiesto un colloquio: con lui parlo già io;
+   - per ora solo in italiano, la lingua di quasi tutti gli iscritti;
+   - ogni passo si registra in contact_events, quindi non parte due volte;
+   - si spegne dal pannello mettendo app_settings.accoglienza.attivo = false.
+   ============================================================ */
+
+type ImpostazioniAccoglienza = { attivo?: boolean; dal?: string };
+
+async function accoglienza(sb: ReturnType<typeof servizio>) {
+  const conf = await leggiImpostazioni<ImpostazioniAccoglienza>(sb, 'accoglienza');
+  if (conf.attivo === false) return;
+  if (!conf.dal) {
+    // Prima volta: da adesso in poi. Il passato non si tocca.
+    await sb.from('app_settings').upsert({ key: 'accoglienza', value: { ...conf, dal: new Date().toISOString() } });
+    return;
+  }
+
+  const smtp = await leggiImpostazioni<ImpostazioniSmtp>(sb, 'smtp');
+  if (!smtpConfigurato(smtp)) return;
+  const sito = await leggiImpostazioni<ImpostazioniSito>(sb, 'sito');
+
+  const { data: contatti } = await sb.from('contacts')
+    .select('id, email, name, confirmed_at')
+    .eq('status', 'confirmed').eq('lang', 'it')
+    .gte('confirmed_at', conf.dal)
+    .order('confirmed_at', { ascending: true })
+    .limit(50);
+  if (!contatti?.length) return;
+
+  const ids = contatti.map((c) => c.id);
+  const { data: fatti } = await sb.from('contact_events')
+    .select('contact_id, kind').in('contact_id', ids).like('kind', 'accoglienza_%');
+  const { data: richieste } = await sb.from('messages')
+    .select('contact_id').in('contact_id', ids);
+  const conRichiesta = new Set((richieste ?? []).map((r) => r.contact_id));
+  const giaInviati = new Map<string, number>();
+  for (const e of fatti ?? []) {
+    const n = Number(String(e.kind).replace('accoglienza_', ''));
+    giaInviati.set(e.contact_id, Math.max(giaInviati.get(e.contact_id) ?? 0, n));
+  }
+
+  const adesso = Date.now();
+  let inviate = 0;
+  for (const c of contatti) {
+    if (inviate >= 8) break; // pochi per giro: protegge l'account Gmail
+    if (conRichiesta.has(c.id)) continue;
+    const prossimo = giaInviati.get(c.id) ?? 0; // 0, 1, 2 = passi già inviati
+    if (prossimo >= ACCOGLIENZA_GIORNI.length) continue;
+    const giorni = (adesso - new Date(c.confirmed_at).getTime()) / 864e5;
+    if (giorni < ACCOGLIENZA_GIORNI[prossimo]) continue;
+
+    const link = await linkDisiscrizione(sb, c.id);
+    const m = emailAccoglienza({ passo: prossimo, nome: c.name, linkDisiscrizione: link, sito });
+    if (await inviaUna(smtp, c.email, { ...m, disiscrizione: link })) {
+      await sb.from('contact_events').insert({
+        contact_id: c.id, kind: `accoglienza_${prossimo + 1}`, source: 'accoglienza', lang: 'it', payload: {},
+      });
+      inviate++;
+    }
+  }
+}
+
+/** Link di disiscrizione personale, riusato se già esistente. */
+async function linkDisiscrizione(sb: ReturnType<typeof servizio>, contactId: string): Promise<string> {
+  const { data } = await sb.from('tokens')
+    .select('token').eq('contact_id', contactId).eq('purpose', 'unsubscribe').maybeSingle();
+  let token = data?.token;
+  if (!token) {
+    token = nuovoToken();
+    await sb.from('tokens').insert({ token, contact_id: contactId, purpose: 'unsubscribe' });
+  }
+  return `${Deno.env.get('SUPABASE_URL')}/functions/v1/api/unsubscribe?t=${token}`;
 }

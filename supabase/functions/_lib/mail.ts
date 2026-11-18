@@ -274,7 +274,12 @@ export function emailMateriale(opts: {
         Se il pulsante non funziona, copia questo indirizzo nel browser:<br>
         <span style="word-break:break-all;">${esc(materiale.url)}</span>
       </p>
-      ${poscritto}`,
+      ${poscritto}
+      <p style="margin:24px 0 0;font-size:14px;color:#6b6b6b;">
+        Se leggendo ti viene voglia di parlarne con qualcuno, puoi scrivermi anche solo una riga
+        <a href="${esc(waLink(WA_PRIMO_COLLOQUIO))}" style="color:${MIRTILLO};font-weight:bold;">su WhatsApp</a>
+        o rispondendo a questa email.
+      </p>`,
   });
 
   const testo = [
@@ -287,6 +292,7 @@ export function emailMateriale(opts: {
     linkConferma
       ? `\n\nSe vuoi ricevere anche le prossime uscite, conferma l'iscrizione: ${linkConferma}\nSe non lo fai, la guida resta tua comunque e non ti scriverò più.`
       : '',
+    `\nSe leggendo ti viene voglia di parlarne con qualcuno, puoi scrivermi su WhatsApp: ${waLink(WA_PRIMO_COLLOQUIO)}`,
   ].filter(Boolean).join('\n');
 
   return { oggetto: `La tua guida: ${materiale.titolo}`, html, testo };
@@ -384,18 +390,230 @@ export function emailAvviso(opts: {
   return { oggetto: opts.titolo, html, testo };
 }
 
-/** Manda un avviso ad Alberto. Non lancia mai: un avviso perso non deve far fallire nulla. */
+/**
+ * Manda un'email singola. Non lancia mai: un'email persa non deve far
+ * fallire la richiesta della persona. Restituisce true se è partita.
+ */
+export async function inviaUna(
+  smtp: ImpostazioniSmtp,
+  a: string | undefined,
+  m: { oggetto: string; html: string; testo: string; disiscrizione?: string },
+): Promise<boolean> {
+  if (!smtpConfigurato(smtp) || !a) return false;
+  try {
+    const conn = await connessione(smtp);
+    await conn.invia({ a, ...m });
+    await conn.chiudi();
+    return true;
+  } catch (e) {
+    console.error('[email]', a === destinatarioAvvisi(smtp) ? 'avviso' : 'persona', e);
+    return false;
+  }
+}
+
+/** Manda un avviso ad Alberto. */
 export async function avvisa(
   smtp: ImpostazioniSmtp,
   m: { oggetto: string; html: string; testo: string },
 ): Promise<void> {
-  const a = destinatarioAvvisi(smtp);
-  if (!smtpConfigurato(smtp) || !a) return;
-  try {
-    const conn = await connessione(smtp);
-    await conn.invia({ a, oggetto: m.oggetto, html: m.html, testo: m.testo });
-    await conn.chiudi();
-  } catch (e) {
-    console.error('[avviso]', e);
-  }
+  await inviaUna(smtp, destinatarioAvvisi(smtp), m);
+}
+
+/* ============================================================
+   Accoglienza: le email che ricevono le persone
+   ------------------------------------------------------------
+   Due flussi, separati per una ragione di consenso.
+
+   1. Chi chiede un primo colloquio riceve subito una conferma: che cosa
+      succede adesso e, se preferisce, WhatsApp. È la risposta alla sua
+      richiesta, non promozione, quindi non serve il consenso newsletter.
+
+   2. Chi conferma l'iscrizione alla newsletter riceve tre email nei primi
+      giorni: un benvenuto, come si comincia in pratica, una domanda. Solo
+      a chi ha dato e confermato il consenso, mai a chi ha già chiesto un
+      colloquio, sempre con il link per disiscriversi. Dopo la terza,
+      soltanto le uscite della newsletter.
+   ============================================================ */
+
+const WA_NUMERO = '393455032318';
+const WA_PRIMO_COLLOQUIO =
+  "Buongiorno Dott. Del Bove, ho ricevuto la sua email e vorrei capire se possiamo fissare un primo colloquio. Preferirei: online / in studio a Itri";
+
+export function waLink(testo: string): string {
+  return `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(testo)}`;
+}
+
+function saluto(nome: string | null | undefined, ciao = 'Ciao'): string {
+  const n = (nome || '').trim().split(/\s+/)[0];
+  return n ? `${ciao} ${n},` : `${ciao},`;
+}
+
+function titolo(t: string): string {
+  return `<h1 style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:23px;
+                 line-height:1.3;color:${NOTTE};font-weight:normal;">${esc(t)}</h1>`;
+}
+
+function par(t: string): string {
+  return `<p style="margin:0 0 14px;">${esc(t)}</p>`;
+}
+
+function linkSecondario(testo: string, href: string): string {
+  return `<p style="margin:0 0 14px;font-size:14px;"><a href="${esc(href)}" style="color:${MIRTILLO};font-weight:bold;">${esc(testo)}</a></p>`;
+}
+
+/* ---------- 1. Conferma della richiesta di colloquio ---------- */
+
+const RICHIESTA: Record<string, {
+  oggetto: string; ciao: string; titolo: string; apertura: string; passi: string[];
+  wa: string; waTesto: string; waMessaggio: string; chiusura: string; firma: string;
+}> = {
+  it: {
+    oggetto: 'Ho ricevuto la tua richiesta',
+    ciao: 'Ciao',
+    titolo: 'Ho ricevuto la tua richiesta',
+    apertura: 'grazie per avermi scritto. Ecco che cosa succede adesso, così sai cosa aspettarti.',
+    passi: [
+      'Ti rispondo io, di solito entro poche ore, per confermare l’orario che hai proposto o sceglierne un altro.',
+      'Ci incontriamo per 45 minuti, online o nello studio di Itri, per capire insieme che cosa ti porta.',
+      'Alla fine decidi tu se e come continuare, senza impegno.',
+    ],
+    wa: 'Se preferisci fare prima, puoi scrivermi direttamente su WhatsApp.',
+    waTesto: 'Scrivimi su WhatsApp',
+    waMessaggio: 'Buongiorno Dott. Del Bove, le ho appena inviato una richiesta di primo colloquio dal sito.',
+    chiusura: 'Puoi anche rispondere a questa email. Quello che mi scrivi resta coperto dal segreto professionale.',
+    firma: 'A presto,\nAlberto Del Bove',
+  },
+  en: {
+    oggetto: 'I have received your request',
+    ciao: 'Hello',
+    titolo: 'I have received your request',
+    apertura: 'thank you for writing to me. Here is what happens next, so you know what to expect.',
+    passi: [
+      'I will reply myself, usually within a few hours, to confirm the time you suggested or find another one.',
+      'We meet for 45 minutes, online or at my practice in Itri, to understand together what brings you.',
+      'At the end you decide whether and how to continue, with no commitment.',
+    ],
+    wa: 'If you prefer to be quicker, you can write to me directly on WhatsApp.',
+    waTesto: 'Write to me on WhatsApp',
+    waMessaggio: 'Good morning Dr. Del Bove, I have just sent you a request for a first session through the website.',
+    chiusura: 'You can also reply to this email. Whatever you write is covered by professional confidentiality.',
+    firma: 'Best wishes,\nAlberto Del Bove',
+  },
+  es: {
+    oggetto: 'He recibido tu solicitud',
+    ciao: 'Hola',
+    titolo: 'He recibido tu solicitud',
+    apertura: 'gracias por escribirme. Esto es lo que pasa ahora, para que sepas qué esperar.',
+    passi: [
+      'Te respondo yo, normalmente en pocas horas, para confirmar el horario que propusiste o elegir otro.',
+      'Nos vemos 45 minutos, online o en mi consulta de Itri, para entender juntos qué te trae.',
+      'Al final decides tú si continuar y cómo, sin compromiso.',
+    ],
+    wa: 'Si prefieres ir más rápido, puedes escribirme directamente por WhatsApp.',
+    waTesto: 'Escríbeme por WhatsApp',
+    waMessaggio: 'Buenos días, Dr. Del Bove: le acabo de enviar una solicitud de primera sesión desde la web.',
+    chiusura: 'También puedes responder a este email. Lo que me escribas está protegido por el secreto profesional.',
+    firma: 'Un saludo,\nAlberto Del Bove',
+  },
+};
+
+export function emailRicevutaRichiesta(opts: {
+  nome?: string | null; lang: string; sito: ImpostazioniSito;
+}): { oggetto: string; html: string; testo: string } {
+  const t = RICHIESTA[opts.lang] ?? RICHIESTA.it;
+  const wa = waLink(t.waMessaggio);
+  const html = cornice({
+    sito: opts.sito,
+    preheader: t.apertura,
+    contenuto: `
+      ${titolo(t.titolo)}
+      ${par(`${saluto(opts.nome, t.ciao)} ${t.apertura}`)}
+      <ol style="margin:0 0 18px;padding-left:20px;">
+        ${t.passi.map((p) => `<li style="margin:0 0 8px;">${esc(p)}</li>`).join('')}
+      </ol>
+      ${par(t.wa)}
+      ${bottone(t.waTesto, wa)}
+      ${par(t.chiusura)}
+      <p style="margin:0;white-space:pre-line;">${esc(t.firma)}</p>`,
+  });
+  const testo = [
+    `${saluto(opts.nome, t.ciao)} ${t.apertura}`, '',
+    ...t.passi.map((p, i) => `${i + 1}. ${p}`), '',
+    `${t.wa} ${wa}`, '', t.chiusura, '', t.firma,
+  ].join('\n');
+  return { oggetto: t.oggetto, html, testo };
+}
+
+/* ---------- 2. Benvenuto in tre passi per chi si iscrive ---------- */
+
+/** Giorni dopo la conferma dell'iscrizione in cui parte ciascun passo. */
+export const ACCOGLIENZA_GIORNI = [0, 3, 8];
+
+export function emailAccoglienza(opts: {
+  passo: number; nome?: string | null; linkDisiscrizione: string; sito: ImpostazioniSito;
+}): { oggetto: string; html: string; testo: string } {
+  const url = (opts.sito.url || 'https://www.albertodelbove-psicologo.it').replace(/\/$/, '');
+  const wa = waLink(WA_PRIMO_COLLOQUIO);
+  const firma = 'A presto,\nAlberto';
+
+  const passi = [
+    {
+      oggetto: 'Grazie di essere qui',
+      titolo: 'Grazie di essere qui',
+      righe: [
+        'grazie per aver confermato l’iscrizione. Ti scriverò di rado, quando ho qualcosa da dire su psicoterapia, ansia, lavoro, relazioni e vita all’estero.',
+        'Se vuoi cominciare da qualcosa, sul sito trovi gli articoli e alcuni test di auto-osservazione. Non danno diagnosi, ma possono aiutarti a mettere a fuoco una domanda.',
+      ],
+      bottone: ['Leggi gli articoli', `${url}/articoli/`],
+      dopo: 'E se a un certo punto ti venisse voglia di parlarne con qualcuno, puoi scrivermi anche solo una riga, su WhatsApp o rispondendo a questa email.',
+      secondario: ['Scrivimi su WhatsApp', wa],
+    },
+    {
+      oggetto: 'Come si comincia, in pratica',
+      titolo: 'Come si comincia, in pratica',
+      righe: [
+        'molte persone mi raccontano che la parte più difficile è stata scrivere il primo messaggio. Per questo provo a dirti come funziona, così sai che cosa aspettarti.',
+        'Si comincia da un colloquio conoscitivo di 45 minuti, online oppure nello studio di Itri (LT). Serve a capire insieme che cosa ti sta succedendo e se un percorso può esserti utile. Alla fine decidi tu se e come continuare, senza impegno.',
+        'Per fissarlo basta un messaggio su WhatsApp, anche breve. Ti rispondo io, di solito in giornata.',
+      ],
+      bottone: ['Scrivimi su WhatsApp', wa],
+      dopo: '',
+      secondario: ['Oppure prenota dal sito', `${url}/#contatti`],
+    },
+    {
+      oggetto: 'Una domanda, se ti va',
+      titolo: 'Una domanda, se ti va',
+      righe: [
+        'questa è l’ultima email di questo tipo. Da qui in avanti riceverai soltanto le uscite della newsletter.',
+        'Volevo farti una domanda semplice: che cosa ti ha portato sul mio sito? Rispondere non è obbligatorio. Ma se ti va di raccontarmelo, anche in due righe, puoi rispondere a questa email o scrivermi su WhatsApp. Leggo tutto io, e quello che mi scrivi resta coperto dal segreto professionale.',
+        'Se invece adesso non è il momento, va bene così. Puoi scrivermi quando vuoi.',
+      ],
+      bottone: ['Scrivimi su WhatsApp', wa],
+      dopo: '',
+      secondario: null as null | string[],
+    },
+  ];
+  const p = passi[Math.max(0, Math.min(opts.passo, passi.length - 1))];
+  const [primo, ...altri] = p.righe;
+
+  const html = cornice({
+    sito: opts.sito,
+    preheader: primo,
+    linkDisiscrizione: opts.linkDisiscrizione,
+    contenuto: `
+      ${titolo(p.titolo)}
+      ${par(`${saluto(opts.nome)} ${primo}`)}
+      ${altri.map(par).join('')}
+      ${bottone(p.bottone[0], p.bottone[1])}
+      ${p.dopo ? par(p.dopo) : ''}
+      ${p.secondario ? linkSecondario(p.secondario[0], p.secondario[1]) : ''}
+      <p style="margin:0;white-space:pre-line;">${esc(firma)}</p>`,
+  });
+  const testo = [
+    `${saluto(opts.nome)} ${primo}`, ...altri, '',
+    `${p.bottone[0]}: ${p.bottone[1]}`,
+    p.dopo, p.secondario ? `${p.secondario[0]}: ${p.secondario[1]}` : '',
+    '', firma, '', `Per non ricevere più queste email: ${opts.linkDisiscrizione}`,
+  ].filter((r, i, a) => r !== '' || a[i - 1] !== '').join('\n');
+  return { oggetto: p.oggetto, html, testo };
 }
