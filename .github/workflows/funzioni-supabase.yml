@@ -33,7 +33,7 @@ jobs:
         with:
           version: latest
       - run: sh supabase/sync-lib.sh
-      - run: supabase functions deploy api --project-ref ynmxgdcikqlgcupfszza --no-verify-jwt
-      - run: supabase functions deploy admin --project-ref ynmxgdcikqlgcupfszza --no-verify-jwt
+      - run: supabase functions deploy api --project-ref ynmxgdcikqlgcupfszza --no-verify-jwt --yes
+      - run: supabase functions deploy admin --project-ref ynmxgdcikqlgcupfszza --no-verify-jwt --yes
       - name: Controlla che il sito risponda
         run: curl -fsS https://ynmxgdcikqlgcupfszza.supabase.co/functions/v1/api/ping
