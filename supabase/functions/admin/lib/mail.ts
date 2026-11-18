@@ -311,7 +311,9 @@ export function emailNotificaRichiesta(opts: {
   messaggio?: string | null;
   linkTrello?: string | null;
   sito: ImpostazioniSito;
+  supervisione?: boolean;
 }): { oggetto: string; html: string; testo: string } {
+  const cosa = opts.supervisione ? 'Richiesta di supervisione' : 'Richiesta primo colloquio';
   const riga = (etichetta: string, valore?: string | null) =>
     valore
       ? `<tr><td style="padding:5px 12px 5px 0;color:#6b6b6b;white-space:nowrap;vertical-align:top;">${esc(etichetta)}</td>
@@ -323,7 +325,7 @@ export function emailNotificaRichiesta(opts: {
     preheader: `${opts.nome} — ${opts.email}`,
     contenuto: `
       <h1 style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-size:22px;
-                 line-height:1.3;color:${NOTTE};font-weight:normal;">Nuova richiesta di primo colloquio</h1>
+                 line-height:1.3;color:${NOTTE};font-weight:normal;">${opts.supervisione ? 'Nuova richiesta di supervisione' : 'Nuova richiesta di primo colloquio'}</h1>
       <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:14px;line-height:1.6;">
         ${riga('Nome', opts.nome)}
         ${riga('Email', opts.email)}
@@ -341,7 +343,7 @@ export function emailNotificaRichiesta(opts: {
   });
 
   const testo = [
-    'Nuova richiesta di primo colloquio',
+    opts.supervisione ? 'Nuova richiesta di supervisione' : 'Nuova richiesta di primo colloquio',
     '',
     `Nome: ${opts.nome}`,
     `Email: ${opts.email}`,
@@ -353,7 +355,7 @@ export function emailNotificaRichiesta(opts: {
     opts.linkTrello ? `\nTrello: ${opts.linkTrello}` : '',
   ].filter(Boolean).join('\n');
 
-  return { oggetto: `Richiesta primo colloquio — ${opts.nome}`, html, testo };
+  return { oggetto: `${cosa} — ${opts.nome}`, html, testo };
 }
 
 /* ============================================================
@@ -506,6 +508,22 @@ const RICHIESTA: Record<string, {
     chiusura: 'You can also reply to this email. Whatever you write is covered by professional confidentiality.',
     firma: 'Best wishes,\nAlberto Del Bove',
   },
+  supervisione: {
+    oggetto: 'Ho ricevuto la tua richiesta di supervisione',
+    ciao: 'Ciao',
+    titolo: 'Ho ricevuto la tua richiesta di supervisione',
+    apertura: 'grazie per avermi scritto. Ecco come proseguiamo.',
+    passi: [
+      'Ti rispondo io, di solito entro un giorno lavorativo.',
+      'Ci sentiamo per un primo incontro, online o in studio a Itri, per capire che cosa ti serve: un caso, un percorso continuativo o un lavoro con l’équipe.',
+      'Onorario e cadenza li concordiamo prima di cominciare.',
+    ],
+    wa: 'Se preferisci, puoi scrivermi anche su WhatsApp.',
+    waTesto: 'Scrivimi su WhatsApp',
+    waMessaggio: 'Buongiorno Dott. Del Bove, le ho appena scritto dal sito per una supervisione clinica.',
+    chiusura: 'Ti chiedo solo di non mandarmi per email o su WhatsApp dati che rendano riconoscibili i pazienti: del caso parliamo in supervisione.',
+    firma: 'A presto,\nAlberto Del Bove',
+  },
   es: {
     oggetto: 'He recibido tu solicitud',
     ciao: 'Hola',
@@ -525,9 +543,9 @@ const RICHIESTA: Record<string, {
 };
 
 export function emailRicevutaRichiesta(opts: {
-  nome?: string | null; lang: string; sito: ImpostazioniSito;
+  nome?: string | null; lang: string; sito: ImpostazioniSito; supervisione?: boolean;
 }): { oggetto: string; html: string; testo: string } {
-  const t = RICHIESTA[opts.lang] ?? RICHIESTA.it;
+  const t = opts.supervisione ? RICHIESTA.supervisione : (RICHIESTA[opts.lang] ?? RICHIESTA.it);
   const wa = waLink(t.waMessaggio);
   const html = cornice({
     sito: opts.sito,

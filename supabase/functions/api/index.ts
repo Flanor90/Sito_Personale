@@ -185,6 +185,7 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
       : [];
     const corpo = testo(b.message, 5000);
     const setting = testo(b.setting, 80);
+    const supervisione = source === 'supervisione';
 
     const { data: msg } = await sb.from('messages').insert({
       contact_id: contatto!.id,
@@ -204,7 +205,7 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
       try {
         const scheda = await creaScheda(trello, {
           listId: trello.list_id,
-          titolo: `${nome || email} — primo colloquio`,
+          titolo: `${nome || email} — ${supervisione ? 'supervisione' : 'primo colloquio'}`,
           descrizione: descrizioneRichiesta({
             email, telefono, setting, temi, messaggio: corpo, lang, fonte: source,
           }),
@@ -223,12 +224,12 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
 
     // Avviso ad Alberto per email, così non deve controllare il pannello.
     await avvisa(smtp, emailNotificaRichiesta({
-      nome: nome || email, email, telefono, setting, temi, messaggio: corpo, linkTrello, sito,
+      nome: nome || email, email, telefono, setting, temi, messaggio: corpo, linkTrello, sito, supervisione,
     }));
 
     // E alla persona: la conferma che la richiesta è arrivata, che cosa
     // succede adesso e, se preferisce, WhatsApp.
-    const ricevuta = emailRicevutaRichiesta({ nome, lang, sito });
+    const ricevuta = emailRicevutaRichiesta({ nome, lang, sito, supervisione });
     if (await inviaUna(smtp, email, ricevuta)) {
       await sb.from('contact_events').insert({
         contact_id: contatto!.id, kind: 'email_ricevuta', source, lang, page: pagina, payload: {},

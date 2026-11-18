@@ -270,6 +270,64 @@
     return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(messaggioWhatsApp(tema, setting));
   }
 
+  /* ----------------------------------------------------------------
+     Variante per i colleghi (data-variante="colleghi"), sulla pagina
+     della supervisione: niente orari del colloquio, la scelta del tipo di
+     supervisione, e un avviso a non scrivere dati che rendano
+     riconoscibili i pazienti.
+     ---------------------------------------------------------------- */
+  var TIPI_SUPERVISIONE = ['Un caso', 'Percorso individuale', 'Équipe o servizio'];
+  var WA_COLLEGHI = 'Buongiorno Dott. Del Bove, sono un collega e vorrei informazioni sulla supervisione clinica.';
+
+  function moduloColleghi(n) {
+    return (
+      '<form novalidate class="space-y-4" data-modulo-richiesta>' +
+        '<fieldset>' +
+          '<legend class="block text-sm font-semibold text-notte mb-2">Di che cosa si tratta?</legend>' +
+          '<div class="flex flex-wrap gap-2">' +
+            TIPI_SUPERVISIONE.map(function (v, i) {
+              return '<label class="cursor-pointer">' +
+                '<input type="radio" name="tipo" value="' + v + '" class="peer sr-only"' + (i === 0 ? ' checked' : '') + '>' +
+                '<span class="inline-block rounded-full border border-tortora-dark px-4 py-2 text-sm text-notte peer-checked:bg-notte peer-checked:border-notte peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-mirtillo-600 transition-colors">' + v + '</span>' +
+              '</label>';
+            }).join('') +
+          '</div>' +
+        '</fieldset>' +
+        sceltaSetting(n) +
+        campo('rq-nome-' + n, 'Nome e cognome <span class="text-mirtillo-700" aria-hidden="true">*</span>', 'text',
+              'name="nome" autocomplete="name" required placeholder="Come ti chiami"') +
+        campo('rq-email-' + n, 'Email <span class="text-mirtillo-700" aria-hidden="true">*</span>', 'email',
+              'name="email" autocomplete="email" required inputmode="email" placeholder="nome@esempio.it"') +
+        campo('rq-tel-' + n, 'Telefono <span class="font-normal text-inchiostro/45">(facoltativo)</span>', 'tel',
+              'name="telefono" autocomplete="tel" inputmode="tel" placeholder="+39 …"') +
+        '<div>' +
+          '<label for="rq-msg-' + n + '" class="block text-sm font-semibold text-notte mb-1.5">Due righe sul tuo contesto di lavoro <span class="font-normal text-inchiostro/45">(facoltativo)</span></label>' +
+          '<textarea id="rq-msg-' + n + '" name="messaggio" rows="3" placeholder="Per esempio: libera professione, servizio pubblico, comunità. Nessun dato che renda riconoscibili i pazienti."' +
+            ' class="w-full rounded-xl border border-tortora-dark bg-crema/60 px-4 py-3 text-[0.97rem] text-notte placeholder:text-inchiostro/40 focus:border-mirtillo-600 focus:bg-white focus:ring-0 transition-colors resize-y"></textarea>' +
+        '</div>' +
+        '<input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden">' +
+        '<p data-esito class="hidden rounded-xl px-4 py-3 text-sm" role="status" aria-live="polite"></p>' +
+        '<button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-notte text-white text-base font-semibold px-6 py-4 rounded-full hover:bg-mirtillo-700 transition-colors">' +
+          'Invia la richiesta' +
+        '</button>' +
+        '<a href="https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(WA_COLLEGHI) + '"' +
+          ' target="_blank" rel="noopener" data-evento="cta_click" data-evento-etichetta="wa-supervisione-modulo"' +
+          ' class="w-full inline-flex items-center justify-center gap-2 border border-tortora-dark text-notte text-base font-semibold px-6 py-3.5 rounded-full hover:bg-crema-dark transition-colors">' +
+          '<i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> Oppure su WhatsApp' +
+        '</a>' +
+        '<div class="rounded-xl bg-crema/70 px-4 py-3">' +
+          '<p class="text-xs font-semibold uppercase tracking-[0.12em] text-mirtillo-700 mb-2">Cosa succede dopo</p>' +
+          '<ol class="space-y-1.5 text-sm leading-relaxed text-inchiostro/75 list-decimal pl-4">' +
+            '<li>Ti rispondo io, di solito entro un giorno lavorativo.</li>' +
+            '<li>Ci sentiamo per un primo incontro, online o in studio a Itri, per capire che cosa ti serve.</li>' +
+            '<li>Onorario e cadenza li concordiamo prima di cominciare.</li>' +
+          '</ol>' +
+        '</div>' +
+        '<p class="text-xs leading-relaxed text-inchiostro/55">I dati servono solo a ricontattarti. Del caso parliamo in supervisione, non qui. <a href="/privacy/" class="underline underline-offset-2 hover:text-notte">Informativa</a></p>' +
+      '</form>'
+    );
+  }
+
   function modulo(n, chiediSetting, tema, setting) {
     return (
       '<form novalidate class="space-y-4" data-modulo-richiesta>' +
@@ -339,7 +397,8 @@
   function collega(contenitore, n) {
     var settingFisso = contenitore.getAttribute('data-setting') || '';
     var tema = contenitore.getAttribute('data-tema') || '';
-    contenitore.innerHTML = modulo(n, !settingFisso, tema, settingFisso);
+    var colleghi = contenitore.getAttribute('data-variante') === 'colleghi';
+    contenitore.innerHTML = colleghi ? moduloColleghi(n) : modulo(n, !settingFisso, tema, settingFisso);
     var form = contenitore.querySelector('form');
     attivaOrari(form);
 
@@ -379,11 +438,11 @@
           name: dati.nome,
           phone: dati.telefono,
           kind: 'contatto',
-          source: 'contatto',
+          source: colleghi ? 'supervisione' : 'contatto',
           lang: 'it',
           consent: false,
           setting: setting,
-          topics: tema ? [tema] : [],
+          topics: [tema, colleghi && form.tipo ? form.tipo.value : ''].filter(Boolean),
           message: [dati.orari.length ? testoOrari(dati.orari) : '', dati.messaggio].filter(Boolean).join('\n\n'),
           page: location.pathname,
           referrer: document.referrer,
@@ -393,14 +452,16 @@
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
         .then(function (r) {
           if (!r || !r.ok) { throw new Error('rifiutata'); }
-          esito(form, dati.orari.length
+          esito(form, colleghi
+            ? 'Ho ricevuto la tua richiesta, grazie. Ti rispondo io, di solito entro un giorno lavorativo.'
+            : dati.orari.length
             ? 'Ho ricevuto la tua proposta, grazie. Ti confermo io l\'orario, o te ne propongo un altro, di solito entro poche ore.'
             : 'Ho ricevuto la tua richiesta, grazie. Ti rispondo io personalmente, di solito entro poche ore.', false);
           form.reset();
           var orari = form.querySelector('[data-orari]');
           if (orari) { orari.dispatchEvent(new Event('change')); }
           if (window.SiteAnalytics) {
-            window.SiteAnalytics.evento('contatto_inviato', { fonte: 'destinazione', pagina: location.pathname, orari: dati.orari.length });
+            window.SiteAnalytics.evento('contatto_inviato', { fonte: colleghi ? 'supervisione' : 'destinazione', pagina: location.pathname, orari: dati.orari.length });
           }
           if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo(); }
         })
