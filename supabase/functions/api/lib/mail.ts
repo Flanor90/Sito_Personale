@@ -364,9 +364,16 @@ export function emailNotificaRichiesta(opts: {
    semplice, con le righe che servono per capire chi e da dove.
    ============================================================ */
 
-/** A chi mandare gli avvisi: l'indirizzo dedicato, se c'è. */
+/**
+ * Dove arrivano gli avvisi se nel pannello «Avvisi a» è vuoto. Non è la
+ * casella che spedisce: Gmail segna come già lette le email che un account
+ * manda a se stesso, e il telefono non suonerebbe.
+ */
+const AVVISI_PREDEFINITI = 'alberto.delbove@gmail.com';
+
+/** A chi mandare gli avvisi: il campo del pannello, altrimenti il predefinito. */
 export function destinatarioAvvisi(s: ImpostazioniSmtp): string | undefined {
-  return s.notifiche_a || s.reply_to || s.from_email || undefined;
+  return s.notifiche_a || AVVISI_PREDEFINITI;
 }
 
 export function emailAvviso(opts: {
