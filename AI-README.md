@@ -21,7 +21,7 @@ Sito statico personale di Alberto Del Bove, psicoterapeuta (`albertodelbove-psic
 | `supabase/migrations/` | Schema, RLS, statistiche |
 | `newsletter/`, `test/` | Pagine newsletter e test/quiz |
 | `tests/` | `node --test`: analytics, markdown, newsletter, quiz-core |
-| `.github/workflows/` | `test.yml` (CI), `pubblica-articoli.yml` (lunedì 05:00 UTC: ribuilda e pubblica gli articoli in scadenza), `indexnow.yml` |
+| `.github/workflows/` | `test.yml` (CI), `pubblica-articoli.yml` (lunedì 05:00 UTC: ribuilda e pubblica gli articoli in scadenza), `indexnow.yml`, `funzioni-supabase.yml` (pubblica le funzioni Supabase quando cambiano, con il segreto `SUPABASE_ACCESS_TOKEN`) |
 | `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt` | SEO / GEO |
 | `tools/indexnow.js` | Ping IndexNow (Bing) a ogni modifica |
 

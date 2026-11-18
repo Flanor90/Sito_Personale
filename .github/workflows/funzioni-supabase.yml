@@ -1,0 +1,39 @@
+name: Pubblica le funzioni Supabase
+
+# Quando cambia il codice del server (supabase/functions/), lo pubblica
+# su Supabase da solo, così una modifica non resta solo su GitHub.
+# Usa il segreto SUPABASE_ACCESS_TOKEN del repository (token personale
+# dell'account, da supabase.com/dashboard/account/tokens, inizia con sbp_).
+#
+# --no-verify-jwt: "api" riceve i moduli del sito, che non hanno login;
+# "admin" controlla da sé l'utente con auth.getUser. Con la verifica JWT
+# di Supabase i moduli del sito smetterebbero di funzionare.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/functions/**"
+      - ".github/workflows/funzioni-supabase.yml"
+  workflow_dispatch:
+
+jobs:
+  pubblica:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controlla che il token ci sia
+        if: env.SUPABASE_ACCESS_TOKEN == ''
+        run: |
+          echo "::error::Manca il segreto SUPABASE_ACCESS_TOKEN (GitHub → Settings → Secrets and variables → Actions)."
+          exit 1
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: sh supabase/sync-lib.sh
+      - run: supabase functions deploy api --project-ref ynmxgdcikqlgcupfszza --no-verify-jwt
+      - run: supabase functions deploy admin --project-ref ynmxgdcikqlgcupfszza --no-verify-jwt
+      - name: Controlla che il sito risponda
+        run: curl -fsS https://ynmxgdcikqlgcupfszza.supabase.co/functions/v1/api/ping
