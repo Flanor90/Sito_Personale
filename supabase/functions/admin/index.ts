@@ -105,9 +105,11 @@ async function leggiTutte(sb: ReturnType<typeof servizio>) {
   const smtp = await leggiImpostazioni<ImpostazioniSmtp>(sb, 'smtp');
   const trello = await leggiImpostazioni<ImpostazioniTrello>(sb, 'trello');
   const sito = await leggiImpostazioni<ImpostazioniSito>(sb, 'sito');
+  const calendario = await leggiImpostazioni<Record<string, unknown>>(sb, 'calendario');
 
   return {
     ok: true,
+    calendario,
     smtp: { ...smtp, pass: smtp.pass ? MASCHERA : '' },
     trello: {
       ...trello,
@@ -143,6 +145,7 @@ async function salva(sb: ReturnType<typeof servizio>, body: Record<string, unkno
   }
 
   if (body.sito) await salvaImpostazioni(sb, 'sito', body.sito as Record<string, unknown>);
+  if (body.calendario) await salvaImpostazioni(sb, 'calendario', body.calendario as Record<string, unknown>);
 
   return await leggiTutte(sb);
 }

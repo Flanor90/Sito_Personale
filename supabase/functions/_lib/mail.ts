@@ -312,8 +312,11 @@ export function emailNotificaRichiesta(opts: {
   linkTrello?: string | null;
   sito: ImpostazioniSito;
   supervisione?: boolean;
+  /** Se la persona ha scelto un orario dal calendario. */
+  prenotazione?: { quando: string; dove: string; link: string; occupato?: boolean } | null;
 }): { oggetto: string; html: string; testo: string } {
   const cosa = opts.supervisione ? 'Richiesta di supervisione' : 'Richiesta primo colloquio';
+  const pr = opts.prenotazione;
   const riga = (etichetta: string, valore?: string | null) =>
     valore
       ? `<tr><td style="padding:5px 12px 5px 0;color:#6b6b6b;white-space:nowrap;vertical-align:top;">${esc(etichetta)}</td>
@@ -339,6 +342,12 @@ export function emailNotificaRichiesta(opts: {
                        border-left:3px solid ${MIRTILLO};white-space:pre-wrap;">${esc(opts.messaggio)}</div>`
         : ''
     }
+      ${pr ? `<div style="margin:20px 0 0;padding:16px 18px;background:#E2E4F1;border-radius:12px;">
+          <p style="margin:0 0 4px;font-size:13px;color:#6b6b6b;">Orario scelto</p>
+          <p style="margin:0;font-size:17px;"><strong>${esc(pr.quando)}</strong>, ${esc(pr.dove)}</p>
+          ${pr.occupato ? '<p style="margin:8px 0 0;font-size:13px;color:#9a3412;">Attenzione: nel frattempo questo orario risulta occupato. Proponine un altro.</p>' : ''}
+        </div>
+        ${bottone('Conferma o proponi un altro orario', pr.link)}` : ''}
       ${opts.linkTrello ? bottone('Apri la scheda su Trello', opts.linkTrello) : ''}`,
   });
 
@@ -352,10 +361,11 @@ export function emailNotificaRichiesta(opts: {
     opts.temi.length ? `Temi: ${opts.temi.join(' · ')}` : '',
     '',
     opts.messaggio ?? '',
+    pr ? `\nOrario scelto: ${pr.quando}, ${pr.dove}${pr.occupato ? ' (risulta occupato: proponine un altro)' : ''}\nConferma o proponi: ${pr.link}` : '',
     opts.linkTrello ? `\nTrello: ${opts.linkTrello}` : '',
   ].filter(Boolean).join('\n');
 
-  return { oggetto: `${cosa} — ${opts.nome}`, html, testo };
+  return { oggetto: `${cosa} — ${opts.nome}${pr ? ` — ${pr.quando}` : ''}`, html, testo };
 }
 
 /* ============================================================
@@ -641,4 +651,162 @@ export function emailAccoglienza(opts: {
     '', firma, '', `Per non ricevere più queste email: ${opts.linkDisiscrizione}`,
   ].filter((r, i, a) => r !== '' || a[i - 1] !== '').join('\n');
   return { oggetto: p.oggetto, html, testo };
+}
+
+/* ============================================================
+   Prenotazione del colloquio conoscitivo
+   ------------------------------------------------------------
+   La persona sceglie un orario, Alberto conferma o ne propone un altro,
+   la persona accetta o ne sceglie un altro ancora. Ogni email porta alla
+   pagina /prenotazione/ del sito con il proprio link personale: lì si
+   conferma, si cambia orario o si annulla. Nelle email nessun pulsante
+   agisce da solo, perché i filtri antispam aprono i link per controllarli
+   e confermerebbero al posto delle persone.
+   ============================================================ */
+
+export type DatiPrenotazione = {
+  nome?: string | null;
+  email: string;
+  telefono?: string | null;
+  setting: 'online' | 'studio';
+  quando: string;
+  slot_start: string;
+  slot_end: string;
+};
+
+function dove(setting: string): string {
+  return setting === 'studio' ? 'nello studio di Itri, in via Luigi Pirandello 8' : 'online, in videochiamata';
+}
+
+function aaaammgg(iso: string): string {
+  return new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+}
+
+export function linkGoogleCalendar(p: DatiPrenotazione, per: 'persona' | 'alberto'): string {
+  const titolo = per === 'persona'
+    ? 'Colloquio conoscitivo con il Dott. Alberto Del Bove'
+    : `Colloquio conoscitivo: ${p.nome || p.email}`;
+  const dettagli = per === 'persona'
+    ? (p.setting === 'online' ? 'Il link per la videochiamata arriva prima dell’incontro.' : 'Studio: via Luigi Pirandello 8, Itri (LT).')
+    : `${p.email}${p.telefono ? ' · ' + p.telefono : ''}`;
+  const q = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: titolo,
+    dates: `${aaaammgg(p.slot_start)}/${aaaammgg(p.slot_end)}`,
+    details: dettagli,
+    location: p.setting === 'studio' ? 'Via Luigi Pirandello 8, 04020 Itri LT' : 'Online',
+  });
+  return `https://calendar.google.com/calendar/render?${q}`;
+}
+
+export function emailPrenotazione(opts: {
+  per: 'persona' | 'alberto';
+  evento: 'ricevuta' | 'proposta' | 'nuovo_orario' | 'confermata' | 'annullata';
+  p: DatiPrenotazione;
+  link: string;
+  nota?: string | null;
+  sito: ImpostazioniSito;
+}): { oggetto: string; html: string; testo: string } {
+  const { per, evento, p, link, nota, sito } = opts;
+  const url = (sito.url || 'https://www.albertodelbove-psicologo.it').replace(/\/$/, '');
+  const chi = p.nome || p.email;
+  const ciao = saluto(p.nome);
+  const firma = 'A presto,\nAlberto Del Bove';
+  const wa = waLink(`Buongiorno Dott. Del Bove, le scrivo per il colloquio di ${p.quando}.`);
+
+  type Testo = { oggetto: string; titolo: string; righe: string[]; bottone: [string, string]; secondario?: [string, string] };
+  let t: Testo;
+
+  if (per === 'persona') {
+    t = {
+      ricevuta: {
+        oggetto: `Ho ricevuto la tua richiesta per ${p.quando}`,
+        titolo: 'Ho ricevuto la tua richiesta',
+        righe: [
+          `${ciao} hai chiesto un colloquio conoscitivo per ${p.quando}, ${dove(p.setting)}.`,
+          'Te lo confermo io, di solito entro poche ore: ti arriva un’altra email. Se quell’orario non riesco a garantirtelo, te ne propongo uno vicino.',
+          'Se nel frattempo devi cambiare orario o annullare, puoi farlo da qui.',
+        ],
+        bottone: ['Gestisci l’appuntamento', link] as [string, string],
+        secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
+      },
+      proposta: {
+        oggetto: `Ti propongo un altro orario: ${p.quando}`,
+        titolo: 'Ti propongo un altro orario',
+        righe: [
+          `${ciao} l’orario che avevi scelto non riesco a garantirtelo. Ti propongo ${p.quando}, ${dove(p.setting)}.`,
+          'Se ti va bene, confermalo con un click. Altrimenti puoi sceglierne un altro tra quelli liberi.',
+        ],
+        bottone: ['Rispondi alla proposta', link] as [string, string],
+        secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
+      },
+      confermata: {
+        oggetto: `Confermato: ${p.quando}`,
+        titolo: 'Il colloquio è confermato',
+        righe: [
+          `${ciao} il nostro colloquio conoscitivo è confermato per ${p.quando}, ${dove(p.setting)}.`,
+          p.setting === 'online'
+            ? 'Qualche minuto prima ti mando il link per la videochiamata. Ti basta un posto tranquillo, dove nessuno ti senta, e una connessione stabile.'
+            : 'Lo studio è in via Luigi Pirandello 8, a Itri (LT), e in zona si parcheggia facilmente.',
+          'Se devi cambiare orario o annullare, puoi farlo dal link qui sotto, anche all’ultimo momento.',
+        ],
+        bottone: ['Aggiungi a Google Calendar', linkGoogleCalendar(p, 'persona')] as [string, string],
+        secondario: ['Cambia orario o annulla', link] as [string, string],
+      },
+      annullata: {
+        oggetto: `Colloquio annullato: ${p.quando}`,
+        titolo: 'Il colloquio è annullato',
+        righe: [
+          `${ciao} il colloquio di ${p.quando} è annullato.`,
+          'Se vuoi fissarne un altro, puoi sceglierlo dal sito quando vuoi, oppure scrivermi.',
+        ],
+        bottone: ['Scegli un nuovo orario', `${url}/#contatti`] as [string, string],
+        secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
+      },
+      nuovo_orario: { oggetto: '', titolo: '', righe: [], bottone: ['', ''] as [string, string] },
+    }[evento];
+  } else {
+    t = {
+      ricevuta: { oggetto: '', titolo: '', righe: [], bottone: ['', ''] as [string, string] },
+      nuovo_orario: {
+        oggetto: `${chi} propone un altro orario: ${p.quando}`,
+        titolo: 'Nuovo orario proposto',
+        righe: [`${chi} ha scelto ${p.quando}, ${dove(p.setting)}.`, 'Confermalo o proponi un altro orario.'],
+        bottone: ['Conferma o proponi un altro orario', link] as [string, string],
+      },
+      proposta: { oggetto: '', titolo: '', righe: [], bottone: ['', ''] as [string, string] },
+      confermata: {
+        oggetto: `Confermato: ${chi}, ${p.quando}`,
+        titolo: 'Colloquio confermato',
+        righe: [`Colloquio conoscitivo con ${chi} confermato per ${p.quando}, ${dove(p.setting)}.`, `Email: ${p.email}${p.telefono ? ` · Telefono: ${p.telefono}` : ''}`],
+        bottone: ['Aggiungi a Google Calendar', linkGoogleCalendar(p, 'alberto')] as [string, string],
+        secondario: ['Gestisci l’appuntamento', link] as [string, string],
+      },
+      annullata: {
+        oggetto: `Annullato: ${chi}, ${p.quando}`,
+        titolo: 'Colloquio annullato',
+        righe: [`${chi} ha annullato il colloquio di ${p.quando}.`],
+        bottone: ['Vedi l’appuntamento', link] as [string, string],
+      },
+    }[evento];
+  }
+
+  const html = cornice({
+    sito,
+    preheader: t.righe[0],
+    contenuto: `
+      ${titolo(t.titolo)}
+      ${t.righe.map(par).join('')}
+      ${nota ? `<div style="margin:0 0 14px;padding:14px 16px;background:${CREMA};border-radius:12px;border-left:3px solid ${MIRTILLO};white-space:pre-wrap;">${esc(nota)}</div>` : ''}
+      ${bottone(t.bottone[0], t.bottone[1])}
+      ${t.secondario ? linkSecondario(t.secondario[0], t.secondario[1]) : ''}
+      ${per === 'persona' ? `<p style="margin:0;white-space:pre-line;">${esc(firma)}</p>` : ''}`,
+  });
+  const testo = [
+    ...t.righe, nota ? `\n«${nota}»` : '', '',
+    `${t.bottone[0]}: ${t.bottone[1]}`,
+    t.secondario ? `${t.secondario[0]}: ${t.secondario[1]}` : '',
+    per === 'persona' ? `\n${firma}` : '',
+  ].filter((r) => r !== '').join('\n');
+  return { oggetto: t.oggetto, html, testo };
 }

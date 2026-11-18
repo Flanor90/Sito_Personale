@@ -209,7 +209,7 @@ function componi({ meta, contenuto }, parti) {
   <title>${meta.titolo}</title>
   <meta name="description" content="${meta.descrizione}">
   <meta name="author" content="Alberto Del Bove">
-  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="robots" content="${meta.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}">
   <link rel="canonical" href="${url}">
   <link rel="alternate" type="application/rss+xml" title="Articoli di Alberto Del Bove" href="${SITO}/articoli/feed.xml">
 ${alternati}
@@ -581,11 +581,14 @@ function main() {
     console.log(`  /${pagina.meta.slug}/  ←  pagine/${f}`);
   });
 
-  scriviSitemap(fatte);
+  // Le pagine di servizio ("noindex": true, come /prenotazione/) restano
+  // fuori da sitemap e llms.txt: non sono pagine da trovare.
+  const pubbliche = fatte.filter((p) => !p.noindex);
+  scriviSitemap(pubbliche);
   aggiornaUltimiInHome(fatte);
   if (fs.existsSync(path.join(RADICE, 'articoli'))) { scriviFeed(fatte); }
-  scriviLlms(fatte);
-  scriviLlmsCompleto(testi);
+  scriviLlms(pubbliche);
+  scriviLlmsCompleto(testi.filter((p) => !p.meta.noindex));
   console.log(`\n${fatte.length} pagine generate, sitemap.xml aggiornata.`);
 }
 

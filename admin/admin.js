@@ -1236,7 +1236,7 @@
     caricamento();
     server('settings.get').then(function (s) {
       stato.impostazioni = s;
-      var smtp = s.smtp || {}, trello = s.trello || {}, sito = s.sito || {};
+      var smtp = s.smtp || {}, trello = s.trello || {}, sito = s.sito || {}, cal = s.calendario || {};
 
       $('#contenuto').innerHTML =
         intestazione('Impostazioni', 'Le password stanno sul server: qui vedi solo i pallini.') +
@@ -1305,6 +1305,27 @@
           '<button class="bottone secondario" id="btn-prova-trello">Prova il collegamento</button>' +
         '</div></div>' +
 
+        /* ---------- Calendario ---------- */
+        '<div class="scheda"><h2>Prenotazioni del colloquio</h2>' +
+        '<p class="aiuto">Gli orari che le persone vedono nel modulo. Chi sceglie un orario ti manda una ' +
+        'richiesta: la confermi o ne proponi un altro dal link nell\'email di avviso.</p>' +
+        '<div id="esito-cal"></div>' +
+        '<div class="avviso info">Scrivi i giorni e le ore di inizio, per esempio ' +
+        '<b>lun-ven: 9 10 11 12 14 15 16 17</b>, oppure <b>lun,mer: 9 10; ven: 15 16</b>. ' +
+        'Se lo studio ha orari diversi dall\'online, scrivili a parte; se lasci vuoto valgono quelli online.</div>' +
+        '<div class="griglia g2">' +
+          campo('cal-online', 'Orari online', cal.orari_online || 'lun-ven: 9 10 11 12 14 15 16 17') +
+          campo('cal-studio', 'Orari in studio a Itri', cal.orari_studio || '') +
+          campo('cal-preavviso', 'Preavviso minimo (ore)', cal.preavviso_ore || 24, 'number') +
+          campo('cal-giorni', 'Prenotabile fino a (giorni)', cal.giorni_avanti || 21, 'number') +
+        '</div>' +
+        '<div class="campo"><label for="cal-ics">Il tuo Google Calendar <span class="facolt">(facoltativo)</span></label>' +
+          '<input type="text" id="cal-ics" value="' + esc(cal.ics_url || '') + '" placeholder="https://calendar.google.com/calendar/ical/…/private-…/basic.ics"></div>' +
+        '<p class="aiuto">In Google Calendar: Impostazioni → il tuo calendario → «Indirizzo segreto in formato iCal». ' +
+        'Copialo qui e gli orari in cui sei impegnato spariscono dal modulo. È un indirizzo privato: resta sul server.</p>' +
+        '<div class="barra-azioni" style="margin-top:18px">' +
+          '<button class="bottone" id="btn-salva-cal">Salva</button></div></div>' +
+
         /* ---------- Sito ---------- */
         '<div class="scheda"><h2>Il sito</h2>' +
         '<p class="aiuto">Compare nel piè di pagina delle email che partono da qui.</p>' +
@@ -1368,6 +1389,24 @@
           .then(function () { return server('trello.test'); })
           .then(function (d) { esito('#esito-trello', d.messaggio, 'ok'); occupato(b, false); })
           .catch(function (e) { esito('#esito-trello', e.message, 'ko'); occupato(b, false); });
+      });
+
+      $('#btn-salva-cal').addEventListener('click', function () {
+        var b = this;
+        occupato(b, true, 'Salvo…');
+        server('settings.save', {
+          calendario: {
+            orari_online: $('#cal-online').value.trim(),
+            orari_studio: $('#cal-studio').value.trim(),
+            preavviso_ore: parseInt($('#cal-preavviso').value, 10) || 24,
+            giorni_avanti: parseInt($('#cal-giorni').value, 10) || 21,
+            ics_url: $('#cal-ics').value.trim()
+          }
+        }).then(function (s) {
+          stato.impostazioni = s;
+          esito('#esito-cal', 'Salvato. Il modulo mostra già i nuovi orari.', 'ok');
+          occupato(b, false);
+        }).catch(function (e) { esito('#esito-cal', e.message, 'ko'); occupato(b, false); });
       });
 
       $('#btn-salva-sito').addEventListener('click', function () {

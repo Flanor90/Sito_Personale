@@ -9,16 +9,16 @@ Sito statico personale di Alberto Del Bove, psicoterapeuta (`albertodelbove-psic
 | Percorso | Cosa contiene |
 |---|---|
 | `index.html` | Home one-page. Contiene header/footer condivisi fra i marcatori `INIZIO/FINE … CONDIVISA` |
-| `pagine/*.html` | **Sorgenti** delle pagine dedicate e degli articoli (contenuto + metadati; il blocco `articolo` con data programma l'uscita) |
+| `pagine/*.html` | **Sorgenti** delle pagine dedicate e degli articoli (contenuto + metadati; il blocco `articolo` con data programma l'uscita; `"noindex": true` esclude la pagina da sitemap e llms, come `prenotazione` ed `esito`) |
 | `<slug>/index.html` (es. `depressione/`, `chi-sono/`, `colleghi/`, `scritti/`, `psicologo-a-itri/`, `en/`…) | **Generate** da `build-pagine.js` (sorgente + header/footer di `index.html`) — non modificare a mano |
 | `build-pagine.js` | Assembla le pagine dedicate, l'elenco `articoli/` (+ `feed.xml`) e la sitemap |
 | `build-icone.js` | Genera le icone (`assets/icone.js`) |
 | `build-pdf.js`, `pdf/`, `tools/genera-guida-pdf.js` | Generazione guide PDF (copertine, font) |
-| `assets/` | JS (`analytics`, `consenso`, `i18n`, `icone`, `lettore`, `newsletter`, `pagine`, `quiz-core`, `report-pdf`, `richiesta`, `temi`), `tailwind.css` (generato), immagini, PDF guide, `etsy/` |
+| `assets/` | JS (`analytics`, `consenso`, `i18n`, `icone`, `lettore`, `newsletter`, `pagine`, `quiz-core`, `prenotazione` (pagina /prenotazione/: conferma, proposta, annullamento), `report-pdf`, `richiesta` (moduli brevi e calendario degli orari liberi), `temi`), `tailwind.css` (generato), immagini, PDF guide, `etsy/` |
 | `tailwind.config.js`, `tailwind.input.css` | Sorgenti CSS |
 | `admin/` | Pannello admin (contatti/email): `admin.js`, `markdown.js` |
-| `supabase/functions/` | Edge functions Deno: `api/` (pubblica), `admin/`, `_lib/` (db, mail, trello, util) |
-| `supabase/migrations/` | Schema, RLS, statistiche |
+| `supabase/functions/` | Edge functions Deno: `api/` (pubblica), `admin/`, `_lib/` (db, mail, trello, util, calendario: orari liberi e lettura iCal). Rotte prenotazione in `api`: `slots`, `booking` |
+| `supabase/migrations/` | Schema, RLS, statistiche, prenotazioni (`bookings`, applicata dal workflow delle funzioni) |
 | `newsletter/`, `test/` | Pagine newsletter e test/quiz |
 | `tests/` | `node --test`: analytics, markdown, newsletter, quiz-core |
 | `.github/workflows/` | `test.yml` (CI), `pubblica-articoli.yml` (lunedì 05:00 UTC: ribuilda e pubblica gli articoli in scadenza), `indexnow.yml`, `funzioni-supabase.yml` (pubblica le funzioni Supabase quando cambiano, con il segreto `SUPABASE_ACCESS_TOKEN`) |

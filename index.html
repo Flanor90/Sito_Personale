@@ -2095,9 +2095,9 @@
       return { nome: nome, email: email, body: body, orari: orari };
     }
 
-    /* Fino a tre orari proposti per il colloquio online: li confermo o ne
-       propongo un altro. Se richiesta.js non è arrivato, il modulo funziona
-       come prima, senza questa parte. */
+    /* Il calendario degli orari liberi (online o in studio): la persona ne
+       sceglie uno e io lo confermo o ne propongo un altro. Se richiesta.js
+       non è arrivato, il modulo funziona come prima, senza questa parte. */
     if (window.ProposteOrari) {
       document.getElementById('cf-orari').innerHTML = window.ProposteOrari.html('cf');
       window.ProposteOrari.attiva(form);
@@ -2175,6 +2175,9 @@
           setting: document.getElementById('cf-setting').value,
           topics:  Array.from(document.querySelectorAll('input[name="temi"]:checked'))
                      .map(function (c) { return c.value; }),
+          // L'orario scelto dal calendario diventa una prenotazione in attesa
+          // della mia conferma (vedi assets/richiesta.js e /prenotazione/).
+          slot:    window.ProposteOrari && window.ProposteOrari.slot ? window.ProposteOrari.slot(form) : '',
           message: [
             data.orari.length ? window.ProposteOrari.testo(data.orari) : '',
             document.getElementById('cf-messaggio').value.trim()
@@ -2188,7 +2191,7 @@
         .then(function (esito) {
           if (!esito || !esito.ok) { throw new Error('rifiutata'); }
           showFeedback(data.orari.length
-            ? 'Ho ricevuto la tua proposta. Ti confermo io l\'orario, o te ne propongo un altro, di solito entro poche ore.'
+            ? 'Ho ricevuto la tua richiesta per ' + data.orari[0] + '. Te lo confermo io per email, di solito entro poche ore.'
             : 'Ho ricevuto la tua richiesta. Ti rispondo io personalmente, di solito entro poche ore. Se nel frattempo preferisci scrivermi direttamente, trovi email e WhatsApp qui accanto.', false);
           form.reset();
           const boxOrari = form.querySelector('[data-orari]');

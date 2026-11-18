@@ -1,0 +1,24 @@
+<!--METADATI
+{
+  "slug": "prenotazione",
+  "briciola": "Il tuo appuntamento",
+  "titolo": "Il tuo appuntamento | Alberto Del Bove",
+  "descrizione": "Conferma, cambia orario o annulla il colloquio conoscitivo prenotato dal sito.",
+  "noindex": true,
+  "priorita": "0.1",
+  "frequenza": "yearly",
+  "script": ["prenotazione.js"]
+}
+-->
+
+<!-- Si arriva qui solo dal link personale di un'email. Il link apre la
+     pagina e basta: nessuna azione parte da sola, perché i filtri antispam
+     aprono i link per controllarli. Conferme, proposte e annullamenti
+     partono solo dai pulsanti. La logica è in assets/prenotazione.js. -->
+<section class="max-w-xl mx-auto px-5 pt-12 pb-20">
+  <div id="pren" aria-live="polite">
+    <h1 class="font-serif text-3xl sm:text-4xl leading-[1.15] text-notte mb-4">Il tuo appuntamento</h1>
+    <p class="text-lg leading-relaxed text-inchiostro/75">Carico l'appuntamento…</p>
+    <noscript><p class="mt-4 text-inchiostro/75">Questa pagina ha bisogno di JavaScript. Se preferisci, scrivimi su <a class="underline text-mirtillo-700" href="https://wa.me/393455032318">WhatsApp</a>.</p></noscript>
+  </div>
+</section>

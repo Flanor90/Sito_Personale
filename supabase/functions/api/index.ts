@@ -14,10 +14,14 @@
 
 import { entroIlLimite, type ImpostazioniSito, type ImpostazioniSmtp, type ImpostazioniTrello, leggiImpostazioni, servizio } from './lib/db.ts';
 import {
-  ACCOGLIENZA_GIORNI, avvisa, connessione, emailAccoglienza, emailAvviso, emailConferma, emailMateriale,
-  emailNotificaRichiesta, emailRicevutaRichiesta, inviaUna, type Materiale, smtpConfigurato,
+  ACCOGLIENZA_GIORNI, avvisa, connessione, type DatiPrenotazione, destinatarioAvvisi, emailAccoglienza, emailAvviso,
+  emailConferma, emailMateriale, emailNotificaRichiesta, emailPrenotazione, emailRicevutaRichiesta, inviaUna,
+  type Materiale, smtpConfigurato,
 } from './lib/mail.ts';
 import { creaScheda, descrizioneRichiesta } from './lib/trello.ts';
+import {
+  type ImpostazioniCalendario, impegniCalendario, type Intervallo, orariLiberi, quandoLeggibile,
+} from './lib/calendario.ts';
 import {
   cors,
   dominioReferrer,
@@ -46,6 +50,8 @@ Deno.serve(async (req) => {
       case 'unsubscribe': return await unsubscribe(req);
       case 'track':       return await track(req, origin);
       case 'ping':        return json({ ok: true }, 200, origin);
+      case 'slots':       return await slots(req, origin);
+      case 'booking':     return await booking(req, origin);
       default:            return json({ ok: false, errore: 'rotta sconosciuta' }, 404, origin);
     }
   } catch (e) {
@@ -187,6 +193,26 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
     const setting = testo(b.setting, 80);
     const supervisione = source === 'supervisione';
 
+    // Orario scelto dal calendario del modulo: diventa una prenotazione in
+    // attesa della conferma di Alberto. Se nel frattempo qualcuno l'ha preso,
+    // la prenotazione nasce lo stesso e l'avviso lo segnala: Alberto ne
+    // propone un altro, la persona non resta senza risposta.
+    let pren: { riga: Record<string, string>; occupato: boolean } | null = null;
+    const slotScelto = testo(b.slot, 40);
+    if (slotScelto && !isNaN(Date.parse(slotScelto)) && Date.parse(slotScelto) > Date.now()) {
+      const modo = /itri|studio/i.test(setting ?? '') ? 'studio' : 'online';
+      const conf = await leggiImpostazioni<ImpostazioniCalendario>(sb, 'calendario');
+      const liberi = await liberiPer(sb, conf, modo);
+      const inizio = new Date(slotScelto).toISOString();
+      const { data: riga } = await sb.from('bookings').insert({
+        contact_id: contatto!.id, name: nome, email, phone: telefono, setting: modo,
+        slot_start: inizio,
+        slot_end: new Date(Date.parse(inizio) + (conf.durata_min || 45) * 60000).toISOString(),
+        token_persona: nuovoToken(), token_alberto: nuovoToken(),
+      }).select().single();
+      if (riga) pren = { riga, occupato: !liberi.includes(inizio) };
+    }
+
     const { data: msg } = await sb.from('messages').insert({
       contact_id: contatto!.id,
       name: nome,
@@ -225,11 +251,25 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
     // Avviso ad Alberto per email, così non deve controllare il pannello.
     await avvisa(smtp, emailNotificaRichiesta({
       nome: nome || email, email, telefono, setting, temi, messaggio: corpo, linkTrello, sito, supervisione,
+      prenotazione: pren ? {
+        quando: quandoLeggibile(pren.riga.slot_start),
+        dove: pren.riga.setting === 'studio' ? 'in studio a Itri' : 'online',
+        link: linkPrenotazione(sito, pren.riga.token_alberto),
+        occupato: pren.occupato,
+      } : null,
     }));
+    if (pren && messaggioId) {
+      await sb.from('bookings').update({ message_id: messaggioId }).eq('id', pren.riga.id);
+    }
 
     // E alla persona: la conferma che la richiesta è arrivata, che cosa
     // succede adesso e, se preferisce, WhatsApp.
-    const ricevuta = emailRicevutaRichiesta({ nome, lang, sito, supervisione });
+    const ricevuta = pren
+      ? emailPrenotazione({
+        per: 'persona', evento: 'ricevuta', p: datiPrenotazione(pren.riga),
+        link: linkPrenotazione(sito, pren.riga.token_persona), sito,
+      })
+      : emailRicevutaRichiesta({ nome, lang, sito, supervisione });
     if (await inviaUna(smtp, email, ricevuta)) {
       await sb.from('contact_events').insert({
         contact_id: contatto!.id, kind: 'email_ricevuta', source, lang, page: pagina, payload: {},
@@ -384,29 +424,12 @@ async function unsubscribe(req: Request): Promise<Response> {
 
 /** Pagina di esito, autoportante e nei colori del sito. */
 function pagina(titolo: string, corpo: string, positiva: boolean): Response {
-  const html = `<!doctype html><html lang="it"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex">
-<title>${esc(titolo)}</title>
-<style>
-  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-       background:#F7F5F1;color:#2B2B2B;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;padding:24px}
-  .c{max-width:480px;background:#fff;border-radius:20px;padding:40px 34px;text-align:center;
-     box-shadow:0 2px 20px rgba(27,42,58,.08)}
-  .b{width:52px;height:52px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;
-     justify-content:center;font-size:26px;background:${positiva ? '#E2E4F1' : '#F3EDE6'}}
-  h1{margin:0 0 12px;font:normal 25px/1.25 Georgia,"Times New Roman",serif;color:#1B2A3A}
-  p{margin:0 0 26px;color:#2B2B2Bcc}
-  a{display:inline-block;background:#4C507F;color:#fff;text-decoration:none;font-weight:600;
-    padding:12px 26px;border-radius:11px;font-size:15px}
-</style></head><body><div class="c">
-<div class="b">${positiva ? '✓' : '!'}</div>
-<h1>${esc(titolo)}</h1><p>${esc(corpo)}</p>
-<a href="https://www.albertodelbove-psicologo.it/">Torna al sito</a>
-</div></body></html>`;
-  return new Response(html, {
-    status: 200,
-    headers: { 'Content-Type': 'text/html; charset=utf-8', 'X-Robots-Tag': 'noindex' },
+  // Supabase serve l'HTML delle funzioni come testo semplice (la persona
+  // vedrebbe il codice): la pagina vera sta sul sito, qui solo il rimando.
+  const q = new URLSearchParams({ t: titolo, m: corpo, ok: positiva ? '1' : '0' });
+  return new Response(null, {
+    status: 302,
+    headers: { Location: `https://www.albertodelbove-psicologo.it/esito/?${q}`, 'X-Robots-Tag': 'noindex' },
   });
 }
 
@@ -606,4 +629,145 @@ async function linkDisiscrizione(sb: ReturnType<typeof servizio>, contactId: str
     await sb.from('tokens').insert({ token, contact_id: contactId, purpose: 'unsubscribe' });
   }
   return `${Deno.env.get('SUPABASE_URL')}/functions/v1/api/unsubscribe?t=${token}`;
+}
+
+/* ============================================================
+   Prenotazione del colloquio conoscitivo
+   ------------------------------------------------------------
+   GET  /api/slots?setting=online|studio   orari liberi
+   POST /api/booking { t, azione, slot?, nota? }
+        azione: stato | conferma | proponi | annulla
+   Il token dice chi sta agendo: quello della persona o quello di Alberto.
+   ============================================================ */
+
+const STATI_ATTIVI = ['in_attesa', 'proposta', 'confermata'];
+
+function linkPrenotazione(sito: ImpostazioniSito, token: string): string {
+  return `${(sito.url || 'https://www.albertodelbove-psicologo.it').replace(/\/$/, '')}/prenotazione/?t=${token}`;
+}
+
+function datiPrenotazione(r: Record<string, string>): DatiPrenotazione {
+  return {
+    nome: r.name, email: r.email, telefono: r.phone,
+    setting: r.setting === 'studio' ? 'studio' : 'online',
+    quando: quandoLeggibile(r.slot_start), slot_start: r.slot_start, slot_end: r.slot_end,
+  };
+}
+
+async function liberiPer(
+  sb: ReturnType<typeof servizio>, conf: ImpostazioniCalendario, setting: 'online' | 'studio', escludi?: string,
+): Promise<string[]> {
+  const giorni = Math.min(Math.max(conf.giorni_avanti || 21, 3), 60);
+  const { data } = await sb.from('bookings').select('id, slot_start, slot_end')
+    .in('status', STATI_ATTIVI).gte('slot_end', new Date().toISOString());
+  const occupati: Intervallo[] = (data ?? []).filter((r) => r.id !== escludi)
+    .map((r) => ({ inizio: Date.parse(r.slot_start), fine: Date.parse(r.slot_end) }));
+  occupati.push(...await impegniCalendario(conf.ics_url, Date.now() + (giorni + 1) * 864e5));
+  return orariLiberi({ conf, setting, occupati });
+}
+
+async function slots(req: Request, origin: string | null): Promise<Response> {
+  const setting = new URL(req.url).searchParams.get('setting') === 'studio' ? 'studio' : 'online';
+  const sb = servizio();
+  const conf = await leggiImpostazioni<ImpostazioniCalendario>(sb, 'calendario');
+  return json({ ok: true, setting, slots: await liberiPer(sb, conf, setting) }, 200, origin);
+}
+
+async function booking(req: Request, origin: string | null): Promise<Response> {
+  if (req.method !== 'POST') return json({ ok: false }, 405, origin);
+  const b = await req.json().catch(() => ({}));
+  const token = testo(b.t, 100);
+  // Solo caratteri da token: il valore finisce in un filtro della query.
+  if (!token || !/^[A-Za-z0-9_-]+$/.test(token)) return json({ ok: false, errore: 'token' }, 400, origin);
+
+  const sb = servizio();
+  const impronta = await improntaChiamante(req, SALE);
+  if (!await entroIlLimite(sb, `booking:${impronta}`, 60, 60)) {
+    return json({ ok: false, errore: 'troppe richieste' }, 429, origin);
+  }
+
+  const { data: r } = await sb.from('bookings').select('*')
+    .or(`token_persona.eq.${token},token_alberto.eq.${token}`).maybeSingle();
+  if (!r) return json({ ok: false, errore: 'non trovata' }, 404, origin);
+  const ruolo: 'persona' | 'alberto' = r.token_alberto === token ? 'alberto' : 'persona';
+
+  const conf = await leggiImpostazioni<ImpostazioniCalendario>(sb, 'calendario');
+  const sito = await leggiImpostazioni<ImpostazioniSito>(sb, 'sito');
+  const smtp = await leggiImpostazioni<ImpostazioniSmtp>(sb, 'smtp');
+  const azione = String(b.azione || 'stato');
+  const nota = testo(b.nota, 1000);
+
+  const risposta = async (riga: Record<string, string>) => {
+    let messaggio: string | null = null;
+    if (ruolo === 'alberto' && riga.message_id) {
+      const { data: m } = await sb.from('messages').select('body, topics').eq('id', riga.message_id).maybeSingle();
+      messaggio = [m?.topics?.length ? `Temi: ${m.topics.join(', ')}` : '', m?.body ?? ''].filter(Boolean).join('\n\n') || null;
+    }
+    return json({
+      ok: true, ruolo, stato: riga.status, proposta_da: riga.proposed_by,
+      quando: quandoLeggibile(riga.slot_start), slot_start: riga.slot_start, slot_end: riga.slot_end,
+      setting: riga.setting, nome: ruolo === 'alberto' ? riga.name : null,
+      email: ruolo === 'alberto' ? riga.email : null, telefono: ruolo === 'alberto' ? riga.phone : null,
+      messaggio, nota: riga.note,
+      slots: riga.status === 'annullata' ? [] : await liberiPer(sb, conf, riga.setting === 'studio' ? 'studio' : 'online', riga.id),
+    }, 200, origin);
+  };
+
+  if (azione === 'stato') return await risposta(r);
+  if (r.status === 'annullata') return json({ ok: false, errore: 'annullata' }, 409, origin);
+
+  const altro = ruolo === 'alberto' ? 'persona' : 'alberto';
+  const aggiorna = async (patch: Record<string, unknown>) => {
+    const { data } = await sb.from('bookings')
+      .update({ ...patch, updated_at: new Date().toISOString() }).eq('id', r.id).select().single();
+    return data as Record<string, string>;
+  };
+  const avvisaAltro = async (riga: Record<string, string>, evento: Parameters<typeof emailPrenotazione>[0]['evento']) => {
+    const m = emailPrenotazione({
+      per: altro, evento, p: datiPrenotazione(riga), nota,
+      link: linkPrenotazione(sito, altro === 'alberto' ? riga.token_alberto : riga.token_persona), sito,
+    });
+    await inviaUna(smtp, altro === 'alberto' ? destinatarioAvvisi(smtp) : riga.email, m);
+  };
+
+  if (azione === 'conferma') {
+    const puo = (ruolo === 'alberto' && r.status === 'in_attesa') ||
+      (ruolo === 'persona' && r.status === 'proposta' && r.proposed_by === 'alberto');
+    if (!puo) return json({ ok: false, errore: 'stato' }, 409, origin);
+    const riga = await aggiorna({ status: 'confermata', note: nota ?? r.note });
+    // Entrambi ricevono la conferma con il link per il calendario.
+    for (const per of ['persona', 'alberto'] as const) {
+      const m = emailPrenotazione({
+        per, evento: 'confermata', p: datiPrenotazione(riga), nota: per === 'persona' && ruolo === 'alberto' ? nota : null,
+        link: linkPrenotazione(sito, per === 'alberto' ? riga.token_alberto : riga.token_persona), sito,
+      });
+      await inviaUna(smtp, per === 'alberto' ? destinatarioAvvisi(smtp) : riga.email, m);
+    }
+    return await risposta(riga);
+  }
+
+  if (azione === 'proponi') {
+    const slot = testo(b.slot, 40);
+    if (!slot || isNaN(Date.parse(slot))) return json({ ok: false, errore: 'slot' }, 400, origin);
+    const inizio = new Date(slot).toISOString();
+    const liberi = await liberiPer(sb, conf, r.setting === 'studio' ? 'studio' : 'online', r.id);
+    if (!liberi.includes(inizio)) return json({ ok: false, errore: 'occupato' }, 409, origin);
+    const riga = await aggiorna({
+      slot_start: inizio,
+      slot_end: new Date(Date.parse(inizio) + (Date.parse(r.slot_end) - Date.parse(r.slot_start))).toISOString(),
+      status: ruolo === 'alberto' ? 'proposta' : 'in_attesa',
+      proposed_by: ruolo,
+      note: nota,
+    });
+    await avvisaAltro(riga, ruolo === 'alberto' ? 'proposta' : 'nuovo_orario');
+    return await risposta(riga);
+  }
+
+  if (azione === 'annulla') {
+    const riga = await aggiorna({ status: 'annullata', note: nota });
+    await avvisaAltro(riga, 'annullata');
+    return await risposta(riga);
+  }
+
+  return json({ ok: false, errore: 'azione' }, 400, origin);
 }

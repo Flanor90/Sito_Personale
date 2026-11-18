@@ -1,0 +1,31 @@
+<!--METADATI
+{
+  "slug": "esito",
+  "briciola": "Esito",
+  "titolo": "Fatto | Alberto Del Bove",
+  "descrizione": "Esito di un'azione arrivata da un link nelle email del sito: conferma dell'iscrizione o disiscrizione.",
+  "noindex": true,
+  "priorita": "0.1",
+  "frequenza": "yearly"
+}
+-->
+
+<!-- Le funzioni del server rimandano qui dopo un click da email (conferma
+     dell'iscrizione, disiscrizione): Supabase mostrerebbe le loro pagine
+     come testo semplice. Titolo e messaggio arrivano nell'indirizzo e si
+     inseriscono come testo, mai come HTML. -->
+<section class="max-w-xl mx-auto px-5 pt-14 pb-20 text-center">
+  <div id="esito-icona" class="w-14 h-14 rounded-full bg-mirtillo-100 text-mirtillo-700 flex items-center justify-center mx-auto mb-6 text-2xl" aria-hidden="true">✓</div>
+  <h1 id="esito-titolo" class="font-serif text-3xl sm:text-4xl leading-[1.15] text-notte mb-4">Fatto</h1>
+  <p id="esito-testo" class="text-lg leading-relaxed text-inchiostro/80 mb-8">Tutto a posto.</p>
+  <a href="/" class="inline-flex items-center gap-2 bg-notte text-white px-6 py-3.5 rounded-full font-semibold hover:bg-mirtillo-700 transition-colors">Torna al sito</a>
+</section>
+
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    if (q.get('t')) { document.getElementById('esito-titolo').textContent = q.get('t'); document.title = q.get('t') + ' | Alberto Del Bove'; }
+    if (q.get('m')) { document.getElementById('esito-testo').textContent = q.get('m'); }
+    if (q.get('ok') === '0') { document.getElementById('esito-icona').textContent = '!'; }
+  })();
+</script>

@@ -241,6 +241,17 @@ niente.
   poi. Per spegnerla: in Supabase, tabella `app_settings`, chiave
   `accoglienza`, metti `"attivo": false`.
 
+**Prenotazione del colloquio.** Nei moduli la persona vede gli orari liberi
+(online o in studio) e ne sceglie uno. Ti arriva l'avviso con il pulsante
+«Conferma o proponi un altro orario», che apre la pagina /prenotazione/:
+lì confermi, proponi un altro orario o annulli. La persona riceve ogni
+passaggio per email e risponde dalla stessa pagina (accetta, sceglie un
+altro orario, annulla). Alla conferma entrambi ricevete il link per
+aggiungere l'appuntamento a Google Calendar. Orari, preavviso e il
+collegamento al tuo Google Calendar (indirizzo segreto iCal: gli impegni
+spariscono dagli orari liberi) si impostano nel pannello, sezione
+«Prenotazioni del colloquio».
+
 **Se cambi qualcosa nel codice del server** (`supabase/functions/`), ricordati
 che `_lib/` è la sorgente e le cartelle `lib/` dentro le funzioni sono copie:
 
