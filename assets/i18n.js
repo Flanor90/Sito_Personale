@@ -485,6 +485,20 @@
       'supervisione.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20am%20a%20colleague%20and%20would%20like%20some%20information%20about%20clinical%20supervision.',
       'supervisione.risposta.modulo': 'Write to me through the form',
 
+      /* --- Blocchi di risposta diretta: test, compendi, guide, scuola --- */
+      'test.risposta': 'If a test has got you thinking and you want to understand better what is happening to you, you can talk it over with a psychotherapist.',
+      'test.risposta.modalita': 'I see people online from anywhere in Italy and abroad, and in person at my practice in Itri (LT). We begin with a 45-minute exploratory session.',
+      'test.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20took%20one%20of%20the%20tests%20on%20the%20website%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy.%20I%20would%20prefer%3A%20online%20%2F%20in%20person%20in%20Itri',
+      'compendi.risposta': 'If, as you read, you recognise yourself in these themes and want to talk to someone, you can write to me.',
+      'compendi.risposta.modalita': 'I see people online from anywhere in Italy and abroad, and in person at my practice in Itri (LT). We begin with a 45-minute exploratory session.',
+      'compendi.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20saw%20the%20compendia%20on%20the%20website%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy.%20I%20would%20prefer%3A%20online%20%2F%20in%20person%20in%20Itri',
+      'guida.ia.risposta': 'If you notice it is easier to confide in a machine than in a person, we can start right there.',
+      'guida.ia.risposta.modalita': 'I see people online from anywhere in Italy and abroad, and in person at my practice in Itri (LT). We begin with a 45-minute exploratory session.',
+      'guida.ia.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20read%20the%20guide%20on%20artificial%20intelligence%20and%20would%20like%20to%20understand%20whether%20we%20can%20begin%20a%20course%20of%20therapy.%20I%20would%20prefer%3A%20online%20%2F%20in%20person%20in%20Itri',
+      'scuola.risposta': 'I work with adults and couples. If you are a parent, a teacher or an adult student and feel the need to talk it over, you can write to me.',
+      'scuola.risposta.modalita': 'I see people online from anywhere in Italy and abroad, and in person at my practice in Itri (LT). We begin with a 45-minute exploratory session.',
+      'scuola.risposta.wa.href': 'https://wa.me/393455032318?text=Good%20morning%20Dr.%20Del%20Bove%2C%20I%20read%20the%20page%20on%20school%20psychologists%20and%20would%20like%20to%20understand%20whether%20we%20can%20talk%20about%20it.%20I%20would%20prefer%3A%20online%20%2F%20in%20person%20in%20Itri',
+
 'temi.leggi': 'Read the page',
       'temi.p': 'With adults and couples, online or in person. And then difficulties in relationships, transitions, questions that don\'t have a name yet: we always start from the first session.',
       'temi.title': 'The difficulties I meet most often',
@@ -1051,6 +1065,20 @@
       'supervisione.risposta.modalita': 'La supervisión se hace online o en persona en Itri (LT), individual o en grupo.',
       'supervisione.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20soy%20un%20colega%20y%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20la%20supervisi%C3%B3n%20cl%C3%ADnica.',
       'supervisione.risposta.modulo': 'Escríbeme desde el formulario',
+
+      /* --- Blocchi di risposta diretta: test, compendi, guide, scuola --- */
+      'test.risposta': 'Si un test te ha hecho pensar y quieres entender mejor qué te está pasando, puedes hablarlo con un psicoterapeuta.',
+      'test.risposta.modalita': 'Atiendo online desde toda Italia y desde el extranjero, y en mi consulta de Itri (LT). Se empieza con una sesión de conocimiento de 45 minutos.',
+      'test.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20he%20hecho%20uno%20de%20los%20tests%20de%20la%20web%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico.%20Preferir%C3%ADa%3A%20online%20%2F%20en%20la%20consulta%20de%20Itri',
+      'compendi.risposta': 'Si al leer te reconoces en estos temas y quieres hablarlo con alguien, puedes escribirme.',
+      'compendi.risposta.modalita': 'Atiendo online desde toda Italia y desde el extranjero, y en mi consulta de Itri (LT). Se empieza con una sesión de conocimiento de 45 minutos.',
+      'compendi.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20he%20visto%20los%20compendios%20en%20la%20web%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico.%20Preferir%C3%ADa%3A%20online%20%2F%20en%20la%20consulta%20de%20Itri',
+      'guida.ia.risposta': 'Si te das cuenta de que es más fácil confiarte a una máquina que a una persona, podemos empezar justo por ahí.',
+      'guida.ia.risposta.modalita': 'Atiendo online desde toda Italia y desde el extranjero, y en mi consulta de Itri (LT). Se empieza con una sesión de conocimiento de 45 minutos.',
+      'guida.ia.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20he%20le%C3%ADdo%20la%20gu%C3%ADa%20sobre%20la%20inteligencia%20artificial%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20empezar%20un%20proceso%20terap%C3%A9utico.%20Preferir%C3%ADa%3A%20online%20%2F%20en%20la%20consulta%20de%20Itri',
+      'scuola.risposta': 'Trabajo con adultos y parejas. Si eres madre o padre, docente o estudiante mayor de edad y sientes la necesidad de hablarlo, puedes escribirme.',
+      'scuola.risposta.modalita': 'Atiendo online desde toda Italia y desde el extranjero, y en mi consulta de Itri (LT). Se empieza con una sesión de conocimiento de 45 minutos.',
+      'scuola.risposta.wa.href': 'https://wa.me/393455032318?text=Buenos%20d%C3%ADas%2C%20Dr.%20Del%20Bove%3A%20he%20le%C3%ADdo%20la%20p%C3%A1gina%20sobre%20el%20psic%C3%B3logo%20en%20la%20escuela%20y%20me%20gustar%C3%ADa%20saber%20si%20podemos%20hablarlo.%20Preferir%C3%ADa%3A%20online%20%2F%20en%20la%20consulta%20de%20Itri',
 
 'temi.leggi': 'Leer la página',
       'temi.p': 'Con adultos y parejas, online o presencial. Y además las dificultades en las relaciones, los momentos de cambio, las preguntas que aún no tienen nombre: siempre se empieza por la primera sesión.',

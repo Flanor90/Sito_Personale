@@ -1,6 +1,7 @@
 <!--METADATI
 {
   "slug": "supervisione-clinica",
+  "script": ["richiesta.js"],
   "briciola": "Supervisione clinica",
   "titolo": "Supervisione clinica per psicologi e psicoterapeuti",
   "descrizione": "Supervisione clinica individuale e di équipe, online e in presenza. Si costruisce senso sul caso insieme, non è una lezione né un controllo.",
@@ -68,7 +69,7 @@
     <p class="clear-left pt-4 text-[0.97rem] leading-relaxed text-inchiostro/75" data-i18n="supervisione.risposta.modalita">La supervisione si fa online o in presenza a Itri (LT), individuale o di gruppo.</p>
     <div class="clear-left flex flex-wrap items-center gap-x-6 gap-y-3 pt-5">
       <a href="https://wa.me/393455032318?text=Buongiorno%20Dott.%20Del%20Bove%2C%20sono%20un%20collega%20e%20vorrei%20informazioni%20sulla%20supervisione%20clinica." data-i18n-href="supervisione.risposta.wa.href" target="_blank" rel="noopener" data-evento="cta_click" data-evento-etichetta="wa-risposta-supervisione" class="inline-flex items-center justify-center gap-2 bg-mirtillo-700 text-white text-base font-semibold px-7 py-4 rounded-full hover:bg-mirtillo-600 transition-colors"><i data-lucide="message-circle" class="w-5 h-5" aria-hidden="true"></i> <span data-i18n="cta.band.wa">Scrivimi su WhatsApp</span></a>
-      <a href="/#contatti" data-evento="cta_click" data-evento-etichetta="contatto-risposta-supervisione" class="font-semibold text-mirtillo-700 underline underline-offset-4 hover:text-notte transition-colors" data-i18n="supervisione.risposta.modulo">Scrivimi dal modulo</a>
+      <a href="#richiesta" data-evento="cta_click" data-evento-etichetta="contatto-risposta-supervisione" class="font-semibold text-mirtillo-700 underline underline-offset-4 hover:text-notte transition-colors" data-i18n="supervisione.risposta.modulo">Scrivimi dal modulo</a>
     </div>
   </div>
 
@@ -256,8 +257,20 @@
       richiesta.
     </p>
 
+    <!-- Un modulo qui, invece di rimandare alla home: chi è arrivato fin
+         qui ha già deciso di scrivere, non deve cercare dove farlo. -->
+    <div id="richiesta" class="scheda-richiesta scroll-mt-28 max-w-xl rounded-2xl bg-white text-inchiostro p-6 sm:p-8 border border-tortora/70 shadow-xl mb-8">
+      <h3 class="font-serif text-2xl text-notte leading-tight mb-1">Scrivimi per la supervisione</h3>
+      <p class="text-sm text-inchiostro/65 mb-6">Bastano il nome e un'email. Nel messaggio puoi accennare se si tratta di un caso, di un percorso individuale o di un'équipe: ti rispondo io per concordare un primo incontro.</p>
+      <div data-richiesta data-setting="" data-tema="Supervisione clinica">
+        <p class="text-sm text-inchiostro/75 mb-4">Scrivimi direttamente:</p>
+        <a href="https://wa.me/393455032318" class="block mb-2 font-semibold text-mirtillo-700 underline">WhatsApp: +39 345 503 2318</a>
+        <a href="mailto:alberto.delbove.psicoterapeuta@gmail.com" class="block font-semibold text-mirtillo-700 underline">alberto.delbove.psicoterapeuta@gmail.com</a>
+      </div>
+    </div>
+
     <div class="flex flex-wrap gap-3">
-      <a href="/#contatti" data-evento="cta_click" data-evento-etichetta="supervisione-contatto"
+      <a href="#richiesta" data-evento="cta_click" data-evento-etichetta="supervisione-contatto"
          class="inline-flex items-center gap-2 bg-notte text-white px-6 py-3.5 rounded-full font-semibold hover:bg-mirtillo-700 transition-colors">
         Scrivimi per la supervisione <i data-lucide="arrow-right" class="w-4 h-4" aria-hidden="true"></i>
       </a>
