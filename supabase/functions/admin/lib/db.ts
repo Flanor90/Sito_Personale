@@ -27,6 +27,12 @@ export type ImpostazioniSmtp = {
   from_name?: string;
   from_email?: string;
   reply_to?: string;
+  /**
+   * Dove arrivano gli avvisi per Alberto (richieste, iscrizioni, test).
+   * Conviene un indirizzo diverso dal mittente: Gmail segna come già lette
+   * le email che un account manda a se stesso, quindi non suonano.
+   */
+  notifiche_a?: string;
   /** Pausa fra un invio e l'altro, in millisecondi: protegge la reputazione. */
   delay_ms?: number;
   /** Quante email per lotto: il pannello richiama la funzione finché non finisce. */

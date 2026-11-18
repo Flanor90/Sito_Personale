@@ -349,3 +349,53 @@ export function emailNotificaRichiesta(opts: {
 
   return { oggetto: `Richiesta primo colloquio — ${opts.nome}`, html, testo };
 }
+
+/* ============================================================
+   Avvisi ad Alberto: tutto ciò che arriva dal sito
+   ------------------------------------------------------------
+   Iscrizioni, guide richieste, risultati dei test chiesti per email,
+   test completati, messaggi WhatsApp preparati dal modulo. Una scheda
+   semplice, con le righe che servono per capire chi e da dove.
+   ============================================================ */
+
+/** A chi mandare gli avvisi: l'indirizzo dedicato, se c'è. */
+export function destinatarioAvvisi(s: ImpostazioniSmtp): string | undefined {
+  return s.notifiche_a || s.reply_to || s.from_email || undefined;
+}
+
+export function emailAvviso(opts: {
+  titolo: string;
+  righe: [string, string | null | undefined][];
+  sito: ImpostazioniSito;
+}): { oggetto: string; html: string; testo: string } {
+  const piene = opts.righe.filter(([, v]) => v) as [string, string][];
+  const html = cornice({
+    sito: opts.sito,
+    preheader: piene.map(([, v]) => v).slice(0, 2).join(' · '),
+    contenuto: `
+      <h1 style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-size:22px;
+                 line-height:1.3;color:${NOTTE};font-weight:normal;">${esc(opts.titolo)}</h1>
+      <table role="presentation" cellpadding="0" cellspacing="0" style="font-size:14px;line-height:1.6;">
+        ${piene.map(([e, v]) => `<tr><td style="padding:5px 12px 5px 0;color:#6b6b6b;white-space:nowrap;vertical-align:top;">${esc(e)}</td>
+           <td style="padding:5px 0;"><strong>${esc(v)}</strong></td></tr>`).join('')}
+      </table>`,
+  });
+  const testo = [opts.titolo, '', ...piene.map(([e, v]) => `${e}: ${v}`)].join('\n');
+  return { oggetto: opts.titolo, html, testo };
+}
+
+/** Manda un avviso ad Alberto. Non lancia mai: un avviso perso non deve far fallire nulla. */
+export async function avvisa(
+  smtp: ImpostazioniSmtp,
+  m: { oggetto: string; html: string; testo: string },
+): Promise<void> {
+  const a = destinatarioAvvisi(smtp);
+  if (!smtpConfigurato(smtp) || !a) return;
+  try {
+    const conn = await connessione(smtp);
+    await conn.invia({ a, oggetto: m.oggetto, html: m.html, testo: m.testo });
+    await conn.chiudi();
+  } catch (e) {
+    console.error('[avviso]', e);
+  }
+}

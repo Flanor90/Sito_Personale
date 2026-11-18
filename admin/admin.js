@@ -1259,6 +1259,7 @@
           campo('smtp-from-name', 'Nome del mittente', smtp.from_name || 'Alberto Del Bove') +
           campo('smtp-from-email', 'Email del mittente', smtp.from_email || '') +
           campo('smtp-reply', 'Rispondi a', smtp.reply_to || '') +
+          campo('smtp-notifiche', 'Avvisi a (meglio un indirizzo diverso dal mittente)', smtp.notifiche_a || '') +
           campo('smtp-batch', 'Email per lotto', smtp.batch || 25, 'number') +
         '</div>' +
         '<div class="riga-check"><input type="checkbox" id="smtp-secure"' +
@@ -1417,6 +1418,7 @@
         from_name: $('#smtp-from-name').value.trim(),
         from_email: $('#smtp-from-email').value.trim(),
         reply_to: $('#smtp-reply').value.trim(),
+        notifiche_a: $('#smtp-notifiche').value.trim(),
         batch: parseInt($('#smtp-batch').value, 10) || 25
       }
     }).then(function (s) {
