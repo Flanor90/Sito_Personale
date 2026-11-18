@@ -13,7 +13,7 @@
 // ============================================================
 
 import { entroIlLimite, type ImpostazioniSito, type ImpostazioniSmtp, type ImpostazioniTrello, leggiImpostazioni, servizio } from './lib/db.ts';
-import { connessione, emailConferma, emailMateriale, emailNotificaRichiesta, type Materiale, smtpConfigurato } from './lib/mail.ts';
+import { avvisa, connessione, emailAvviso, emailConferma, emailMateriale, emailNotificaRichiesta, type Materiale, smtpConfigurato } from './lib/mail.ts';
 import { creaScheda, descrizioneRichiesta } from './lib/trello.ts';
 import {
   cors,
@@ -52,6 +52,15 @@ Deno.serve(async (req) => {
     return json({ ok: false, errore: 'errore interno' }, 500, origin);
   }
 });
+
+/** Il nome umano di una fonte, per l'oggetto degli avvisi. */
+function descriviFonte(fonte: string): string {
+  if (fonte.startsWith('test')) return `Risultato del test richiesto (${fonte.replace(/^test-?/, '') || 'test'})`;
+  if (fonte.startsWith('guida')) return `Guida richiesta (${fonte})`;
+  if (fonte.startsWith('compend')) return 'Contatto dai compendi';
+  if (fonte === 'newsletter') return 'Nuova iscrizione alla newsletter';
+  return `Nuovo contatto dal sito (${fonte})`;
+}
 
 /* ============================================================
    POST /api/collect
@@ -210,19 +219,30 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
     }
 
     // Avviso ad Alberto per email, così non deve controllare il pannello.
-    if (smtpConfigurato(smtp) && smtp.from_email) {
-      try {
-        const conn = await connessione(smtp);
-        const m = emailNotificaRichiesta({
-          nome: nome || email, email, telefono, setting, temi, messaggio: corpo, linkTrello, sito,
-        });
-        await conn.invia({ a: smtp.reply_to || smtp.from_email, oggetto: m.oggetto, html: m.html, testo: m.testo });
-        await conn.chiudi();
-      } catch (e) {
-        console.error('[collect] notifica:', e);
-      }
-    }
-  } else if (trello.attivo && trello.list_id_newsletter) {
+    await avvisa(smtp, emailNotificaRichiesta({
+      nome: nome || email, email, telefono, setting, temi, messaggio: corpo, linkTrello, sito,
+    }));
+  } else {
+    // Ogni altro contatto (newsletter, guida, risultati di un test chiesti
+    // per email): prima arrivava solo nel pannello, ora anche per email.
+    await avvisa(smtp, emailAvviso({
+      titolo: `${descriviFonte(source)}: ${nome || email}`,
+      sito,
+      righe: [
+        ['Email', email],
+        ['Nome', nome],
+        ['Telefono', telefono],
+        ['Fonte', source],
+        ['Pagina', pagina],
+        ['Arriva da', referrer],
+        ['Newsletter', consenso ? 'sì, da confermare' : 'no'],
+        ['Lingua', lang],
+        ['Già noto', esistente ? 'sì, contatto già in archivio' : 'no, nuovo'],
+      ],
+    }));
+  }
+
+  if (kind !== 'contatto' && trello.attivo && trello.list_id_newsletter) {
     // Anche una semplice email lasciata può diventare una scheda.
     try {
       const scheda = await creaScheda(trello, {
@@ -429,6 +449,7 @@ async function track(req: Request, origin: string | null): Promise<Response> {
   }
 
   if (eventi.length) {
+    await avvisiDaEventi(sb, eventi, viste[0] as Record<string, unknown> | undefined);
     await sb.from('events').insert(eventi.map((e: Record<string, unknown>) => ({
       session_id: sessione,
       name: testo(e.name, 60) ?? 'evento',
@@ -438,4 +459,46 @@ async function track(req: Request, origin: string | null): Promise<Response> {
   }
 
   return json({ ok: true }, 200, origin);
+}
+
+/* ============================================================
+   Avvisi dagli eventi: test completati e WhatsApp dal modulo
+   ------------------------------------------------------------
+   Chi completa un test senza lasciare l'email non passa da collect:
+   lo si sa solo dall'evento. L'avviso dice quale test e da dove, mai le
+   risposte né il punteggio, come promesso nelle FAQ dei test.
+   ============================================================ */
+
+async function avvisiDaEventi(
+  sb: ReturnType<typeof servizio>,
+  eventi: Record<string, unknown>[],
+  vista?: Record<string, unknown>,
+) {
+  const rilevanti = eventi.filter((e) => {
+    const p = (e.props ?? {}) as Record<string, unknown>;
+    return e.name === 'test_completato' || (e.name === 'contatto_inviato' && p.fonte === 'whatsapp');
+  });
+  if (!rilevanti.length) return;
+
+  const smtp = await leggiImpostazioni<ImpostazioniSmtp>(sb, 'smtp');
+  const sito = await leggiImpostazioni<ImpostazioniSito>(sb, 'sito');
+  for (const e of rilevanti.slice(0, 3)) {
+    const p = (e.props ?? {}) as Record<string, unknown>;
+    const test = e.name === 'test_completato';
+    await avvisa(smtp, emailAvviso({
+      titolo: test
+        ? `Test completato: ${testo(p.fonte, 40) ?? 'test'}`
+        : 'Messaggio WhatsApp preparato dal modulo contatti',
+      sito,
+      righe: [
+        ['Pagina', testo(e.path, 300)],
+        ['Paese', vista ? testo(vista.country, 2) : null],
+        ['Dispositivo', vista ? testo(vista.device, 12) : null],
+        ['Arriva da', vista ? dominioReferrer(vista.referrer) ?? testo(vista.utm_source, 80) : null],
+        ['Nota', test
+          ? 'La persona ha visto il risultato. Se ha lasciato l\'email, arriva un avviso a parte.'
+          : 'Il messaggio parte dal telefono della persona: controlla WhatsApp.'],
+      ],
+    }));
+  }
 }
