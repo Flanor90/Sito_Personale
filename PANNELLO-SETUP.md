@@ -223,6 +223,24 @@ le visite non succede. Se dovesse capitare (per esempio dopo una settimana di
 sito irraggiungibile), si riattiva da solo dal pannello Supabase, senza perdere
 niente.
 
+**Avvisi e accoglienza per email.**
+
+- *Avvisi a te*: ogni contatto (richiesta di colloquio, iscrizione, guida,
+  risultati di un test chiesti per email) e ogni test completato manda un
+  avviso all'indirizzo «Avvisi a» delle impostazioni email. Usa un indirizzo
+  diverso dal mittente: Gmail segna come già lette le email che un account
+  manda a se stesso, e il telefono non suona.
+- *Conferma a chi chiede un colloquio*: riceve subito un'email con cosa
+  succede adesso e il pulsante WhatsApp (in italiano, inglese o spagnolo).
+- *Accoglienza per chi si iscrive*: dopo la conferma dell'iscrizione partono
+  tre email (subito, dopo 3 giorni, dopo 8): benvenuto, come si comincia,
+  una domanda. Solo a chi ha confermato il consenso, mai a chi ha già chiesto
+  un colloquio, con il link per disiscriversi. Le spedisce il server al
+  passaggio delle visite, al massimo 8 ogni mezz'ora. Si attiva da sola alla
+  prima visita dopo la pubblicazione e vale solo per chi si iscrive da lì in
+  poi. Per spegnerla: in Supabase, tabella `app_settings`, chiave
+  `accoglienza`, metti `"attivo": false`.
+
 **Se cambi qualcosa nel codice del server** (`supabase/functions/`), ricordati
 che `_lib/` è la sorgente e le cartelle `lib/` dentro le funzioni sono copie:
 
