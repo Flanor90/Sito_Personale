@@ -1311,10 +1311,10 @@
         'richiesta: la confermi o ne proponi un altro dal link nell\'email di avviso.</p>' +
         '<div id="esito-cal"></div>' +
         '<div class="avviso info">Scrivi i giorni e le ore di inizio, per esempio ' +
-        '<b>lun-ven: 9 10 11 12 13 14 15 16 17</b>, oppure <b>lun,mer: 9 10; ven: 15 16</b>. ' +
+        '<b>lun-ven: 9 10 11 12 14 15 16 17</b> (dalle 9 alle 17, pausa dalle 13 alle 14), oppure <b>lun,mer: 9 10; ven: 15 16</b>. ' +
         'Se lo studio ha orari diversi dall\'online, scrivili a parte; se lasci vuoto valgono quelli online.</div>' +
         '<div class="griglia g2">' +
-          campo('cal-online', 'Orari online', cal.orari_online || 'lun-ven: 9 10 11 12 13 14 15 16 17') +
+          campo('cal-online', 'Orari online', cal.orari_online || 'lun-ven: 9 10 11 12 14 15 16 17') +
           campo('cal-studio', 'Orari in studio a Itri', cal.orari_studio || '') +
           campo('cal-preavviso', 'Preavviso minimo (ore)', cal.preavviso_ore || 24, 'number') +
           campo('cal-giorni', 'Prenotabile fino a (giorni)', cal.giorni_avanti || 21, 'number') +
@@ -1322,7 +1322,8 @@
         '<div class="campo"><label for="cal-ics">Il tuo Google Calendar <span class="facolt">(facoltativo)</span></label>' +
           '<input type="text" id="cal-ics" value="' + esc(cal.ics_url || '') + '" placeholder="https://calendar.google.com/calendar/ical/…/private-…/basic.ics"></div>' +
         '<p class="aiuto">In Google Calendar: Impostazioni → il tuo calendario → «Indirizzo segreto in formato iCal». ' +
-        'Copialo qui e gli orari in cui sei impegnato spariscono dal modulo. È un indirizzo privato: resta sul server.</p>' +
+        'Copialo qui e gli orari in cui sei impegnato spariscono dal modulo. È un indirizzo privato: resta sul server. ' +
+        '<b>Se installi lo script qui sotto non serve</b>: lo script legge già il calendario, ricorrenze comprese.</p>' +
         '<h3 style="margin-top:22px">Appuntamenti nel tuo Google Calendar</h3>' +
         '<p class="aiuto">Con lo script, le richieste compaiono nel calendario come «[Da confermare]», diventano ' +
         'definitive quando confermi (con il link Meet per l\'online, che la persona riceve per email), si spostano ' +

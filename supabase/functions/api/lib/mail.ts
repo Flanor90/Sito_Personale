@@ -21,6 +21,27 @@ export type Messaggio = {
 
 export class ErroreSmtp extends Error {}
 
+/**
+ * L'oggetto con lettere accentate o trattini lunghi va codificato a mano:
+ * la libreria SMTP spezza le righe lunghe a metà della codifica e Gmail
+ * mostrava l'oggetto come «=?utf-8?Q?Richiesta primo colloquio =e2=80=94…».
+ * Qui diventa una serie di parole codificate in base64 (RFC 2047), ognuna
+ * corta e senza caratteri spezzati a metà.
+ */
+export function oggettoMime(testo: string): string {
+  if (/^[\x20-\x7e]*$/.test(testo)) return testo;
+  const byte = new TextEncoder().encode(testo);
+  const parti: string[] = [];
+  let i = 0;
+  while (i < byte.length) {
+    let j = Math.min(i + 42, byte.length);
+    while (j < byte.length && (byte[j] & 0xc0) === 0x80) j--;
+    parti.push(btoa(String.fromCharCode(...byte.slice(i, j))));
+    i = j;
+  }
+  return parti.map((p) => `=?UTF-8?B?${p}?=`).join(' ');
+}
+
 /** Verifica che ci sia tutto il necessario prima ancora di connettersi. */
 export function smtpConfigurato(s: ImpostazioniSmtp): boolean {
   return Boolean(s.host && s.port && s.user && s.pass && s.from_email);
@@ -53,7 +74,7 @@ export async function connessione(s: ImpostazioniSmtp) {
         from: mittente,
         to: m.a,
         replyTo: s.reply_to || s.from_email!,
-        subject: m.oggetto,
+        subject: oggettoMime(m.oggetto),
         content: m.testo,
         html: m.html,
         headers: m.disiscrizione

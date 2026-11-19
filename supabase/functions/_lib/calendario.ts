@@ -29,7 +29,7 @@ export type ImpostazioniCalendario = {
   script_segreto?: string;
 };
 
-export const ORARI_PREDEFINITI = 'lun-ven: 9 10 11 12 13 14 15 16 17';
+export const ORARI_PREDEFINITI = 'lun-ven: 9 10 11 12 14 15 16 17';
 const GIORNI = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
 
 export type Intervallo = { inizio: number; fine: number };
@@ -144,8 +144,34 @@ export function orariLiberi(opts: {
    segnati come "disponibile" (TRANSP:TRANSPARENT) non bloccano niente. */
 
 let cache: { url: string; quando: number; intervalli: Intervallo[] } | null = null;
+let cacheScript: { quando: number; intervalli: Intervallo[] } | null = null;
 
-export async function impegniCalendario(url: string | undefined, finoA: number): Promise<Intervallo[]> {
+/**
+ * Gli impegni di Alberto. Prima chiede allo script di Google Calendar
+ * (legge il calendario vero, ricorrenze comprese); se lo script non c'è o
+ * non risponde, usa l'indirizzo iCal privato, se impostato.
+ */
+export async function impegniCalendario(conf: ImpostazioniCalendario, finoA: number): Promise<Intervallo[]> {
+  if (conf.script_url && conf.script_segreto) {
+    if (cacheScript && Date.now() - cacheScript.quando < 5 * 60000) return cacheScript.intervalli;
+    const esito = await chiamaScript(conf, {
+      azione: 'impegni', da: new Date(Date.now() - 864e5).toISOString(), a: new Date(finoA).toISOString(),
+    }) as (EsitoScript & { impegni?: { inizio: string; fine: string; tuttoIlGiorno?: boolean }[] }) | null;
+    if (esito?.ok && Array.isArray(esito.impegni)) {
+      const giorno = (d: string) => { const [a, m, g] = d.split('-').map(Number); return istanteRoma(a, m - 1, g, 0); };
+      const intervalli = esito.impegni.map((e) => ({
+        inizio: e.tuttoIlGiorno ? giorno(e.inizio) : Date.parse(e.inizio),
+        fine: e.tuttoIlGiorno ? giorno(e.fine) : Date.parse(e.fine),
+      })).filter((x) => !isNaN(x.inizio) && !isNaN(x.fine));
+      cacheScript = { quando: Date.now(), intervalli };
+      return intervalli;
+    }
+    if (cacheScript) return cacheScript.intervalli;
+  }
+  return await impegniIcs(conf.ics_url, finoA);
+}
+
+async function impegniIcs(url: string | undefined, finoA: number): Promise<Intervallo[]> {
   if (!url) return [];
   if (cache && cache.url === url && Date.now() - cache.quando < 10 * 60000) return cache.intervalli;
   try {

@@ -2,7 +2,8 @@
    Script per Google Calendar — prenotazioni dal sito
    albertodelbove-psicologo.it
    ------------------------------------------------------------
-   Il server del sito lo chiama quando arriva una richiesta di colloquio,
+   Il server del sito lo chiama per sapere quando sei impegnato (quegli
+   orari spariscono dal modulo), quando arriva una richiesta di colloquio,
    quando la confermi, quando cambia orario e quando viene annullata.
    Lo script crea, sposta o cancella l'evento nel tuo calendario
    principale e, per i colloqui online confermati, genera il link Meet.
@@ -45,6 +46,7 @@ function doPost(e) {
     if (b.azione === 'ping') return risposta({ ok: true });
     if (b.azione === 'cancella') return risposta(cancella(b));
     if (b.azione === 'salva') return risposta(salva(b));
+    if (b.azione === 'impegni') return risposta(impegni(b));
     return risposta({ ok: false, errore: 'azione' });
   } catch (err) {
     return risposta({ ok: false, errore: String(err && err.message || err) });
@@ -60,7 +62,10 @@ function salva(b) {
     end: { dateTime: b.fine },
     status: b.provvisorio ? 'tentative' : 'confirmed',
     transparency: 'opaque',
-    reminders: { useDefault: true }
+    reminders: { useDefault: true },
+    // Segna gli eventi creati dal sito: non contano come impegni, perché
+    // le prenotazioni le conosce già il sito.
+    extendedProperties: { private: { sito: 'prenotazione' } }
   };
   var opzioni = {};
   if (b.meet && !b.provvisorio) {
@@ -91,6 +96,33 @@ function salva(b) {
     salvato = Calendar.Events.insert(evento, CALENDARIO, opzioni);
   }
   return { ok: true, id: salvato.id, meet: salvato.hangoutLink || null };
+}
+
+/* Gli impegni fra due date, per togliere dagli orari prenotabili quelli in
+   cui sei occupato. Non contano gli eventi segnati «Disponibile», quelli
+   rifiutati e quelli creati dal sito stesso. */
+function impegni(b) {
+  var fuori = [];
+  var pagina = null;
+  do {
+    var opzioni = { timeMin: b.da, timeMax: b.a, singleEvents: true, orderBy: 'startTime', maxResults: 2500 };
+    if (pagina) opzioni.pageToken = pagina;
+    var r = Calendar.Events.list(CALENDARIO, opzioni);
+    (r.items || []).forEach(function (ev) {
+      if (ev.status === 'cancelled' || ev.transparency === 'transparent') return;
+      var p = ev.extendedProperties && ev.extendedProperties.private;
+      if (p && p.sito === 'prenotazione') return;
+      var io = (ev.attendees || []).filter(function (a) { return a.self; })[0];
+      if (io && io.responseStatus === 'declined') return;
+      fuori.push({
+        inizio: ev.start.dateTime || ev.start.date,
+        fine: ev.end.dateTime || ev.end.date,
+        tuttoIlGiorno: !ev.start.dateTime
+      });
+    });
+    pagina = r.nextPageToken;
+  } while (pagina);
+  return { ok: true, impegni: fuori };
 }
 
 function cancella(b) {

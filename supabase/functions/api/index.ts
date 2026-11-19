@@ -699,7 +699,7 @@ async function liberiPer(
     .in('status', STATI_ATTIVI).gte('slot_end', new Date().toISOString());
   const occupati: Intervallo[] = (data ?? []).filter((r) => r.id !== escludi)
     .map((r) => ({ inizio: Date.parse(r.slot_start), fine: Date.parse(r.slot_end) }));
-  occupati.push(...await impegniCalendario(conf.ics_url, Date.now() + (giorni + 1) * 864e5));
+  occupati.push(...await impegniCalendario(conf, Date.now() + (giorni + 1) * 864e5));
   return orariLiberi({ conf, setting, occupati });
 }
 
