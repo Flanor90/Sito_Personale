@@ -800,8 +800,19 @@
           (msg.trello_card_url
             ? '<a class="bottone secondario" href="' + esc(msg.trello_card_url) + '" target="_blank" rel="noopener">Apri su Trello</a>'
             : '<button class="bottone secondario" id="btn-trello-msg" data-msg="' + esc(msg.id) + '">Crea scheda Trello</button>') +
+          '<button class="bottone pericolo spinta" id="btn-elimina-msg" data-msg="' + esc(msg.id) + '">Elimina definitivamente</button>' +
         '</div>'
       );
+
+      // Per le richieste di prova o doppie: la richiesta sparisce dall'elenco.
+      // Il contatto e la sua storia restano (si eliminano da Contatti).
+      $('#btn-elimina-msg').addEventListener('click', function () {
+        var id = this.dataset.msg;
+        if (!confirm('Eliminare questa richiesta? L’operazione non si può annullare.')) { return; }
+        db('messages?id=eq.' + encodeURIComponent(id), { metodo: 'DELETE' })
+          .then(function () { chiudiCassetto(); richieste(); })
+          .catch(function (e) { esito('#esito-richiesta', e.message, 'ko'); });
+      });
 
       $('#stato-msg').addEventListener('change', function () {
         var sel = this;
