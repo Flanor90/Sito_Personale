@@ -1311,10 +1311,10 @@
         'richiesta: la confermi o ne proponi un altro dal link nell\'email di avviso.</p>' +
         '<div id="esito-cal"></div>' +
         '<div class="avviso info">Scrivi i giorni e le ore di inizio, per esempio ' +
-        '<b>lun-ven: 9 10 11 12 14 15 16 17</b>, oppure <b>lun,mer: 9 10; ven: 15 16</b>. ' +
+        '<b>lun-ven: 9 10 11 12 13 14 15 16 17</b>, oppure <b>lun,mer: 9 10; ven: 15 16</b>. ' +
         'Se lo studio ha orari diversi dall\'online, scrivili a parte; se lasci vuoto valgono quelli online.</div>' +
         '<div class="griglia g2">' +
-          campo('cal-online', 'Orari online', cal.orari_online || 'lun-ven: 9 10 11 12 14 15 16 17') +
+          campo('cal-online', 'Orari online', cal.orari_online || 'lun-ven: 9 10 11 12 13 14 15 16 17') +
           campo('cal-studio', 'Orari in studio a Itri', cal.orari_studio || '') +
           campo('cal-preavviso', 'Preavviso minimo (ore)', cal.preavviso_ore || 24, 'number') +
           campo('cal-giorni', 'Prenotabile fino a (giorni)', cal.giorni_avanti || 21, 'number') +

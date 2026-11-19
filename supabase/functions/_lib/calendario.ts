@@ -25,7 +25,7 @@ export type ImpostazioniCalendario = {
   durata_min?: number;
 };
 
-export const ORARI_PREDEFINITI = 'lun-ven: 9 10 11 12 14 15 16 17';
+export const ORARI_PREDEFINITI = 'lun-ven: 9 10 11 12 13 14 15 16 17';
 const GIORNI = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
 
 export type Intervallo = { inizio: number; fine: number };
