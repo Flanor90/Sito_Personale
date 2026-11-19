@@ -1,0 +1,109 @@
+/* ============================================================
+   Script per Google Calendar — prenotazioni dal sito
+   albertodelbove-psicologo.it
+   ------------------------------------------------------------
+   Il server del sito lo chiama quando arriva una richiesta di colloquio,
+   quando la confermi, quando cambia orario e quando viene annullata.
+   Lo script crea, sposta o cancella l'evento nel tuo calendario
+   principale e, per i colloqui online confermati, genera il link Meet.
+   La persona NON viene invitata all'evento: il link le arriva dalle
+   email del sito.
+
+   COME SI INSTALLA (una volta sola, circa 5 minuti)
+   1. Vai su https://script.google.com con il tuo account Google e
+      clicca «Nuovo progetto». Chiamalo «Prenotazioni sito».
+   2. Cancella il codice che c'è e incolla tutto questo file.
+   3. Qui sotto, in SEGRETO, scrivi la parola segreta che vedi nel
+      pannello del sito (Impostazioni → Prenotazioni del colloquio).
+   4. A sinistra, accanto a «Servizi», clicca «+», scegli
+      «Google Calendar API» e premi «Aggiungi». Serve per il link Meet.
+   5. In alto a destra: «Esegui il deployment» → «Nuovo deployment» →
+      tipo «App web». Esegui come: «Me». Chi ha accesso: «Chiunque».
+      Premi «Esegui il deployment» e autorizza l'accesso al calendario.
+   6. Copia l'«URL dell'app web» (finisce con /exec) e incollalo nel
+      pannello del sito, poi premi «Prova il collegamento».
+
+   Se un giorno cambi questo codice, ripeti il punto 5 scegliendo
+   «Gestisci deployment» → modifica → «Nuova versione»: l'indirizzo
+   resta lo stesso.
+   ============================================================ */
+
+var SEGRETO = 'INCOLLA-QUI-LA-PAROLA-SEGRETA-DEL-PANNELLO';
+var CALENDARIO = 'primary';
+
+function doPost(e) {
+  var b;
+  try {
+    b = JSON.parse(e.postData.contents);
+  } catch (err) {
+    return risposta({ ok: false, errore: 'json' });
+  }
+  if (!b || b.segreto !== SEGRETO) {
+    return risposta({ ok: false, errore: 'segreto' });
+  }
+  try {
+    if (b.azione === 'ping') return risposta({ ok: true });
+    if (b.azione === 'cancella') return risposta(cancella(b));
+    if (b.azione === 'salva') return risposta(salva(b));
+    return risposta({ ok: false, errore: 'azione' });
+  } catch (err) {
+    return risposta({ ok: false, errore: String(err && err.message || err) });
+  }
+}
+
+function salva(b) {
+  var evento = {
+    summary: (b.provvisorio ? '[Da confermare] ' : '') + b.titolo,
+    description: b.descrizione || '',
+    location: b.luogo || '',
+    start: { dateTime: b.inizio },
+    end: { dateTime: b.fine },
+    status: b.provvisorio ? 'tentative' : 'confirmed',
+    transparency: 'opaque',
+    reminders: { useDefault: true }
+  };
+  var opzioni = {};
+  if (b.meet && !b.provvisorio) {
+    evento.conferenceData = {
+      createRequest: {
+        requestId: 'sito-' + Date.now() + '-' + Math.floor(Math.random() * 1e6),
+        conferenceSolutionKey: { type: 'hangoutsMeet' }
+      }
+    };
+    opzioni.conferenceDataVersion = 1;
+  }
+
+  var salvato = null;
+  if (b.id) {
+    try {
+      var esistente = Calendar.Events.get(CALENDARIO, b.id);
+      // Il link Meet già creato resta lo stesso anche se l'orario cambia.
+      if (esistente.conferenceData && evento.conferenceData) {
+        delete evento.conferenceData;
+        delete opzioni.conferenceDataVersion;
+      }
+      salvato = Calendar.Events.patch(evento, CALENDARIO, b.id, opzioni);
+    } catch (err) {
+      salvato = null; // evento cancellato a mano: ne creo uno nuovo
+    }
+  }
+  if (!salvato) {
+    salvato = Calendar.Events.insert(evento, CALENDARIO, opzioni);
+  }
+  return { ok: true, id: salvato.id, meet: salvato.hangoutLink || null };
+}
+
+function cancella(b) {
+  if (!b.id) return { ok: true };
+  try {
+    Calendar.Events.remove(CALENDARIO, b.id);
+  } catch (err) {
+    // Già cancellato: va bene così.
+  }
+  return { ok: true };
+}
+
+function risposta(oggetto) {
+  return ContentService.createTextOutput(JSON.stringify(oggetto))
+    .setMimeType(ContentService.MimeType.JSON);
+}

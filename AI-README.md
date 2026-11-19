@@ -25,6 +25,7 @@ Sito statico personale di Alberto Del Bove, psicoterapeuta (`albertodelbove-psic
 | `.github/workflows/` | `test.yml` (CI), `pubblica-articoli.yml` (lunedì 05:00 UTC: ribuilda e pubblica gli articoli in scadenza), `indexnow.yml`, `funzioni-supabase.yml` (pubblica le funzioni Supabase quando cambiano, con il segreto `SUPABASE_ACCESS_TOKEN`) |
 | `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt` | SEO / GEO |
 | `tools/indexnow.js` | Ping IndexNow (Bing) a ogni modifica |
+| `tools/script-google-calendar.txt` | Apps Script da incollare nell'account Google di Alberto: crea, sposta e cancella gli eventi delle prenotazioni e il link Meet (chiamato da `api` con la parola segreta del pannello) |
 
 ## Comandi
 - `npm run build` — pagine + icone + CSS (dopo ogni modifica a `pagine/`, `index.html` o classi Tailwind)

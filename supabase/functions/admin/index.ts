@@ -21,6 +21,7 @@ import {
   servizio,
 } from './lib/db.ts';
 import { connessione, cornice, smtpConfigurato } from './lib/mail.ts';
+import { chiamaScript, type ImpostazioniCalendario } from './lib/calendario.ts';
 import { bacheche, chiSono, creaScheda, liste } from './lib/trello.ts';
 import { cors, esc, json, nuovoToken, testo } from './lib/util.ts';
 
@@ -81,6 +82,7 @@ Deno.serve(async (req) => {
       case 'settings.save':       return json(await salva(sb, body), 200, origin);
       case 'smtp.test':           return json(await provaSmtp(sb, user.email), 200, origin);
       case 'trello.test':         return json(await provaTrello(sb), 200, origin);
+      case 'calendar.test':       return json(await provaCalendario(sb), 200, origin);
       case 'trello.boards':       return json(await elencoBacheche(sb), 200, origin);
       case 'trello.lists':        return json(await elencoListe(sb, body), 200, origin);
       case 'trello.card':         return json(await schedaManuale(sb, body), 200, origin);
@@ -469,4 +471,17 @@ async function importa(sb: ReturnType<typeof servizio>, body: Record<string, unk
   }
 
   return { ok: true, nuovi, aggiornati, scartati };
+}
+
+/** Verifica lo script di Google Calendar: indirizzo raggiungibile e parola segreta giusta. */
+async function provaCalendario(sb: ReturnType<typeof servizio>) {
+  const conf = await leggiImpostazioni<ImpostazioniCalendario>(sb, 'calendario');
+  if (!conf.script_url || !conf.script_segreto) {
+    throw new Error('Mancano l\'indirizzo dello script o la parola segreta.');
+  }
+  const esito = await chiamaScript(conf, { azione: 'ping' });
+  if (!esito) throw new Error('Lo script non risponde. Controlla che l\'indirizzo finisca con /exec e che il deployment sia «Chiunque».');
+  if (!esito.ok && esito.errore === 'segreto') throw new Error('Lo script risponde, ma la parola segreta non coincide con quella scritta nello script.');
+  if (!esito.ok) throw new Error(`Lo script risponde con un errore: ${esito.errore}`);
+  return { ok: true, messaggio: 'Collegato: le prossime prenotazioni entrano nel tuo Google Calendar.' };
 }

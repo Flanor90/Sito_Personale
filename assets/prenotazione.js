@@ -51,7 +51,7 @@
     return 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
       '&text=' + encodeURIComponent(titolo) +
       '&dates=' + compatta(d.slot_start) + '/' + compatta(d.slot_end) +
-      '&location=' + encodeURIComponent(d.setting === 'studio' ? 'Via Luigi Pirandello 8, 04020 Itri LT' : 'Online');
+      '&location=' + encodeURIComponent(d.setting === 'studio' ? 'Via Luigi Pirandello 8, 04020 Itri LT' : (d.meet || 'Online'));
   }
 
   function linkIcs(d) {
@@ -246,6 +246,13 @@
       var conferma = bottone(alberto ? 'Conferma questo orario' : 'Va bene, confermo', true);
       conferma.addEventListener('click', function () { agisci('conferma', {}, conferma, 'confermato'); });
       azioni.appendChild(conferma);
+    }
+    if (d.stato === 'confermata' && d.meet && d.setting === 'online') {
+      var meet = document.createElement('a');
+      meet.href = d.meet; meet.target = '_blank'; meet.rel = 'noopener';
+      meet.textContent = 'Entra nella videochiamata';
+      meet.className = 'inline-flex items-center gap-2 bg-mirtillo-700 text-white px-6 py-3.5 rounded-full font-semibold hover:bg-mirtillo-600 transition-colors';
+      azioni.appendChild(meet);
     }
     if (d.stato === 'confermata') {
       var g = document.createElement('a');

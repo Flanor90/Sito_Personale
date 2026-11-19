@@ -20,7 +20,7 @@ import {
 } from './lib/mail.ts';
 import { creaScheda, descrizioneRichiesta } from './lib/trello.ts';
 import {
-  type ImpostazioniCalendario, impegniCalendario, type Intervallo, orariLiberi, quandoLeggibile,
+  type ImpostazioniCalendario, impegniCalendario, type Intervallo, orariLiberi, quandoLeggibile, sincronizzaEvento,
 } from './lib/calendario.ts';
 import {
   cors,
@@ -210,7 +210,9 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
         slot_end: new Date(Date.parse(inizio) + (conf.durata_min || 45) * 60000).toISOString(),
         token_persona: nuovoToken(), token_alberto: nuovoToken(),
       }).select().single();
-      if (riga) pren = { riga, occupato: !liberi.includes(inizio) };
+      if (riga) {
+        pren = { riga: await aggiornaCalendario(sb, conf, sito, riga, 'provvisorio'), occupato: !liberi.includes(inizio) };
+      }
     }
 
     const { data: msg } = await sb.from('messages').insert({
@@ -493,6 +495,11 @@ async function track(req: Request, origin: string | null): Promise<Response> {
     } catch (e) {
       console.error('[accoglienza]', e);
     }
+    try {
+      await promemoria(sb);
+    } catch (e) {
+      console.error('[promemoria]', e);
+    }
   }
 
   if (eventi.length) {
@@ -651,7 +658,37 @@ function datiPrenotazione(r: Record<string, string>): DatiPrenotazione {
     nome: r.name, email: r.email, telefono: r.phone,
     setting: r.setting === 'studio' ? 'studio' : 'online',
     quando: quandoLeggibile(r.slot_start), slot_start: r.slot_start, slot_end: r.slot_end,
+    meet: r.status === 'confermata' ? r.meet_link : null,
+    inCalendario: !!r.google_event_id,
   };
+}
+
+/**
+ * Porta la prenotazione nel Google Calendar di Alberto tramite lo script
+ * (evento provvisorio, confermato con Meet, o cancellato) e salva
+ * identificativo dell'evento e link Meet. Se lo script manca o non
+ * risponde, restituisce la riga com'era: il resto del flusso va avanti.
+ */
+async function aggiornaCalendario(
+  sb: ReturnType<typeof servizio>, conf: ImpostazioniCalendario, sito: ImpostazioniSito,
+  r: Record<string, string>, tipo: 'provvisorio' | 'confermato' | 'cancella',
+): Promise<Record<string, string>> {
+  const esito = await sincronizzaEvento(conf, {
+    azione: tipo === 'cancella' ? 'cancella' : 'salva',
+    id: r.google_event_id,
+    provvisorio: tipo === 'provvisorio',
+    nome: r.name || r.email, email: r.email, telefono: r.phone,
+    setting: r.setting === 'studio' ? 'studio' : 'online',
+    inizio: r.slot_start, fine: r.slot_end,
+    linkGestione: linkPrenotazione(sito, r.token_alberto),
+  });
+  if (!esito?.ok || tipo === 'cancella') return r;
+  const patch: Record<string, string> = {};
+  if (esito.id && esito.id !== r.google_event_id) patch.google_event_id = esito.id;
+  if (esito.meet && esito.meet !== r.meet_link) patch.meet_link = esito.meet;
+  if (!Object.keys(patch).length) return r;
+  const { data } = await sb.from('bookings').update(patch).eq('id', r.id).select().single();
+  return (data as Record<string, string>) ?? { ...r, ...patch };
 }
 
 async function liberiPer(
@@ -709,6 +746,7 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
       setting: riga.setting, nome: ruolo === 'alberto' ? riga.name : null,
       email: ruolo === 'alberto' ? riga.email : null, telefono: ruolo === 'alberto' ? riga.phone : null,
       messaggio, nota: riga.note,
+      meet: riga.status === 'confermata' ? riga.meet_link : null,
       slots: riga.status === 'annullata' ? [] : await liberiPer(sb, conf, riga.setting === 'studio' ? 'studio' : 'online', riga.id),
     }, 200, origin);
   };
@@ -734,7 +772,8 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
     const puo = (ruolo === 'alberto' && r.status === 'in_attesa') ||
       (ruolo === 'persona' && r.status === 'proposta' && r.proposed_by === 'alberto');
     if (!puo) return json({ ok: false, errore: 'stato' }, 409, origin);
-    const riga = await aggiorna({ status: 'confermata', note: nota ?? r.note });
+    const riga = await aggiornaCalendario(sb, conf, sito,
+      await aggiorna({ status: 'confermata', note: nota ?? r.note }), 'confermato');
     // Entrambi ricevono la conferma con il link per il calendario.
     for (const per of ['persona', 'alberto'] as const) {
       const m = emailPrenotazione({
@@ -758,16 +797,49 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
       status: ruolo === 'alberto' ? 'proposta' : 'in_attesa',
       proposed_by: ruolo,
       note: nota,
-    });
+      reminder_sent_at: null,
+    }).then((x) => aggiornaCalendario(sb, conf, sito, x, 'provvisorio'));
     await avvisaAltro(riga, ruolo === 'alberto' ? 'proposta' : 'nuovo_orario');
     return await risposta(riga);
   }
 
   if (azione === 'annulla') {
     const riga = await aggiorna({ status: 'annullata', note: nota });
+    await aggiornaCalendario(sb, conf, sito, riga, 'cancella');
     await avvisaAltro(riga, 'annullata');
     return await risposta(riga);
   }
 
   return json({ ok: false, errore: 'azione' }, 400, origin);
+}
+
+/* ============================================================
+   Promemoria del giorno prima
+   ------------------------------------------------------------
+   Per ogni colloquio confermato che cade fra 1 e 24 ore, un'email alla
+   persona con data, luogo o link Meet e il link per spostare o annullare.
+   Parte una volta sola; se l'orario cambia, reminder_sent_at torna vuoto
+   e il promemoria vale per il nuovo orario.
+   ============================================================ */
+
+async function promemoria(sb: ReturnType<typeof servizio>) {
+  const adesso = Date.now();
+  const { data } = await sb.from('bookings').select('*')
+    .eq('status', 'confermata').is('reminder_sent_at', null)
+    .gte('slot_start', new Date(adesso + 3600000).toISOString())
+    .lte('slot_start', new Date(adesso + 24 * 3600000).toISOString())
+    .limit(10);
+  if (!data?.length) return;
+  const smtp = await leggiImpostazioni<ImpostazioniSmtp>(sb, 'smtp');
+  if (!smtpConfigurato(smtp)) return;
+  const sito = await leggiImpostazioni<ImpostazioniSito>(sb, 'sito');
+  for (const r of data) {
+    const m = emailPrenotazione({
+      per: 'persona', evento: 'promemoria', p: datiPrenotazione(r),
+      link: linkPrenotazione(sito, r.token_persona), sito,
+    });
+    if (await inviaUna(smtp, r.email, m)) {
+      await sb.from('bookings').update({ reminder_sent_at: new Date().toISOString() }).eq('id', r.id);
+    }
+  }
 }

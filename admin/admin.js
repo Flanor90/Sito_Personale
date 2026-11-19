@@ -1323,8 +1323,19 @@
           '<input type="text" id="cal-ics" value="' + esc(cal.ics_url || '') + '" placeholder="https://calendar.google.com/calendar/ical/…/private-…/basic.ics"></div>' +
         '<p class="aiuto">In Google Calendar: Impostazioni → il tuo calendario → «Indirizzo segreto in formato iCal». ' +
         'Copialo qui e gli orari in cui sei impegnato spariscono dal modulo. È un indirizzo privato: resta sul server.</p>' +
+        '<h3 style="margin-top:22px">Appuntamenti nel tuo Google Calendar</h3>' +
+        '<p class="aiuto">Con lo script, le richieste compaiono nel calendario come «[Da confermare]», diventano ' +
+        'definitive quando confermi (con il link Meet per l\'online, che la persona riceve per email), si spostano ' +
+        'se cambia l\'orario e spariscono se vengono annullate. Le istruzioni sono in cima allo ' +
+        '<a href="/tools/script-google-calendar.txt" target="_blank" rel="noopener">codice dello script</a>: ' +
+        'incollalo in script.google.com, scrivi nello script la parola segreta qui sotto e incolla qui l\'indirizzo che finisce con /exec.</p>' +
+        '<div class="griglia g2">' +
+          campo('cal-script', 'Indirizzo dello script (…/exec)', cal.script_url || '') +
+          campo('cal-segreto', 'Parola segreta', cal.script_segreto || segretoNuovo()) +
+        '</div>' +
         '<div class="barra-azioni" style="margin-top:18px">' +
-          '<button class="bottone" id="btn-salva-cal">Salva</button></div></div>' +
+          '<button class="bottone" id="btn-salva-cal">Salva</button>' +
+          '<button class="bottone secondario" id="btn-prova-cal">Prova il collegamento</button></div></div>' +
 
         /* ---------- Sito ---------- */
         '<div class="scheda"><h2>Il sito</h2>' +
@@ -1400,13 +1411,34 @@
             orari_studio: $('#cal-studio').value.trim(),
             preavviso_ore: parseInt($('#cal-preavviso').value, 10) || 24,
             giorni_avanti: parseInt($('#cal-giorni').value, 10) || 21,
-            ics_url: $('#cal-ics').value.trim()
+            ics_url: $('#cal-ics').value.trim(),
+            script_url: $('#cal-script').value.trim(),
+            script_segreto: $('#cal-segreto').value.trim()
           }
         }).then(function (s) {
           stato.impostazioni = s;
           esito('#esito-cal', 'Salvato. Il modulo mostra già i nuovi orari.', 'ok');
           occupato(b, false);
         }).catch(function (e) { esito('#esito-cal', e.message, 'ko'); occupato(b, false); });
+      });
+
+      $('#btn-prova-cal').addEventListener('click', function () {
+        var b = this;
+        occupato(b, true, 'Verifico…');
+        server('settings.save', {
+          calendario: {
+            orari_online: $('#cal-online').value.trim(),
+            orari_studio: $('#cal-studio').value.trim(),
+            preavviso_ore: parseInt($('#cal-preavviso').value, 10) || 24,
+            giorni_avanti: parseInt($('#cal-giorni').value, 10) || 21,
+            ics_url: $('#cal-ics').value.trim(),
+            script_url: $('#cal-script').value.trim(),
+            script_segreto: $('#cal-segreto').value.trim()
+          }
+        })
+          .then(function () { return server('calendar.test'); })
+          .then(function (d) { esito('#esito-cal', d.messaggio, 'ok'); occupato(b, false); })
+          .catch(function (e) { esito('#esito-cal', e.message, 'ko'); occupato(b, false); });
       });
 
       $('#btn-salva-sito').addEventListener('click', function () {
@@ -1472,6 +1504,13 @@
       occupato(b, false);
       throw e;
     });
+  }
+
+  /* Una parola segreta casuale per lo script di Google Calendar. */
+  function segretoNuovo() {
+    var v = new Uint8Array(18);
+    (window.crypto || window.msCrypto).getRandomValues(v);
+    return Array.prototype.map.call(v, function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
   }
 
   function salvaTrello(soloCredenziali) {

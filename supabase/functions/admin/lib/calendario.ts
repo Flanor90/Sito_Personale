@@ -23,6 +23,10 @@ export type ImpostazioniCalendario = {
   preavviso_ore?: number;
   giorni_avanti?: number;
   durata_min?: number;
+  /** URL /exec dello script Google (tools/script-google-calendar.txt). */
+  script_url?: string;
+  /** Parola segreta condivisa con lo script. */
+  script_segreto?: string;
 };
 
 export const ORARI_PREDEFINITI = 'lun-ven: 9 10 11 12 13 14 15 16 17';
@@ -247,4 +251,71 @@ export function leggiIcs(testo: string, da: number, a: number): Intervallo[] {
     }
   }
   return fuori;
+}
+
+/* ---------- Scrittura nel Google Calendar, tramite lo script ----------
+   Lo script gira nell'account Google di Alberto (vedi
+   tools/script-google-calendar.txt): crea, sposta o cancella l'evento e,
+   per l'online confermato, genera il link Meet. Se non è configurato o
+   non risponde, si torna al pulsante «Aggiungi a Google Calendar»: niente
+   si blocca. */
+
+export type EsitoScript = { ok: boolean; id?: string; meet?: string | null; errore?: string };
+
+export async function chiamaScript(
+  conf: ImpostazioniCalendario, corpo: Record<string, unknown>,
+): Promise<EsitoScript | null> {
+  if (!conf.script_url || !conf.script_segreto) return null;
+  try {
+    // Le app web di Apps Script rispondono con un rimando: fetch lo segue.
+    const r = await fetch(conf.script_url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ ...corpo, segreto: conf.script_segreto }),
+      redirect: 'follow',
+      signal: AbortSignal.timeout(15000),
+    });
+    const testo = await r.text();
+    const esito = JSON.parse(testo) as EsitoScript;
+    if (!esito.ok) console.error('[script calendario]', esito.errore);
+    return esito;
+  } catch (e) {
+    console.error('[script calendario]', e);
+    return null;
+  }
+}
+
+/** Salva l'evento (provvisorio o confermato) o lo cancella. */
+export async function sincronizzaEvento(conf: ImpostazioniCalendario, opts: {
+  azione: 'salva' | 'cancella';
+  id?: string | null;
+  provvisorio?: boolean;
+  nome: string;
+  email: string;
+  telefono?: string | null;
+  setting: 'online' | 'studio';
+  inizio: string;
+  fine: string;
+  linkGestione: string;
+}): Promise<EsitoScript | null> {
+  if (opts.azione === 'cancella') {
+    return opts.id ? await chiamaScript(conf, { azione: 'cancella', id: opts.id }) : null;
+  }
+  return await chiamaScript(conf, {
+    azione: 'salva',
+    id: opts.id || null,
+    provvisorio: !!opts.provvisorio,
+    titolo: `Colloquio conoscitivo: ${opts.nome}${opts.setting === 'studio' ? ' (studio)' : ' (online)'}`,
+    descrizione: [
+      `Email: ${opts.email}`,
+      opts.telefono ? `Telefono: ${opts.telefono}` : '',
+      '',
+      opts.provvisorio ? 'In attesa della tua conferma.' : 'Confermato.',
+      `Gestisci: ${opts.linkGestione}`,
+    ].filter((r, i) => r !== '' || i === 2).join('\n'),
+    luogo: opts.setting === 'studio' ? 'Via Luigi Pirandello 8, 04020 Itri LT' : '',
+    inizio: opts.inizio,
+    fine: opts.fine,
+    meet: opts.setting === 'online',
+  });
 }

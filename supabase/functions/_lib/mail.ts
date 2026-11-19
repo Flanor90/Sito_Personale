@@ -672,7 +672,13 @@ export type DatiPrenotazione = {
   quando: string;
   slot_start: string;
   slot_end: string;
+  /** Link Google Meet, per l'online confermato, se lo script l'ha creato. */
+  meet?: string | null;
+  /** L'evento è già nel Google Calendar di Alberto (creato dallo script). */
+  inCalendario?: boolean;
 };
+
+const CORTESIA = 'Se non riesci a esserci, spostalo o annullalo dal link qui sotto, possibilmente entro il giorno prima: quell’orario può servire a qualcun altro.';
 
 function dove(setting: string): string {
   return setting === 'studio' ? 'nello studio di Itri, in via Luigi Pirandello 8' : 'online, in videochiamata';
@@ -687,7 +693,9 @@ export function linkGoogleCalendar(p: DatiPrenotazione, per: 'persona' | 'albert
     ? 'Colloquio conoscitivo con il Dott. Alberto Del Bove'
     : `Colloquio conoscitivo: ${p.nome || p.email}`;
   const dettagli = per === 'persona'
-    ? (p.setting === 'online' ? 'Il link per la videochiamata arriva prima dell’incontro.' : 'Studio: via Luigi Pirandello 8, Itri (LT).')
+    ? (p.setting === 'online'
+      ? (p.meet ? `Videochiamata: ${p.meet}` : 'Il link per la videochiamata arriva prima dell’incontro.')
+      : 'Studio: via Luigi Pirandello 8, Itri (LT).')
     : `${p.email}${p.telefono ? ' · ' + p.telefono : ''}`;
   const q = new URLSearchParams({
     action: 'TEMPLATE',
@@ -701,7 +709,7 @@ export function linkGoogleCalendar(p: DatiPrenotazione, per: 'persona' | 'albert
 
 export function emailPrenotazione(opts: {
   per: 'persona' | 'alberto';
-  evento: 'ricevuta' | 'proposta' | 'nuovo_orario' | 'confermata' | 'annullata';
+  evento: 'ricevuta' | 'proposta' | 'nuovo_orario' | 'confermata' | 'annullata' | 'promemoria';
   p: DatiPrenotazione;
   link: string;
   nota?: string | null;
@@ -714,7 +722,14 @@ export function emailPrenotazione(opts: {
   const firma = 'A presto,\nAlberto Del Bove';
   const wa = waLink(`Buongiorno Dott. Del Bove, le scrivo per il colloquio di ${p.quando}.`);
 
-  type Testo = { oggetto: string; titolo: string; righe: string[]; bottone: [string, string]; secondario?: [string, string] };
+  type Testo = {
+    oggetto: string; titolo: string; righe: string[]; bottone: [string, string];
+    secondario?: [string, string]; meet?: boolean;
+  };
+  const vuoto: Testo = { oggetto: '', titolo: '', righe: [], bottone: ['', ''] };
+  const comeOnline = p.meet
+    ? 'Ci vediamo su Google Meet: all’ora dell’appuntamento ti basta aprire il link qui sotto, dal computer o dal telefono, da un posto tranquillo dove nessuno ti senta.'
+    : 'Qualche minuto prima ti mando il link per la videochiamata. Ti basta un posto tranquillo, dove nessuno ti senta, e una connessione stabile.';
   let t: Testo;
 
   if (per === 'persona') {
@@ -745,13 +760,24 @@ export function emailPrenotazione(opts: {
         titolo: 'Il colloquio è confermato',
         righe: [
           `${ciao} il nostro colloquio conoscitivo è confermato per ${p.quando}, ${dove(p.setting)}.`,
-          p.setting === 'online'
-            ? 'Qualche minuto prima ti mando il link per la videochiamata. Ti basta un posto tranquillo, dove nessuno ti senta, e una connessione stabile.'
-            : 'Lo studio è in via Luigi Pirandello 8, a Itri (LT), e in zona si parcheggia facilmente.',
-          'Se devi cambiare orario o annullare, puoi farlo dal link qui sotto, anche all’ultimo momento.',
+          p.setting === 'online' ? comeOnline : 'Lo studio è in via Luigi Pirandello 8, a Itri (LT), e in zona si parcheggia facilmente.',
+          CORTESIA,
         ],
         bottone: ['Aggiungi a Google Calendar', linkGoogleCalendar(p, 'persona')] as [string, string],
         secondario: ['Cambia orario o annulla', link] as [string, string],
+        meet: true,
+      },
+      promemoria: {
+        oggetto: `Promemoria: ${p.quando}`,
+        titolo: 'Ci vediamo domani',
+        righe: [
+          `${ciao} ti ricordo il nostro colloquio conoscitivo di ${p.quando}, ${dove(p.setting)}.`,
+          p.setting === 'online' ? comeOnline : 'Lo studio è in via Luigi Pirandello 8, a Itri (LT), e in zona si parcheggia facilmente.',
+          CORTESIA,
+        ],
+        bottone: ['Gestisci l’appuntamento', link] as [string, string],
+        secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
+        meet: true,
       },
       annullata: {
         oggetto: `Colloquio annullato: ${p.quando}`,
@@ -763,24 +789,33 @@ export function emailPrenotazione(opts: {
         bottone: ['Scegli un nuovo orario', `${url}/#contatti`] as [string, string],
         secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
       },
-      nuovo_orario: { oggetto: '', titolo: '', righe: [], bottone: ['', ''] as [string, string] },
+      nuovo_orario: vuoto,
     }[evento];
   } else {
     t = {
-      ricevuta: { oggetto: '', titolo: '', righe: [], bottone: ['', ''] as [string, string] },
+      ricevuta: vuoto,
+      promemoria: vuoto,
       nuovo_orario: {
         oggetto: `${chi} propone un altro orario: ${p.quando}`,
         titolo: 'Nuovo orario proposto',
         righe: [`${chi} ha scelto ${p.quando}, ${dove(p.setting)}.`, 'Confermalo o proponi un altro orario.'],
         bottone: ['Conferma o proponi un altro orario', link] as [string, string],
       },
-      proposta: { oggetto: '', titolo: '', righe: [], bottone: ['', ''] as [string, string] },
+      proposta: vuoto,
       confermata: {
         oggetto: `Confermato: ${chi}, ${p.quando}`,
         titolo: 'Colloquio confermato',
-        righe: [`Colloquio conoscitivo con ${chi} confermato per ${p.quando}, ${dove(p.setting)}.`, `Email: ${p.email}${p.telefono ? ` · Telefono: ${p.telefono}` : ''}`],
-        bottone: ['Aggiungi a Google Calendar', linkGoogleCalendar(p, 'alberto')] as [string, string],
-        secondario: ['Gestisci l’appuntamento', link] as [string, string],
+        righe: [
+          `Colloquio conoscitivo con ${chi} confermato per ${p.quando}, ${dove(p.setting)}.`,
+          `Email: ${p.email}${p.telefono ? ` · Telefono: ${p.telefono}` : ''}`,
+          p.inCalendario
+            ? `È già nel tuo Google Calendar${p.meet ? ', con il link Meet, che la persona ha ricevuto nell’email di conferma' : ''}.`
+            : 'Non è ancora nel tuo calendario: aggiungilo con il pulsante qui sotto.',
+        ],
+        bottone: p.inCalendario
+          ? ['Gestisci l’appuntamento', link] as [string, string]
+          : ['Aggiungi a Google Calendar', linkGoogleCalendar(p, 'alberto')] as [string, string],
+        secondario: p.inCalendario ? undefined : ['Gestisci l’appuntamento', link] as [string, string],
       },
       annullata: {
         oggetto: `Annullato: ${chi}, ${p.quando}`,
@@ -798,12 +833,14 @@ export function emailPrenotazione(opts: {
       ${titolo(t.titolo)}
       ${t.righe.map(par).join('')}
       ${nota ? `<div style="margin:0 0 14px;padding:14px 16px;background:${CREMA};border-radius:12px;border-left:3px solid ${MIRTILLO};white-space:pre-wrap;">${esc(nota)}</div>` : ''}
+      ${t.meet && p.meet && p.setting === 'online' ? `<p style="margin:0 0 14px;padding:14px 16px;background:#E2E4F1;border-radius:12px;">Link della videochiamata:<br><a href="${esc(p.meet)}" style="color:${MIRTILLO};font-weight:bold;word-break:break-all;">${esc(p.meet)}</a></p>` : ''}
       ${bottone(t.bottone[0], t.bottone[1])}
       ${t.secondario ? linkSecondario(t.secondario[0], t.secondario[1]) : ''}
       ${per === 'persona' ? `<p style="margin:0;white-space:pre-line;">${esc(firma)}</p>` : ''}`,
   });
   const testo = [
-    ...t.righe, nota ? `\n«${nota}»` : '', '',
+    ...t.righe, nota ? `\n«${nota}»` : '',
+    t.meet && p.meet && p.setting === 'online' ? `\nLink della videochiamata: ${p.meet}` : '', '',
     `${t.bottone[0]}: ${t.bottone[1]}`,
     t.secondario ? `${t.secondario[0]}: ${t.secondario[1]}` : '',
     per === 'persona' ? `\n${firma}` : '',
