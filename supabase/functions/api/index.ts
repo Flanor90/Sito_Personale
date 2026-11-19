@@ -748,6 +748,7 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
       email: ruolo === 'alberto' ? riga.email : null, telefono: ruolo === 'alberto' ? riga.phone : null,
       messaggio, nota: riga.note,
       meet: riga.status === 'confermata' ? riga.meet_link : null,
+      presenza: !!riga.presenza_confermata_at,
       slots: riga.status === 'annullata' ? [] : await liberiPer(sb, conf, riga.setting === 'studio' ? 'studio' : 'online', riga.id),
     }, 200, origin);
   };
@@ -799,8 +800,18 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
       proposed_by: ruolo,
       note: nota,
       reminder_sent_at: null,
+      presenza_confermata_at: null,
     }).then((x) => aggiornaCalendario(sb, conf, sito, x, 'provvisorio'));
     await avvisaAltro(riga, ruolo === 'alberto' ? 'proposta' : 'nuovo_orario');
+    return await risposta(riga);
+  }
+
+  // La persona conferma che ci sarà (facoltativo): Alberto riceve l'avviso.
+  if (azione === 'presenza') {
+    if (ruolo !== 'persona' || r.status !== 'confermata') return json({ ok: false, errore: 'stato' }, 409, origin);
+    if (r.presenza_confermata_at) return await risposta(r);
+    const riga = await aggiorna({ presenza_confermata_at: new Date().toISOString() });
+    await avvisaAltro(riga, 'presenza');
     return await risposta(riga);
   }
 

@@ -710,6 +710,7 @@ export type DatiPrenotazione = {
 };
 
 const CORTESIA = 'Se non riesci a esserci, spostalo o annullalo dal link qui sotto, possibilmente entro il giorno prima: quell’orario può servire a qualcun altro.';
+const PRESENZA = 'Dalla stessa pagina puoi anche confermarmi che ci sarai: non è obbligatorio, ma mi aiuta a organizzarmi.';
 
 function dove(setting: string): string {
   return setting === 'studio' ? 'nello studio di Itri, in via Luigi Pirandello 8' : 'online, in videochiamata';
@@ -740,7 +741,7 @@ export function linkGoogleCalendar(p: DatiPrenotazione, per: 'persona' | 'albert
 
 export function emailPrenotazione(opts: {
   per: 'persona' | 'alberto';
-  evento: 'ricevuta' | 'proposta' | 'nuovo_orario' | 'confermata' | 'annullata' | 'promemoria';
+  evento: 'ricevuta' | 'proposta' | 'nuovo_orario' | 'confermata' | 'annullata' | 'promemoria' | 'presenza';
   p: DatiPrenotazione;
   link: string;
   nota?: string | null;
@@ -793,9 +794,10 @@ export function emailPrenotazione(opts: {
           `${ciao} il nostro colloquio conoscitivo è confermato per ${p.quando}, ${dove(p.setting)}.`,
           p.setting === 'online' ? comeOnline : 'Lo studio è in via Luigi Pirandello 8, a Itri (LT), e in zona si parcheggia facilmente.',
           CORTESIA,
+          PRESENZA,
         ],
-        bottone: ['Aggiungi a Google Calendar', linkGoogleCalendar(p, 'persona')] as [string, string],
-        secondario: ['Cambia orario o annulla', link] as [string, string],
+        bottone: ['Conferma, sposta o annulla', `${link}&a=presenza`] as [string, string],
+        secondario: ['Aggiungi a Google Calendar', linkGoogleCalendar(p, 'persona')] as [string, string],
         meet: true,
       },
       promemoria: {
@@ -805,8 +807,9 @@ export function emailPrenotazione(opts: {
           `${ciao} ti ricordo il nostro colloquio conoscitivo di ${p.quando}, ${dove(p.setting)}.`,
           p.setting === 'online' ? comeOnline : 'Lo studio è in via Luigi Pirandello 8, a Itri (LT), e in zona si parcheggia facilmente.',
           CORTESIA,
+          PRESENZA,
         ],
-        bottone: ['Gestisci l’appuntamento', link] as [string, string],
+        bottone: ['Conferma, sposta o annulla', `${link}&a=presenza`] as [string, string],
         secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
         meet: true,
       },
@@ -821,11 +824,18 @@ export function emailPrenotazione(opts: {
         secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
       },
       nuovo_orario: vuoto,
+      presenza: vuoto,
     }[evento];
   } else {
     t = {
       ricevuta: vuoto,
       promemoria: vuoto,
+      presenza: {
+        oggetto: `Presenza confermata: ${chi}, ${p.quando}`,
+        titolo: 'Ci sarà',
+        righe: [`${chi} ha confermato che ci sarà al colloquio di ${p.quando}, ${dove(p.setting)}.`],
+        bottone: ['Vedi l’appuntamento', link] as [string, string],
+      },
       nuovo_orario: {
         oggetto: `${chi} propone un altro orario: ${p.quando}`,
         titolo: 'Nuovo orario proposto',

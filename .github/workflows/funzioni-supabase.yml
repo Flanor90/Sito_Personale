@@ -38,7 +38,7 @@ jobs:
       # con lo stesso token. Sono scritte per poter girare più volte.
       - name: Applica le migrazioni idempotenti
         run: |
-          for f in supabase/migrations/20261118150000_prenotazioni.sql supabase/migrations/20261119100000_prenotazioni_calendario.sql; do
+          for f in supabase/migrations/20261118150000_prenotazioni.sql supabase/migrations/20261119100000_prenotazioni_calendario.sql supabase/migrations/20261119160000_prenotazioni_presenza.sql; do
             echo "Applico $f"
             jq -Rs '{query: .}' "$f" > /tmp/q.json
             curl -fsS -X POST "https://api.supabase.com/v1/projects/ynmxgdcikqlgcupfszza/database/query" \

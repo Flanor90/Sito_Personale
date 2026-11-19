@@ -165,7 +165,9 @@
         throw new Error(d && d.errore);
       }
       var altro = d.ruolo === 'alberto' ? 'la persona' : 'Alberto';
-      avviso = azione === 'conferma'
+      avviso = azione === 'presenza'
+        ? 'Grazie, ho avvisato Alberto che ci sarai.'
+        : azione === 'conferma'
         ? 'Confermato. Vi arriva un\'email con il promemoria.'
         : azione === 'annulla'
           ? 'Appuntamento annullato. Ho avvisato ' + altro + '.'
@@ -239,6 +241,26 @@
       nuovo.className = 'inline-flex items-center gap-2 bg-notte text-white px-6 py-3.5 rounded-full font-semibold hover:bg-mirtillo-700 transition-colors';
       azioni.appendChild(nuovo);
       return;
+    }
+
+    // La persona, a colloquio confermato, può dire «ci sarò» (facoltativo).
+    if (!alberto && d.stato === 'confermata') {
+      if (d.presenza) {
+        var gia = document.createElement('p');
+        gia.className = 'w-full text-[0.97rem] text-mirtillo-700 font-semibold';
+        gia.textContent = 'Hai confermato che ci sarai. Grazie.';
+        azioni.appendChild(gia);
+      } else {
+        var ciSaro = bottone('Confermo che ci sarò', true);
+        ciSaro.addEventListener('click', function () { agisci('presenza', {}, ciSaro, 'presenza'); });
+        azioni.appendChild(ciSaro);
+      }
+    }
+    if (alberto && d.stato === 'confermata' && d.presenza) {
+      var ok = document.createElement('p');
+      ok.className = 'w-full text-[0.97rem] text-mirtillo-700 font-semibold';
+      ok.textContent = 'La persona ha confermato che ci sarà.';
+      azioni.appendChild(ok);
     }
 
     var puoConfermare = (alberto && d.stato === 'in_attesa') || (!alberto && d.stato === 'proposta');

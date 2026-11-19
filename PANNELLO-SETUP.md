@@ -257,7 +257,10 @@ istruzioni sono in cima al file) gli appuntamenti entrano da soli nel tuo
 calendario: «[Da confermare]» quando arriva la richiesta, definitivi alla
 conferma (con il link Meet per l'online, che la persona riceve per email),
 spostati se cambia l'orario, cancellati se annullati. Il giorno prima la
-persona riceve un promemoria con il link per spostare o annullare. Senza
+persona riceve un promemoria con il link per spostare o annullare.
+Dalla conferma e dal promemoria la persona può anche dire «ci sarò»
+(facoltativo): ti arriva l'avviso «Presenza confermata». Se sposta o
+annulla, ti arriva l'avviso corrispondente. Senza
 script tutto funziona lo stesso, con il pulsante «Aggiungi a Google
 Calendar» nelle email.
 
