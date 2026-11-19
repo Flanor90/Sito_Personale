@@ -22,15 +22,25 @@ export type Messaggio = {
 export class ErroreSmtp extends Error {}
 
 /**
- * L'oggetto con lettere accentate o trattini lunghi va codificato a mano:
- * la libreria SMTP spezza le righe lunghe a metà della codifica e Gmail
- * mostrava l'oggetto come «=?utf-8?Q?Richiesta primo colloquio =e2=80=94…».
- * Qui diventa una serie di parole codificate in base64 (RFC 2047), ognuna
- * corta e senza caratteri spezzati a metà.
+ * L'oggetto con lettere accentate o trattini lunghi va codificato a mano.
+ * La libreria SMTP (denomailer 1.6.0) lo codifica da sé in quoted-printable,
+ * ma spezza le righe lunghe a metà della codifica: Gmail mostrava
+ * «=?utf-8?Q?Richiesta primo colloquio =e2=80=94…». E se l'oggetto inizia
+ * con «=?» lo ricodifica una seconda volta, rompendo l'intestazione.
+ * Quindi: le prime parole senza accenti restano in chiaro (così l'oggetto
+ * non inizia mai con «=?» e la libreria lo lascia com'è), il resto diventa
+ * una serie di parole codificate in base64 (RFC 2047), corte e senza
+ * caratteri spezzati a metà.
  */
 export function oggettoMime(testo: string): string {
   if (/^[\x20-\x7e]*$/.test(testo)) return testo;
-  const byte = new TextEncoder().encode(testo);
+  const primo = testo.search(/[^\x20-\x7e]/);
+  const inizioParola = testo.lastIndexOf(' ', primo) + 1;
+  if (inizioParola === 0) {
+    // Nessuna parola in chiaro davanti: tolgo gli accenti, meglio che rompere l'email.
+    return testo.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\x20-\x7e]/g, '-');
+  }
+  const byte = new TextEncoder().encode(testo.slice(inizioParola));
   const parti: string[] = [];
   let i = 0;
   while (i < byte.length) {
@@ -39,7 +49,7 @@ export function oggettoMime(testo: string): string {
     parti.push(btoa(String.fromCharCode(...byte.slice(i, j))));
     i = j;
   }
-  return parti.map((p) => `=?UTF-8?B?${p}?=`).join(' ');
+  return testo.slice(0, inizioParola) + parti.map((p) => `=?UTF-8?B?${p}?=`).join(' ');
 }
 
 /** Verifica che ci sia tutto il necessario prima ancora di connettersi. */
