@@ -20,6 +20,7 @@ Sito statico personale di Alberto Del Bove, psicoterapeuta (`albertodelbove-psic
 | `supabase/functions/` | Edge functions Deno: `api/` (pubblica), `admin/`, `_lib/` (db, mail, trello, util, calendario: orari liberi e lettura iCal). Rotte prenotazione in `api`: `slots`, `booking` |
 | `supabase/migrations/` | Schema, RLS, statistiche, prenotazioni (`bookings`, applicata dal workflow delle funzioni) |
 | `newsletter/`, `test/` | Pagine newsletter e test/quiz |
+| `english-speaking-therapist/`, `psicologo-en-espanol/` | Pagine sulla terapia in inglese e in spagnolo (`lingua` en/es), collegate in hreflang a `psicoterapia-online/` |
 | `tests/` | `node --test`: analytics, markdown, newsletter, quiz-core |
 | `.github/workflows/` | `test.yml` (CI), `pubblica-articoli.yml` (lunedì 05:00 UTC: ribuilda e pubblica gli articoli in scadenza), `indexnow.yml`, `funzioni-supabase.yml` (pubblica le funzioni Supabase quando cambiano, con il segreto `SUPABASE_ACCESS_TOKEN`) |
 | `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt` | SEO / GEO |
