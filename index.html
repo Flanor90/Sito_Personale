@@ -2200,7 +2200,7 @@
           const boxOrari = form.querySelector('[data-orari]');
           if (boxOrari) { boxOrari.dispatchEvent(new Event('change')); boxOrari.hidden = false; }
           if (window.SiteAnalytics) { window.SiteAnalytics.evento('contatto_inviato'); }
-          if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo(); }
+          if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo({ orario: data.orari.length > 0 }); }
         })
         .catch(function () {
           // Server irraggiungibile: non lascio la persona a mani vuote.

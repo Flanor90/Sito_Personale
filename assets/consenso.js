@@ -146,11 +146,22 @@
      per i lead», importata da GA4: per questo l'evento parte con il nome
      che GA4 si aspetta, e solo se le statistiche sono state accettate.
      generate_lead è l'evento standard di GA4 per lo stesso fatto. */
-  function conversioneModulo() {
+  /* Una richiesta con l'orario già scelto dal calendario vale di più di
+     una richiesta generica: è una persona che ha deciso giorno e ora. Il
+     valore diverso permette a Google Ads di imparare quali ricerche portano
+     a prenotazioni vere; l'evento prenotazione_richiesta si può segnare
+     come evento chiave in Analytics e importare in Ads. */
+  function conversioneModulo(dettagli) {
     var s = stato();
     if (!(s.stat || s.ads) || typeof window.gtag !== 'function') { return; }
+    var conOrario = !!(dettagli && dettagli.orario);
     window.gtag('event', 'ads_conversion_Invio_modulo_per_i_lead_1');
-    window.gtag('event', 'generate_lead', { value: 1.0, currency: 'EUR' });
+    window.gtag('event', 'generate_lead', {
+      value: conOrario ? 3.0 : 1.0, currency: 'EUR', metodo: conOrario ? 'calendario' : 'modulo'
+    });
+    if (conOrario) {
+      window.gtag('event', 'prenotazione_richiesta', { value: 3.0, currency: 'EUR' });
+    }
   }
 
   /* ----------------------------------------------------------

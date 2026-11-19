@@ -441,7 +441,7 @@
           if (window.SiteAnalytics) {
             window.SiteAnalytics.evento('contatto_inviato', { fonte: colleghi ? 'supervisione' : 'destinazione', pagina: location.pathname, orari: dati.orari.length });
           }
-          if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo(); }
+          if (window.ConsensoCookie) { window.ConsensoCookie.conversioneModulo({ orario: dati.orari.length > 0 }); }
         })
         .catch(function () {
           // Server irraggiungibile: apro la posta col messaggio già pronto.
