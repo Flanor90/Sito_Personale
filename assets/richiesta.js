@@ -95,9 +95,9 @@
   var fmtGiornoLungo = new Intl.DateTimeFormat('it-IT', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Rome' });
   var fmtOra = new Intl.DateTimeFormat('it-IT', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' });
 
-  function sceltaOrari(n) {
+  function sceltaOrari(n, settingFisso) {
     return (
-      '<fieldset data-orari data-n="' + n + '" class="min-w-0">' +
+      '<fieldset data-orari data-n="' + n + '"' + (settingFisso ? ' data-setting="' + settingFisso + '"' : '') + ' class="min-w-0">' +
         '<legend class="block text-sm font-semibold text-notte mb-1">Scegli giorno e ora del colloquio <span class="font-normal text-inchiostro/45">(facoltativo)</span></legend>' +
         '<p class="text-xs leading-relaxed text-inchiostro/60 mb-3">Orari liberi in ora italiana' +
           (oraLocale(Date.now()) ? ', con accanto l\'ora da te' : '') +
@@ -164,7 +164,9 @@
     if (!box) { return; }
     var riepilogo = box.querySelector('[data-proposte]');
     function carica() {
-      var modo = /itri/i.test(settingScelto(form)) ? 'studio' : 'online';
+      // Nelle pagine con la modalità già decisa (lo studio di Itri) non c'è
+      // scelta nel modulo: vale quella scritta sul contenitore.
+      var modo = /itri/i.test(box.getAttribute('data-setting') || settingScelto(form)) ? 'studio' : 'online';
       riepilogo.textContent = '';
       box.querySelector('[data-cal]').innerHTML = '<p class="text-sm text-inchiostro/55">Carico gli orari liberi…</p>';
       fetch(SLOTS + '?setting=' + modo)
@@ -307,7 +309,7 @@
     return (
       '<form novalidate class="space-y-4" data-modulo-richiesta>' +
         (chiediSetting ? sceltaSetting(n) : '') +
-        sceltaOrari(n) +
+        sceltaOrari(n, setting) +
         campo('rq-nome-' + n, 'Nome <span class="text-mirtillo-700" aria-hidden="true">*</span>', 'text',
               'name="nome" autocomplete="name" required placeholder="Come ti chiami"') +
         campo('rq-email-' + n, 'Email <span class="text-mirtillo-700" aria-hidden="true">*</span>', 'email',

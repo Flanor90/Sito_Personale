@@ -725,7 +725,8 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
 
   const { data: r } = await sb.from('bookings').select('*')
     .or(`token_persona.eq.${token},token_alberto.eq.${token}`).maybeSingle();
-  if (!r) return json({ ok: false, errore: 'non trovata' }, 404, origin);
+  // 200 e non 404: la pagina gestisce da sé il caso, senza errori in console.
+  if (!r) return json({ ok: false, errore: 'non trovata' }, 200, origin);
   const ruolo: 'persona' | 'alberto' = r.token_alberto === token ? 'alberto' : 'persona';
 
   const conf = await leggiImpostazioni<ImpostazioniCalendario>(sb, 'calendario');
