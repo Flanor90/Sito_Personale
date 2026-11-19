@@ -1881,7 +1881,10 @@
     });
 
     /* Supervisione → seleziona il tema e precompila il messaggio.
-       Il pulsante sta su /colleghi/ e porta qui con ?tema=supervisione. */
+       Il pulsante di /colleghi/ ora porta al modulo per i colleghi su
+       /supervisione-clinica/#richiesta, senza parametri nell'indirizzo.
+       ?tema=supervisione resta letto solo per i vecchi link già in giro:
+       il canonical della home lo riporta comunque all'indirizzo pulito. */
     function precompilaSupervisione() {
       const box = document.querySelector('input[name="temi"][value="Supervisione clinica"]');
       if (box) { box.checked = true; }
