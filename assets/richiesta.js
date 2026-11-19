@@ -429,6 +429,11 @@
       })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
         .then(function (r) {
+          // Un solo conoscitivo per indirizzo: lo dico, senza aprire la posta.
+          if (r && r.errore === 'gia_prenotato') {
+            esito(form, 'Risulta già un colloquio conoscitivo prenotato con questo indirizzo email. Trovi il link per spostarlo o annullarlo nell\'email di conferma; se non la trovi, scrivimi su WhatsApp.', true);
+            return;
+          }
           if (!r || !r.ok) { throw new Error('rifiutata'); }
           esito(form, colleghi
             ? 'Ho ricevuto la tua richiesta, grazie. Ti rispondo io, di solito entro un giorno lavorativo.'

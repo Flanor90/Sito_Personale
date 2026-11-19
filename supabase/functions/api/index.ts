@@ -95,6 +95,16 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
   }
 
   const kind = KIND_VALIDI.includes(String(b.kind)) ? String(b.kind) : 'newsletter';
+
+  // Un solo colloquio conoscitivo per indirizzo email: se ce n'è già uno in
+  // attesa, proposto o confermato, non se ne prenota un secondo. Chi ha
+  // annullato può riprenotare. Il controllo usa la forma canonica
+  // dell'indirizzo (vedi emailCanonica), così mario.rossi+1@gmail.com e
+  // mariorossi@gmail.com contano come lo stesso. Prima di qualsiasi
+  // scrittura: un tentativo respinto non lascia tracce.
+  if (kind === 'contatto' && testo(b.slot, 40) && await giaPrenotato(sb, email)) {
+    return json({ ok: false, errore: 'gia_prenotato' }, 200, origin);
+  }
   const source = testo(b.source, 60) ?? kind;
   const lang = ['it', 'en', 'es'].includes(String(b.lang)) ? String(b.lang) : 'it';
   const nome = testo(b.name, 120);
@@ -854,4 +864,23 @@ async function promemoria(sb: ReturnType<typeof servizio>) {
       await sb.from('bookings').update({ reminder_sent_at: new Date().toISOString() }).eq('id', r.id);
     }
   }
+}
+
+/* ============================================================
+   Un solo colloquio conoscitivo per persona
+   ============================================================ */
+
+/** Forma canonica di un indirizzo: senza +etichetta e, per Gmail, senza punti. */
+function emailCanonica(email: string): string {
+  const [utente, dominio = ''] = email.toLowerCase().trim().split('@');
+  const base = utente.split('+')[0];
+  const gmail = dominio === 'gmail.com' || dominio === 'googlemail.com';
+  return `${gmail ? base.replace(/\./g, '') : base}@${gmail ? 'gmail.com' : dominio}`;
+}
+
+async function giaPrenotato(sb: ReturnType<typeof servizio>, email: string): Promise<boolean> {
+  const cercata = emailCanonica(email);
+  const { data } = await sb.from('bookings').select('email')
+    .in('status', ['in_attesa', 'proposta', 'confermata']);
+  return (data ?? []).some((r) => emailCanonica(String(r.email)) === cercata);
 }

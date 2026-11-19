@@ -2192,6 +2192,11 @@
       })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
         .then(function (esito) {
+          // Un solo conoscitivo per indirizzo: lo dico, senza aprire la posta.
+          if (esito && esito.errore === 'gia_prenotato') {
+            showFeedback('Risulta già un colloquio conoscitivo prenotato con questo indirizzo email. Trovi il link per spostarlo o annullarlo nell\'email di conferma; se non la trovi, scrivimi su WhatsApp.', true);
+            return;
+          }
           if (!esito || !esito.ok) { throw new Error('rifiutata'); }
           showFeedback(data.orari.length
             ? 'Ho ricevuto la tua richiesta per ' + data.orari[0] + '. Te lo confermo io per email, di solito entro poche ore.'
