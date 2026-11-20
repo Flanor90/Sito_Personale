@@ -344,7 +344,7 @@ export function emailNotificaRichiesta(opts: {
   sito: ImpostazioniSito;
   supervisione?: boolean;
   /** Se la persona ha scelto un orario dal calendario. */
-  prenotazione?: { quando: string; dove: string; link: string; occupato?: boolean } | null;
+  prenotazione?: { quando: string; dove: string; link: string; occupato?: boolean; gia?: boolean } | null;
 }): { oggetto: string; html: string; testo: string } {
   const cosa = opts.supervisione ? 'Richiesta di supervisione' : 'Richiesta primo colloquio';
   const pr = opts.prenotazione;
@@ -374,11 +374,12 @@ export function emailNotificaRichiesta(opts: {
         : ''
     }
       ${pr ? `<div style="margin:20px 0 0;padding:16px 18px;background:#E2E4F1;border-radius:12px;">
-          <p style="margin:0 0 4px;font-size:13px;color:#6b6b6b;">Orario scelto</p>
+          <p style="margin:0 0 4px;font-size:13px;color:#6b6b6b;">${pr.gia ? 'Ha già un colloquio conoscitivo prenotato' : 'Orario scelto'}</p>
           <p style="margin:0;font-size:17px;"><strong>${esc(pr.quando)}</strong>, ${esc(pr.dove)}</p>
           ${pr.occupato ? '<p style="margin:8px 0 0;font-size:13px;color:#9a3412;">Attenzione: nel frattempo questo orario risulta occupato. Proponine un altro.</p>' : ''}
+          ${pr.gia ? '<p style="margin:8px 0 0;font-size:13px;color:#6b6b6b;">Ha provato a prenotare un secondo orario: non l’ho creato, ma il suo messaggio è qui sopra.</p>' : ''}
         </div>
-        ${bottone('Conferma o proponi un altro orario', pr.link)}` : ''}
+        ${bottone(pr.gia ? 'Vedi l’appuntamento' : 'Conferma o proponi un altro orario', pr.link)}` : ''}
       ${opts.linkTrello ? bottone('Apri la scheda su Trello', opts.linkTrello) : ''}`,
   });
 
@@ -392,11 +393,16 @@ export function emailNotificaRichiesta(opts: {
     opts.temi.length ? `Temi: ${opts.temi.join(' · ')}` : '',
     '',
     opts.messaggio ?? '',
-    pr ? `\nOrario scelto: ${pr.quando}, ${pr.dove}${pr.occupato ? ' (risulta occupato: proponine un altro)' : ''}\nConferma o proponi: ${pr.link}` : '',
+    pr ? (pr.gia
+      ? `\nHa già un colloquio conoscitivo: ${pr.quando}, ${pr.dove}. Non ho creato una seconda prenotazione.\nVedi l’appuntamento: ${pr.link}`
+      : `\nOrario scelto: ${pr.quando}, ${pr.dove}${pr.occupato ? ' (risulta occupato: proponine un altro)' : ''}\nConferma o proponi: ${pr.link}`) : '',
     opts.linkTrello ? `\nTrello: ${opts.linkTrello}` : '',
   ].filter(Boolean).join('\n');
 
-  return { oggetto: `${cosa} — ${opts.nome}${pr ? ` — ${pr.quando}` : ''}`, html, testo };
+  return {
+    oggetto: pr?.gia ? `Nuovo messaggio da ${opts.nome} (ha già un colloquio)` : `${cosa} — ${opts.nome}${pr ? ` — ${pr.quando}` : ''}`,
+    html, testo,
+  };
 }
 
 /* ============================================================
@@ -711,6 +717,7 @@ export type DatiPrenotazione = {
 
 const CORTESIA = 'Se non riesci a esserci, spostalo o annullalo dal link qui sotto, possibilmente entro il giorno prima: quell’orario può servire a qualcun altro.';
 const PRESENZA = 'Dalla stessa pagina puoi anche confermarmi che ci sarai: non è obbligatorio, ma mi aiuta a organizzarmi.';
+const SCRIVIMI = 'Se prima del colloquio vuoi dirmi qualcosa, anche solo due righe su cosa ti porta, puoi rispondere a questa email o scrivermi dalla pagina dell’appuntamento. Leggo tutto io.';
 
 function dove(setting: string): string {
   return setting === 'studio' ? 'nello studio di Itri, in via Luigi Pirandello 8' : 'online, in videochiamata';
@@ -741,7 +748,8 @@ export function linkGoogleCalendar(p: DatiPrenotazione, per: 'persona' | 'albert
 
 export function emailPrenotazione(opts: {
   per: 'persona' | 'alberto';
-  evento: 'ricevuta' | 'proposta' | 'nuovo_orario' | 'confermata' | 'annullata' | 'promemoria' | 'presenza';
+  evento: 'ricevuta' | 'proposta' | 'nuovo_orario' | 'confermata' | 'annullata' | 'promemoria' | 'presenza'
+    | 'gia_prenotato' | 'messaggio';
   p: DatiPrenotazione;
   link: string;
   nota?: string | null;
@@ -772,7 +780,18 @@ export function emailPrenotazione(opts: {
         righe: [
           `${ciao} hai chiesto un colloquio conoscitivo per ${p.quando}, ${dove(p.setting)}.`,
           'Te lo confermo io, di solito entro poche ore: ti arriva un’altra email. Se quell’orario non riesco a garantirtelo, te ne propongo uno vicino.',
+          SCRIVIMI,
           'Se nel frattempo devi cambiare orario o annullare, puoi farlo da qui.',
+        ],
+        bottone: ['Gestisci l’appuntamento', link] as [string, string],
+        secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
+      },
+      gia_prenotato: {
+        oggetto: 'Ho ricevuto il tuo messaggio',
+        titolo: 'Ho ricevuto il tuo messaggio',
+        righe: [
+          `${ciao} grazie per avermi scritto: leggo io il tuo messaggio e ti rispondo personalmente.`,
+          `Il tuo colloquio conoscitivo resta fissato per ${p.quando}, ${dove(p.setting)}. Il colloquio conoscitivo è uno per persona, ma se l’orario non ti va più bene puoi spostarlo da qui, oppure scrivermi: ne troviamo uno insieme.`,
         ],
         bottone: ['Gestisci l’appuntamento', link] as [string, string],
         secondario: ['Oppure scrivimi su WhatsApp', wa] as [string, string],
@@ -825,11 +844,19 @@ export function emailPrenotazione(opts: {
       },
       nuovo_orario: vuoto,
       presenza: vuoto,
+      messaggio: vuoto,
     }[evento];
   } else {
     t = {
       ricevuta: vuoto,
       promemoria: vuoto,
+      gia_prenotato: vuoto,
+      messaggio: {
+        oggetto: `Messaggio da ${chi} (colloquio di ${p.quando})`,
+        titolo: 'Un messaggio per te',
+        righe: [`${chi} ti ha scritto dalla pagina del suo appuntamento (${p.quando}, ${dove(p.setting)}).`, `Rispondi a: ${p.email}`],
+        bottone: ['Vedi l’appuntamento', link] as [string, string],
+      },
       presenza: {
         oggetto: `Presenza confermata: ${chi}, ${p.quando}`,
         titolo: 'Ci sarà',

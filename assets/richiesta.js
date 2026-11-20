@@ -317,8 +317,8 @@
         campo('rq-tel-' + n, 'Telefono <span class="font-normal text-inchiostro/45">(facoltativo)</span>', 'tel',
               'name="telefono" autocomplete="tel" inputmode="tel" placeholder="+39 …"') +
         '<div>' +
-          '<label for="rq-msg-' + n + '" class="block text-sm font-semibold text-notte mb-1.5">Due righe su cosa ti porta qui <span class="font-normal text-inchiostro/45">(facoltativo)</span></label>' +
-          '<textarea id="rq-msg-' + n + '" name="messaggio" rows="3" placeholder="Non serve trovare le parole giuste."' +
+          '<label for="rq-msg-' + n + '" class="block text-sm font-semibold text-notte mb-1.5">Un messaggio per me <span class="font-normal text-inchiostro/45">(facoltativo, ma mi aiuta)</span></label>' +
+          '<textarea id="rq-msg-' + n + '" name="messaggio" rows="3" placeholder="Anche solo due righe: cosa ti porta, cosa ti aspetti, una domanda. Non serve trovare le parole giuste, lo leggo io."' +
             ' class="w-full rounded-xl border border-tortora-dark bg-crema/60 px-4 py-3 text-[0.97rem] text-notte placeholder:text-inchiostro/40 focus:border-mirtillo-600 focus:bg-white focus:ring-0 transition-colors resize-y"></textarea>' +
         '</div>' +
         '<input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden">' +
@@ -429,12 +429,15 @@
       })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http')); })
         .then(function (r) {
-          // Un solo conoscitivo per indirizzo: lo dico, senza aprire la posta.
-          if (r && r.errore === 'gia_prenotato') {
-            esito(form, 'Risulta già un colloquio conoscitivo prenotato con questo indirizzo email. Trovi il link per spostarlo o annullarlo nell\'email di conferma; se non la trovi, scrivimi su WhatsApp.', true);
+          if (!r || !r.ok) { throw new Error('rifiutata'); }
+          // Ha già un colloquio: niente seconda prenotazione, ma il messaggio
+          // mi arriva e la persona riceve di nuovo il link al suo appuntamento.
+          if (r.gia_prenotato) {
+            esito(form, 'Ho ricevuto il tuo messaggio, grazie: ti rispondo io. Hai già un colloquio conoscitivo per ' + r.quando +
+              ': ti ho rimandato per email il link per spostarlo o annullarlo.', false);
+            form.reset();
             return;
           }
-          if (!r || !r.ok) { throw new Error('rifiutata'); }
           esito(form, colleghi
             ? 'Ho ricevuto la tua richiesta, grazie. Ti rispondo io, di solito entro un giorno lavorativo.'
             : dati.orari.length

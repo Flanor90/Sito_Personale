@@ -240,6 +240,7 @@
       nuovo.textContent = 'Prenota un nuovo colloquio';
       nuovo.className = 'inline-flex items-center gap-2 bg-notte text-white px-6 py-3.5 rounded-full font-semibold hover:bg-mirtillo-700 transition-colors';
       azioni.appendChild(nuovo);
+      if (!alberto) { box.appendChild(riquadroMessaggio()); }
       return;
     }
 
@@ -302,6 +303,34 @@
     var annulla = bottone(alberto ? 'Annulla la richiesta' : 'Annulla', false);
     annulla.addEventListener('click', function () { apri(riquadroAnnulla()); });
     azioni.appendChild(annulla);
+    if (!alberto) { box.appendChild(riquadroMessaggio()); }
+  }
+
+  /* Due righe per Alberto, in qualunque momento: arrivano per email e
+     restano fra le richieste del pannello. */
+  function riquadroMessaggio() {
+    var w = el(
+      '<div class="mt-8 rounded-2xl border border-tortora bg-white p-5">' +
+        '<label for="pren-msg" class="block text-sm font-semibold text-notte mb-1.5">Vuoi dirmi qualcosa prima del colloquio?</label>' +
+        '<p class="text-sm text-inchiostro/65 mb-3">Anche solo due righe: cosa ti porta, cosa ti aspetti, una domanda. Lo leggo io e ti rispondo.</p>' +
+        '<textarea id="pren-msg" rows="3" class="w-full rounded-xl border border-tortora-dark bg-crema/60 px-4 py-3 text-[0.97rem] text-notte focus:border-mirtillo-600 focus:bg-white focus:ring-0 transition-colors resize-y"></textarea>' +
+        '<button type="button" data-invia-msg class="mt-3 inline-flex items-center justify-center gap-2 bg-notte text-white font-semibold px-6 py-3 rounded-full hover:bg-mirtillo-700 transition-colors">Invia il messaggio</button>' +
+        '<p class="mt-3 text-sm text-inchiostro/60">Preferisci WhatsApp? <a class="underline text-mirtillo-700" href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">Scrivimi lì</a>.</p>' +
+      '</div>'
+    ).firstChild;
+    var b = w.querySelector('[data-invia-msg]');
+    b.addEventListener('click', function () {
+      var testo = w.querySelector('#pren-msg').value.trim();
+      if (!testo) { w.querySelector('#pren-msg').focus(); return; }
+      b.disabled = true;
+      chiama('messaggio', { testo: testo }).then(function (d) {
+        if (!d || !d.ok) { throw new Error('ko'); }
+        avviso = 'Messaggio inviato: lo leggo io e ti rispondo.';
+        dati = d;
+        disegna();
+      }).catch(function () { b.disabled = false; });
+    });
+    return w;
   }
 
   function carica() {

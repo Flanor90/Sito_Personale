@@ -97,14 +97,12 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
   const kind = KIND_VALIDI.includes(String(b.kind)) ? String(b.kind) : 'newsletter';
 
   // Un solo colloquio conoscitivo per indirizzo email: se ce n'è già uno in
-  // attesa, proposto o confermato, non se ne prenota un secondo. Chi ha
-  // annullato può riprenotare. Il controllo usa la forma canonica
-  // dell'indirizzo (vedi emailCanonica), così mario.rossi+1@gmail.com e
-  // mariorossi@gmail.com contano come lo stesso. Prima di qualsiasi
-  // scrittura: un tentativo respinto non lascia tracce.
-  if (kind === 'contatto' && testo(b.slot, 40) && await giaPrenotato(sb, email)) {
-    return json({ ok: false, errore: 'gia_prenotato' }, 200, origin);
-  }
+  // attesa, proposto o confermato, non se ne prenota un secondo. Ma niente
+  // porte chiuse: il messaggio arriva lo stesso ad Alberto e la persona
+  // riceve di nuovo il link al suo appuntamento. Chi ha annullato può
+  // riprenotare. Il confronto usa la forma canonica dell'indirizzo (vedi
+  // emailCanonica), così gli alias Gmail contano come lo stesso indirizzo.
+  const giaAttiva = kind === 'contatto' && testo(b.slot, 40) ? await prenotazioneAttiva(sb, email) : null;
   const source = testo(b.source, 60) ?? kind;
   const lang = ['it', 'en', 'es'].includes(String(b.lang)) ? String(b.lang) : 'it';
   const nome = testo(b.name, 120);
@@ -209,7 +207,7 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
     // propone un altro, la persona non resta senza risposta.
     let pren: { riga: Record<string, string>; occupato: boolean } | null = null;
     const slotScelto = testo(b.slot, 40);
-    if (slotScelto && !isNaN(Date.parse(slotScelto)) && Date.parse(slotScelto) > Date.now()) {
+    if (!giaAttiva && slotScelto && !isNaN(Date.parse(slotScelto)) && Date.parse(slotScelto) > Date.now()) {
       const modo = /itri|studio/i.test(setting ?? '') ? 'studio' : 'online';
       const conf = await leggiImpostazioni<ImpostazioniCalendario>(sb, 'calendario');
       const liberi = await liberiPer(sb, conf, modo);
@@ -268,6 +266,11 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
         dove: pren.riga.setting === 'studio' ? 'in studio a Itri' : 'online',
         link: linkPrenotazione(sito, pren.riga.token_alberto),
         occupato: pren.occupato,
+      } : giaAttiva ? {
+        quando: quandoLeggibile(giaAttiva.slot_start),
+        dove: giaAttiva.setting === 'studio' ? 'in studio a Itri' : 'online',
+        link: linkPrenotazione(sito, giaAttiva.token_alberto),
+        gia: true,
       } : null,
     }));
     if (pren && messaggioId) {
@@ -276,7 +279,12 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
 
     // E alla persona: la conferma che la richiesta è arrivata, che cosa
     // succede adesso e, se preferisce, WhatsApp.
-    const ricevuta = pren
+    const ricevuta = giaAttiva
+      ? emailPrenotazione({
+        per: 'persona', evento: 'gia_prenotato', p: datiPrenotazione(giaAttiva),
+        link: linkPrenotazione(sito, giaAttiva.token_persona), sito,
+      })
+      : pren
       ? emailPrenotazione({
         per: 'persona', evento: 'ricevuta', p: datiPrenotazione(pren.riga),
         link: linkPrenotazione(sito, pren.riga.token_persona), sito,
@@ -369,7 +377,10 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
     stato = 'gia_confermato';
   }
 
-  return json({ ok: true, stato }, 200, origin);
+  return json({
+    ok: true, stato,
+    ...(giaAttiva ? { gia_prenotato: true, quando: quandoLeggibile(giaAttiva.slot_start) } : {}),
+  }, 200, origin);
 }
 
 /* ============================================================
@@ -764,7 +775,7 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
   };
 
   if (azione === 'stato') return await risposta(r);
-  if (r.status === 'annullata') return json({ ok: false, errore: 'annullata' }, 409, origin);
+  if (r.status === 'annullata' && azione !== 'messaggio') return json({ ok: false, errore: 'annullata' }, 409, origin);
 
   const altro = ruolo === 'alberto' ? 'persona' : 'alberto';
   const aggiorna = async (patch: Record<string, unknown>) => {
@@ -814,6 +825,25 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
     }).then((x) => aggiornaCalendario(sb, conf, sito, x, 'provvisorio'));
     await avvisaAltro(riga, ruolo === 'alberto' ? 'proposta' : 'nuovo_orario');
     return await risposta(riga);
+  }
+
+  // Un messaggio libero dalla pagina dell'appuntamento, in qualunque stato:
+  // arriva ad Alberto per email e resta fra le richieste del pannello.
+  if (azione === 'messaggio') {
+    const corpo = testo(b.testo, 3000);
+    if (!corpo) return json({ ok: false, errore: 'vuoto' }, 400, origin);
+    if (ruolo === 'persona') {
+      await sb.from('messages').insert({
+        contact_id: r.contact_id, name: r.name, email: r.email, phone: r.phone,
+        setting: r.setting === 'studio' ? 'In studio a Itri (LT)' : 'Online',
+        topics: ['Messaggio dalla prenotazione'], body: corpo, lang: 'it',
+      });
+      await inviaUna(smtp, destinatarioAvvisi(smtp), emailPrenotazione({
+        per: 'alberto', evento: 'messaggio', p: datiPrenotazione(r), nota: corpo,
+        link: linkPrenotazione(sito, r.token_alberto), sito,
+      }));
+    }
+    return await risposta(r);
   }
 
   // La persona conferma che ci sarà (facoltativo): Alberto riceve l'avviso.
@@ -878,9 +908,13 @@ function emailCanonica(email: string): string {
   return `${gmail ? base.replace(/\./g, '') : base}@${gmail ? 'gmail.com' : dominio}`;
 }
 
-async function giaPrenotato(sb: ReturnType<typeof servizio>, email: string): Promise<boolean> {
+/** La prenotazione ancora attiva (in attesa, proposta o confermata) di un indirizzo, se c'è. */
+async function prenotazioneAttiva(
+  sb: ReturnType<typeof servizio>, email: string,
+): Promise<Record<string, string> | null> {
   const cercata = emailCanonica(email);
-  const { data } = await sb.from('bookings').select('email')
-    .in('status', ['in_attesa', 'proposta', 'confermata']);
-  return (data ?? []).some((r) => emailCanonica(String(r.email)) === cercata);
+  const { data } = await sb.from('bookings').select('*')
+    .in('status', ['in_attesa', 'proposta', 'confermata'])
+    .gte('slot_end', new Date().toISOString());
+  return (data ?? []).find((r) => emailCanonica(String(r.email)) === cercata) ?? null;
 }
