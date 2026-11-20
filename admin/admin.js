@@ -393,6 +393,7 @@
       cruscotto: cruscotto,
       contatti: contatti,
       richieste: richieste,
+      prenotazioni: prenotazioni,
       newsletter: newsletter,
       statistiche: statistiche,
       impostazioni: impostazioni
@@ -727,6 +728,60 @@
     db('contacts?id=eq.' + encodeURIComponent(id), { metodo: 'DELETE' })
       .then(function () { chiudiCassetto(); contatti(false); })
       .catch(function (e) { alert(e.message); });
+  }
+
+  /* ============================================================
+     PRENOTAZIONI (colloqui conoscitivi dal calendario)
+     ------------------------------------------------------------
+     Solo lettura: confermare, proporre un altro orario o annullare si
+     fa dalla pagina dell'appuntamento, che apre «Gestisci».
+     ============================================================ */
+
+  var STATI_PRENOTAZIONE = {
+    in_attesa: ['Da confermare', 'et-pending'],
+    proposta: ['Proposta inviata', 'et-nuovo'],
+    confermata: ['Confermata', 'et-confirmed'],
+    annullata: ['Annullata', 'et-archiviato']
+  };
+
+  function prenotazioni() {
+    caricamento();
+    db('bookings?select=id,name,email,phone,setting,slot_start,status,proposed_by,presenza_confermata_at,meet_link,token_alberto,lang,created_at' +
+       '&order=slot_start.desc&limit=300').then(function (righe) {
+      var adesso = Date.now();
+      var future = righe.filter(function (r) { return Date.parse(r.slot_start) >= adesso && r.status !== 'annullata'; })
+        .sort(function (x, y) { return Date.parse(x.slot_start) - Date.parse(y.slot_start); });
+      var altre = righe.filter(function (r) { return future.indexOf(r) < 0; });
+      var daConfermare = future.filter(function (r) { return r.status === 'in_attesa'; }).length;
+
+      function tabella(lista) {
+        return '<div class="tabella-avvolge"><table><thead><tr><th>Quando</th><th>Persona</th><th>Modalità</th>' +
+          '<th>Stato</th><th>Ci sarà</th><th></th></tr></thead><tbody>' +
+          lista.map(function (r) {
+            var st = STATI_PRENOTAZIONE[r.status] || [r.status, 'et-fonte'];
+            return '<tr>' +
+              '<td><b>' + dataOra(r.slot_start) + '</b></td>' +
+              '<td><b>' + esc(r.name || '—') + '</b><div class="tenue">' + esc(r.email) +
+                (r.phone ? ' · ' + esc(r.phone) : '') + (r.lang && r.lang !== 'it' ? ' · ' + esc(r.lang.toUpperCase()) : '') + '</div></td>' +
+              '<td class="tenue">' + (r.setting === 'studio' ? 'Studio Itri' : 'Online') +
+                (r.meet_link ? ' · <a href="' + esc(r.meet_link) + '" target="_blank" rel="noopener">Meet</a>' : '') + '</td>' +
+              '<td><span class="etichetta ' + st[1] + '">' + esc(st[0]) + '</span></td>' +
+              '<td class="tenue">' + (r.presenza_confermata_at ? 'Sì' : '—') + '</td>' +
+              '<td><a class="bottone secondario" href="/prenotazione/?t=' + encodeURIComponent(r.token_alberto) +
+                '" target="_blank" rel="noopener">Gestisci</a></td>' +
+            '</tr>';
+          }).join('') + '</tbody></table></div>';
+      }
+
+      $('#contenuto').innerHTML =
+        intestazione('Prenotazioni del colloquio',
+          daConfermare ? daConfermare + ' da confermare. «Gestisci» apre la pagina dove confermi, proponi un altro orario o annulli.'
+                       : 'I colloqui conoscitivi prenotati dal calendario del sito.') +
+        '<div class="scheda"><h2>In arrivo</h2>' +
+          (future.length ? tabella(future) : '<div class="vuoto"><strong>Nessun colloquio in arrivo</strong>Le nuove prenotazioni compaiono qui.</div>') +
+        '</div>' +
+        (altre.length ? '<div class="scheda"><h2>Passate e annullate</h2>' + tabella(altre) + '</div>' : '');
+    }).catch(mostraErrore);
   }
 
   /* ============================================================
@@ -1694,7 +1749,7 @@
       .catch(function () { /* il cruscotto funziona lo stesso */ })
       .then(function () {
         var iniziale = (location.hash || '').replace('#', '') || 'cruscotto';
-        vai(['cruscotto', 'contatti', 'richieste', 'newsletter', 'statistiche', 'impostazioni']
+        vai(['cruscotto', 'contatti', 'richieste', 'prenotazioni', 'newsletter', 'statistiche', 'impostazioni']
           .indexOf(iniziale) >= 0 ? iniziale : 'cruscotto');
       });
   }

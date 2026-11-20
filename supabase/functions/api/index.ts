@@ -213,7 +213,7 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
       const liberi = await liberiPer(sb, conf, modo);
       const inizio = new Date(slotScelto).toISOString();
       const { data: riga } = await sb.from('bookings').insert({
-        contact_id: contatto!.id, name: nome, email, phone: telefono, setting: modo,
+        contact_id: contatto!.id, name: nome, email, phone: telefono, setting: modo, lang,
         slot_start: inizio,
         slot_end: new Date(Date.parse(inizio) + (conf.durata_min || 45) * 60000).toISOString(),
         token_persona: nuovoToken(), token_alberto: nuovoToken(),
@@ -379,7 +379,7 @@ async function collect(req: Request, origin: string | null): Promise<Response> {
 
   return json({
     ok: true, stato,
-    ...(giaAttiva ? { gia_prenotato: true, quando: quandoLeggibile(giaAttiva.slot_start) } : {}),
+    ...(giaAttiva ? { gia_prenotato: true, quando: quandoLeggibile(giaAttiva.slot_start, lang) } : {}),
   }, 200, origin);
 }
 
@@ -678,9 +678,11 @@ function datiPrenotazione(r: Record<string, string>): DatiPrenotazione {
   return {
     nome: r.name, email: r.email, telefono: r.phone,
     setting: r.setting === 'studio' ? 'studio' : 'online',
-    quando: quandoLeggibile(r.slot_start), slot_start: r.slot_start, slot_end: r.slot_end,
+    quando: quandoLeggibile(r.slot_start, r.lang), slot_start: r.slot_start, slot_end: r.slot_end,
     meet: r.status === 'confermata' ? r.meet_link : null,
     inCalendario: !!r.google_event_id,
+    lang: r.lang || 'it',
+    quandoIt: quandoLeggibile(r.slot_start),
   };
 }
 
@@ -764,7 +766,8 @@ async function booking(req: Request, origin: string | null): Promise<Response> {
     }
     return json({
       ok: true, ruolo, stato: riga.status, proposta_da: riga.proposed_by,
-      quando: quandoLeggibile(riga.slot_start), slot_start: riga.slot_start, slot_end: riga.slot_end,
+      lang: ruolo === 'persona' ? (riga.lang || 'it') : 'it',
+      quando: quandoLeggibile(riga.slot_start, ruolo === 'persona' ? riga.lang : 'it'), slot_start: riga.slot_start, slot_end: riga.slot_end,
       setting: riga.setting, nome: ruolo === 'alberto' ? riga.name : null,
       email: ruolo === 'alberto' ? riga.email : null, telefono: ruolo === 'alberto' ? riga.phone : null,
       messaggio, nota: riga.note,

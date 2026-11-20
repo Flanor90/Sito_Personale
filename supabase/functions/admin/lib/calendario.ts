@@ -77,15 +77,18 @@ function giornoRoma(ms: number) {
   return { a: d.getUTCFullYear(), m: d.getUTCMonth(), g: d.getUTCDate(), dow: d.getUTCDay() };
 }
 
-/** "giovedì 20 novembre alle 10:00", in ora italiana. */
-export function quandoLeggibile(iso: string): string {
+/** "giovedì 20 novembre alle 10:00" (o in inglese/spagnolo), in ora italiana. */
+export function quandoLeggibile(iso: string, lang = 'it'): string {
   const d = new Date(iso);
-  const giorno = new Intl.DateTimeFormat('it-IT', {
+  const loc = lang === 'en' ? 'en-GB' : lang === 'es' ? 'es-ES' : 'it-IT';
+  const giorno = new Intl.DateTimeFormat(loc, {
     weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Rome',
   }).format(d);
-  const ora = new Intl.DateTimeFormat('it-IT', {
+  const ora = new Intl.DateTimeFormat(loc, {
     hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome',
   }).format(d);
+  if (lang === 'en') return `${giorno} at ${ora} (Italian time)`;
+  if (lang === 'es') return `${giorno} a las ${ora} (hora de Italia)`;
   return `${giorno} alle ${ora}`;
 }
 

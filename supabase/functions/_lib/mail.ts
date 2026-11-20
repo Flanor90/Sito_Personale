@@ -713,7 +713,120 @@ export type DatiPrenotazione = {
   meet?: string | null;
   /** L'evento è già nel Google Calendar di Alberto (creato dallo script). */
   inCalendario?: boolean;
+  /** Lingua della persona (it, en, es): le sue email la seguono. */
+  lang?: string;
+  /** La data in italiano, per le email ad Alberto. */
+  quandoIt?: string;
 };
+
+/* ---------- Le email della persona in inglese e spagnolo ---------- */
+
+type TestoPren = {
+  oggetto: string; titolo: string; righe: string[]; bottone: [string, string];
+  secondario?: [string, string]; meet?: boolean;
+};
+
+const ESTERO: Record<'en' | 'es', {
+  firma: string; ciao: string; dove: (s: string) => string; online: (meet: boolean) => string; studio: string;
+  cortesia: string; presenza: string; scrivimi: string; gestisci: string; wa: string; waMsg: (q: string) => string;
+  linkVideo: string; gcal: string; spostaAnnulla: string; confermaSposta: string; nuovo: string;
+  ricevuta: [string, string, string, string]; proposta: [string, string, string, string]; rispondi: string;
+  confermata: [string, string, string]; annullata: [string, string, string, string];
+  promemoria: [string, string, string]; gia: [string, string, string, string];
+}> = {
+  en: {
+    firma: 'Best wishes,\nAlberto Del Bove', ciao: 'Hello',
+    dove: (s) => s === 'studio' ? 'at my practice in Itri, Via Luigi Pirandello 8' : 'online, by video call',
+    online: (meet) => meet
+      ? 'We meet on Google Meet: at the time of the session just open the link below, from your computer or phone, somewhere quiet where nobody can hear you.'
+      : 'A few minutes before, I will send you the video call link. All you need is a quiet place where nobody can hear you and a stable connection.',
+    studio: 'My practice is at Via Luigi Pirandello 8, in Itri (LT), and parking nearby is easy.',
+    cortesia: 'If you cannot make it, please move or cancel it from the link below, ideally by the day before: that time could help someone else.',
+    presenza: 'From the same page you can also let me know you will be there: it is optional, but it helps me plan.',
+    scrivimi: 'If you would like to tell me something before we meet, even just a couple of lines about what brings you, you can reply to this email or write to me from the appointment page. I read everything myself.',
+    gestisci: 'Manage your appointment', wa: 'Or write to me on WhatsApp',
+    waMsg: (q) => `Hello Dr. Del Bove, I am writing about the session on ${q}.`,
+    linkVideo: 'Video call link', gcal: 'Add to Google Calendar', spostaAnnulla: 'Change time or cancel',
+    confermaSposta: 'Confirm, move or cancel', nuovo: 'Choose a new time',
+    ricevuta: ['I have received your request for', 'I have received your request', 'you asked for an introductory session on',
+      'I will confirm it myself, usually within a few hours: you will get another email. If I cannot guarantee that time, I will suggest one close to it.'],
+    proposta: ['I suggest another time:', 'I suggest another time', 'I cannot guarantee the time you chose. I suggest',
+      'If it works for you, confirm it with one click. Otherwise you can choose another free time.'],
+    rispondi: 'Reply to the proposal',
+    confermata: ['Confirmed:', 'Your session is confirmed', 'our introductory session is confirmed for'],
+    annullata: ['Session cancelled:', 'Your session is cancelled', 'the session on', 'is cancelled. If you would like to book another one, you can choose it on the website whenever you like, or write to me.'],
+    promemoria: ['Reminder:', 'See you tomorrow', 'a reminder of our introductory session on'],
+    gia: ['I have received your message', 'I have received your message', 'thank you for writing: I will read your message myself and reply personally.',
+      'Your introductory session is still booked for'],
+  },
+  es: {
+    firma: 'Un saludo,\nAlberto Del Bove', ciao: 'Hola',
+    dove: (s) => s === 'studio' ? 'en mi consulta de Itri, via Luigi Pirandello 8' : 'online, por videollamada',
+    online: (meet) => meet
+      ? 'Nos vemos en Google Meet: a la hora de la cita basta con abrir el enlace de abajo, desde el ordenador o el móvil, en un lugar tranquilo donde nadie te oiga.'
+      : 'Unos minutos antes te mando el enlace de la videollamada. Solo necesitas un lugar tranquilo, donde nadie te oiga, y una conexión estable.',
+    studio: 'La consulta está en via Luigi Pirandello 8, en Itri (LT), y es fácil aparcar cerca.',
+    cortesia: 'Si no puedes venir, cámbiala o anúlala desde el enlace de abajo, a ser posible el día antes: ese horario puede servirle a otra persona.',
+    presenza: 'Desde la misma página también puedes confirmarme que vendrás: no es obligatorio, pero me ayuda a organizarme.',
+    scrivimi: 'Si antes de la sesión quieres contarme algo, aunque sean dos líneas sobre lo que te trae, puedes responder a este email o escribirme desde la página de la cita. Lo leo todo yo.',
+    gestisci: 'Gestiona tu cita', wa: 'O escríbeme por WhatsApp',
+    waMsg: (q) => `Buenos días, Dr. Del Bove: le escribo por la sesión del ${q}.`,
+    linkVideo: 'Enlace de la videollamada', gcal: 'Añadir a Google Calendar', spostaAnnulla: 'Cambiar horario o anular',
+    confermaSposta: 'Confirmar, cambiar o anular', nuovo: 'Elige un nuevo horario',
+    ricevuta: ['He recibido tu solicitud para el', 'He recibido tu solicitud', 'has pedido una sesión de conocimiento para el',
+      'Te la confirmo yo, normalmente en pocas horas: te llegará otro email. Si no puedo garantizarte ese horario, te propongo uno cercano.'],
+    proposta: ['Te propongo otro horario:', 'Te propongo otro horario', 'no puedo garantizarte el horario que elegiste. Te propongo el',
+      'Si te va bien, confírmalo con un clic. Si no, puedes elegir otro horario libre.'],
+    rispondi: 'Responder a la propuesta',
+    confermata: ['Confirmada:', 'La sesión está confirmada', 'nuestra sesión de conocimiento está confirmada para el'],
+    annullata: ['Sesión anulada:', 'La sesión está anulada', 'la sesión del', 'está anulada. Si quieres reservar otra, puedes elegirla en la web cuando quieras, o escribirme.'],
+    promemoria: ['Recordatorio:', 'Nos vemos mañana', 'te recuerdo nuestra sesión de conocimiento del'],
+    gia: ['He recibido tu mensaje', 'He recibido tu mensaje', 'gracias por escribirme: leo yo tu mensaje y te respondo personalmente.',
+      'Tu sesión de conocimiento sigue reservada para el'],
+  },
+};
+
+function testiEstero(lang: 'en' | 'es', evento: string, p: DatiPrenotazione, link: string, url: string): TestoPren | null {
+  const L = ESTERO[lang];
+  const n = (p.nome || '').trim().split(/\s+/)[0];
+  const ciao = n ? `${L.ciao} ${n},` : `${L.ciao},`;
+  const wa = waLink(L.waMsg(p.quando));
+  const luogo = p.setting === 'online' ? L.online(!!p.meet) : L.studio;
+  const gcal = linkGoogleCalendar(p, 'persona');
+  switch (evento) {
+    case 'ricevuta': return {
+      oggetto: `${L.ricevuta[0]} ${p.quando}`, titolo: L.ricevuta[1],
+      righe: [`${ciao} ${L.ricevuta[2]} ${p.quando}, ${L.dove(p.setting)}.`, L.ricevuta[3], L.scrivimi],
+      bottone: [L.gestisci, link], secondario: [L.wa, wa],
+    };
+    case 'proposta': return {
+      oggetto: `${L.proposta[0]} ${p.quando}`, titolo: L.proposta[1],
+      righe: [`${ciao} ${L.proposta[2]} ${p.quando}, ${L.dove(p.setting)}.`, L.proposta[3]],
+      bottone: [L.rispondi, link], secondario: [L.wa, wa],
+    };
+    case 'confermata': return {
+      oggetto: `${L.confermata[0]} ${p.quando}`, titolo: L.confermata[1],
+      righe: [`${ciao} ${L.confermata[2]} ${p.quando}, ${L.dove(p.setting)}.`, luogo, L.cortesia, L.presenza],
+      bottone: [L.confermaSposta, `${link}&a=presenza`], secondario: [L.gcal, gcal], meet: true,
+    };
+    case 'promemoria': return {
+      oggetto: `${L.promemoria[0]} ${p.quando}`, titolo: L.promemoria[1],
+      righe: [`${ciao} ${L.promemoria[2]} ${p.quando}, ${L.dove(p.setting)}.`, luogo, L.cortesia, L.presenza],
+      bottone: [L.confermaSposta, `${link}&a=presenza`], secondario: [L.wa, wa], meet: true,
+    };
+    case 'annullata': return {
+      oggetto: `${L.annullata[0]} ${p.quando}`, titolo: L.annullata[1],
+      righe: [`${ciao} ${L.annullata[2]} ${p.quando} ${L.annullata[3]}`],
+      bottone: [L.nuovo, `${url}/?lang=${lang}#contatti`], secondario: [L.wa, wa],
+    };
+    case 'gia_prenotato': return {
+      oggetto: L.gia[0], titolo: L.gia[1],
+      righe: [`${ciao} ${L.gia[2]}`, `${L.gia[3]} ${p.quando}, ${L.dove(p.setting)}.`],
+      bottone: [L.gestisci, link], secondario: [L.wa, wa],
+    };
+  }
+  return null;
+}
 
 const CORTESIA = 'Se non riesci a esserci, spostalo o annullalo dal link qui sotto, possibilmente entro il giorno prima: quell’orario può servire a qualcun altro.';
 const PRESENZA = 'Dalla stessa pagina puoi anche confermarmi che ci sarai: non è obbligatorio, ma mi aiuta a organizzarmi.';
@@ -729,7 +842,9 @@ function aaaammgg(iso: string): string {
 
 export function linkGoogleCalendar(p: DatiPrenotazione, per: 'persona' | 'alberto'): string {
   const titolo = per === 'persona'
-    ? 'Colloquio conoscitivo con il Dott. Alberto Del Bove'
+    ? (p.lang === 'en' ? 'Introductory session with Dr Alberto Del Bove'
+      : p.lang === 'es' ? 'Sesión de conocimiento con el Dr. Alberto Del Bove'
+      : 'Colloquio conoscitivo con il Dott. Alberto Del Bove')
     : `Colloquio conoscitivo: ${p.nome || p.email}`;
   const dettagli = per === 'persona'
     ? (p.setting === 'online'
@@ -755,11 +870,14 @@ export function emailPrenotazione(opts: {
   nota?: string | null;
   sito: ImpostazioniSito;
 }): { oggetto: string; html: string; testo: string } {
-  const { per, evento, p, link, nota, sito } = opts;
+  const { per, evento, link, nota, sito } = opts;
+  // Ad Alberto la data arriva sempre in italiano, qualunque sia la lingua della persona.
+  const p = per === 'alberto' && opts.p.quandoIt ? { ...opts.p, quando: opts.p.quandoIt } : opts.p;
   const url = (sito.url || 'https://www.albertodelbove-psicologo.it').replace(/\/$/, '');
   const chi = p.nome || p.email;
   const ciao = saluto(p.nome);
-  const firma = 'A presto,\nAlberto Del Bove';
+  const estero = per === 'persona' && (p.lang === 'en' || p.lang === 'es') ? p.lang : null;
+  const firma = estero ? ESTERO[estero].firma : 'A presto,\nAlberto Del Bove';
   const wa = waLink(`Buongiorno Dott. Del Bove, le scrivo per il colloquio di ${p.quando}.`);
 
   type Testo = {
@@ -771,8 +889,11 @@ export function emailPrenotazione(opts: {
     ? 'Ci vediamo su Google Meet: all’ora dell’appuntamento ti basta aprire il link qui sotto, dal computer o dal telefono, da un posto tranquillo dove nessuno ti senta.'
     : 'Qualche minuto prima ti mando il link per la videochiamata. Ti basta un posto tranquillo, dove nessuno ti senta, e una connessione stabile.';
   let t: Testo;
+  const tEstero = estero ? testiEstero(estero, evento, p, link, url) : null;
 
-  if (per === 'persona') {
+  if (tEstero) {
+    t = tEstero;
+  } else if (per === 'persona') {
     t = {
       ricevuta: {
         oggetto: `Ho ricevuto la tua richiesta per ${p.quando}`,
@@ -901,14 +1022,14 @@ export function emailPrenotazione(opts: {
       ${titolo(t.titolo)}
       ${t.righe.map(par).join('')}
       ${nota ? `<div style="margin:0 0 14px;padding:14px 16px;background:${CREMA};border-radius:12px;border-left:3px solid ${MIRTILLO};white-space:pre-wrap;">${esc(nota)}</div>` : ''}
-      ${t.meet && p.meet && p.setting === 'online' ? `<p style="margin:0 0 14px;padding:14px 16px;background:#E2E4F1;border-radius:12px;">Link della videochiamata:<br><a href="${esc(p.meet)}" style="color:${MIRTILLO};font-weight:bold;word-break:break-all;">${esc(p.meet)}</a></p>` : ''}
+      ${t.meet && p.meet && p.setting === 'online' ? `<p style="margin:0 0 14px;padding:14px 16px;background:#E2E4F1;border-radius:12px;">${estero ? ESTERO[estero].linkVideo : 'Link della videochiamata'}:<br><a href="${esc(p.meet)}" style="color:${MIRTILLO};font-weight:bold;word-break:break-all;">${esc(p.meet)}</a></p>` : ''}
       ${bottone(t.bottone[0], t.bottone[1])}
       ${t.secondario ? linkSecondario(t.secondario[0], t.secondario[1]) : ''}
       ${per === 'persona' ? `<p style="margin:0;white-space:pre-line;">${esc(firma)}</p>` : ''}`,
   });
   const testo = [
     ...t.righe, nota ? `\n«${nota}»` : '',
-    t.meet && p.meet && p.setting === 'online' ? `\nLink della videochiamata: ${p.meet}` : '', '',
+    t.meet && p.meet && p.setting === 'online' ? `\n${estero ? ESTERO[estero].linkVideo : 'Link della videochiamata'}: ${p.meet}` : '', '',
     `${t.bottone[0]}: ${t.bottone[1]}`,
     t.secondario ? `${t.secondario[0]}: ${t.secondario[1]}` : '',
     per === 'persona' ? `\n${firma}` : '',
