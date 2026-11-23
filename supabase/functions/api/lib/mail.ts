@@ -22,6 +22,16 @@ export type Messaggio = {
 export class ErroreSmtp extends Error {}
 
 /**
+ * La libreria SMTP codifica uno spazio a fine riga come «=20» e poi codifica
+ * anche il simbolo «=»: nel messaggio arrivava un «=20» visibile (per esempio
+ * «Psicoterapeuta =20 Nuova richiesta»). Gli spazi a fine riga non servono a
+ * niente, quindi li tolgo prima dell'invio.
+ */
+export function senzaSpaziFinali(testo: string): string {
+  return testo.replace(/[ \t]+(?=\r?\n)/g, '').replace(/[ \t]+$/, '');
+}
+
+/**
  * L'oggetto con lettere accentate o trattini lunghi va codificato a mano.
  * La libreria SMTP (denomailer 1.6.0) lo codifica da sé in quoted-printable,
  * ma spezza le righe lunghe a metà della codifica: Gmail mostrava
@@ -85,8 +95,8 @@ export async function connessione(s: ImpostazioniSmtp) {
         to: m.a,
         replyTo: s.reply_to || s.from_email!,
         subject: oggettoMime(m.oggetto),
-        content: m.testo,
-        html: m.html,
+        content: senzaSpaziFinali(m.testo),
+        html: senzaSpaziFinali(m.html),
         headers: m.disiscrizione
           ? {
             'List-Unsubscribe': `<${m.disiscrizione}>`,

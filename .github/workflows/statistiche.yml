@@ -1,0 +1,26 @@
+name: Statistiche
+
+# Andamento del sito in numeri aggregati (visite, pagine, provenienze,
+# clic, richieste, prenotazioni). Si lancia a mano da Actions; il
+# riepilogo compare nella pagina dell'esecuzione. Nessun dato personale:
+# il repository è pubblico.
+
+on:
+  workflow_dispatch:
+    inputs:
+      giorni:
+        description: "Quanti giorni indietro"
+        default: "30"
+
+jobs:
+  statistiche:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      - run: node tools/statistiche.js
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          GIORNI: ${{ github.event.inputs.giorni }}
