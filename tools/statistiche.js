@@ -64,6 +64,26 @@ const QUERY = {
     select to_char(date_trunc('week', created_at), 'YYYY-MM-DD') as settimana, count(*) as richieste
     from messages where created_at > now() - interval '${GIORNI} days'
     group by 1 order by 1`,
+  'Visite anomale (più di 10 pagine viste)': `
+    select left(session_id, 6) as visita, count(*) as viste, count(distinct path) as pagine_diverse,
+           min(path) as pagina, max(country) as paese, max(device) as dispositivo, max(browser) as browser,
+           max(coalesce(referrer_host, '-')) as provenienza,
+           to_char(min(created_at) at time zone 'Europe/Rome', 'MM-DD HH24:MI') as inizio,
+           to_char(max(created_at) at time zone 'Europe/Rome', 'MM-DD HH24:MI') as fine
+    from page_views where created_at > now() - interval '${GIORNI} days'
+    group by session_id having count(*) > 10 order by 2 desc limit 15`,
+  'Visite dagli Stati Uniti per pagina': `
+    select path as pagina, count(distinct session_id) as visite, max(browser) as browser
+    from page_views where country = 'US' and created_at > now() - interval '${GIORNI} days'
+    group by 1 order by 2 desc limit 10`,
+  'Pagine di arrivo da Google e richieste': `
+    with prima as (
+      select distinct on (session_id) session_id, path, referrer_host
+      from page_views where created_at > now() - interval '${GIORNI} days' order by session_id, created_at)
+    select p.path as pagina_di_arrivo, count(*) as visite,
+           count(*) filter (where exists (select 1 from events e where e.session_id = p.session_id and e.name = 'cta_click')) as con_clic,
+           count(*) filter (where exists (select 1 from events e where e.session_id = p.session_id and e.name = 'contatto_inviato')) as con_richiesta
+    from prima p where p.referrer_host like '%google%' group by 1 order by 2 desc limit 10`,
   'Prenotazioni dal calendario': `
     select status as stato, lang as lingua, count(*) as prenotazioni,
            count(*) filter (where slot_start > now()) as future,
