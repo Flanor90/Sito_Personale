@@ -14,36 +14,38 @@ const fs = require('fs');
 const REF = 'ynmxgdcikqlgcupfszza';
 const TOKEN = process.env.SUPABASE_ACCESS_TOKEN;
 const GIORNI = Number(process.env.GIORNI || 30);
+// Le prove in locale (prima che il contatore le escludesse) non contano.
+const VERE = `coalesce(referrer_host, '') <> 'localhost'`;
 
 const QUERY = {
   'Visite per giorno (ultimi 14 giorni)': `
     select to_char(date_trunc('day', created_at at time zone 'Europe/Rome'), 'YYYY-MM-DD') as giorno,
            count(*) as pagine_viste, count(distinct session_id) as visite
-    from page_views where created_at > now() - interval '14 days'
+    from page_views where ${VERE} and created_at > now() - interval '14 days'
     group by 1 order by 1`,
   'Totali del periodo': `
     select count(*) as pagine_viste, count(distinct session_id) as visite,
            round(avg(nullif(seconds, 0))) as secondi_medi_per_pagina
-    from page_views where created_at > now() - interval '${GIORNI} days'`,
+    from page_views where ${VERE} and created_at > now() - interval '${GIORNI} days'`,
   'Pagine più viste': `
     select path as pagina, count(*) as viste, count(distinct session_id) as visite
-    from page_views where created_at > now() - interval '${GIORNI} days'
+    from page_views where ${VERE} and created_at > now() - interval '${GIORNI} days'
     group by 1 order by 2 desc limit 20`,
   'Da dove arrivano (sito di provenienza)': `
     select coalesce(referrer_host, '(diretto o sconosciuto)') as provenienza, count(distinct session_id) as visite
-    from page_views where created_at > now() - interval '${GIORNI} days'
+    from page_views where ${VERE} and created_at > now() - interval '${GIORNI} days'
     group by 1 order by 2 desc limit 15`,
   'Campagne (utm)': `
     select coalesce(utm_source, '-') as fonte, coalesce(utm_medium, '-') as mezzo,
            coalesce(utm_campaign, '-') as campagna, count(distinct session_id) as visite
-    from page_views where created_at > now() - interval '${GIORNI} days' and utm_source is not null
+    from page_views where ${VERE} and created_at > now() - interval '${GIORNI} days' and utm_source is not null
     group by 1, 2, 3 order by 4 desc limit 15`,
   'Dispositivo': `
     select coalesce(device, '-') as dispositivo, count(distinct session_id) as visite
-    from page_views where created_at > now() - interval '${GIORNI} days' group by 1 order by 2 desc`,
+    from page_views where ${VERE} and created_at > now() - interval '${GIORNI} days' group by 1 order by 2 desc`,
   'Paese': `
     select coalesce(country, '-') as paese, count(distinct session_id) as visite
-    from page_views where created_at > now() - interval '${GIORNI} days' group by 1 order by 2 desc limit 10`,
+    from page_views where ${VERE} and created_at > now() - interval '${GIORNI} days' group by 1 order by 2 desc limit 10`,
   'Eventi': `
     select name as evento, count(*) as volte, count(distinct session_id) as visite
     from events where created_at > now() - interval '${GIORNI} days' group by 1 order by 2 desc limit 20`,
@@ -70,7 +72,7 @@ const QUERY = {
            max(coalesce(referrer_host, '-')) as provenienza,
            to_char(min(created_at) at time zone 'Europe/Rome', 'MM-DD HH24:MI') as inizio,
            to_char(max(created_at) at time zone 'Europe/Rome', 'MM-DD HH24:MI') as fine
-    from page_views where created_at > now() - interval '${GIORNI} days'
+    from page_views where ${VERE} and created_at > now() - interval '${GIORNI} days'
     group by session_id having count(*) > 10 order by 2 desc limit 15`,
   'Visite dagli Stati Uniti per pagina': `
     select path as pagina, count(distinct session_id) as visite, max(browser) as browser
@@ -79,7 +81,7 @@ const QUERY = {
   'Pagine di arrivo da Google e richieste': `
     with prima as (
       select distinct on (session_id) session_id, path, referrer_host
-      from page_views where created_at > now() - interval '${GIORNI} days' order by session_id, created_at)
+      from page_views where ${VERE} and created_at > now() - interval '${GIORNI} days' order by session_id, created_at)
     select p.path as pagina_di_arrivo, count(*) as visite,
            count(*) filter (where exists (select 1 from events e where e.session_id = p.session_id and e.name = 'cta_click')) as con_clic,
            count(*) filter (where exists (select 1 from events e where e.session_id = p.session_id and e.name = 'contatto_inviato')) as con_richiesta
